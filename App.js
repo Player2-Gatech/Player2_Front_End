@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Alert } from 'react-native'
 
 import AuthScreen from './src/containers/AuthScreen'
 import HomeScreen from './src/containers/HomeScreen'
@@ -27,7 +28,7 @@ export class LoginAnimation extends Component {
         console.log(responseJson)
         checker = Object.keys(responseJson)[0];
         if (checker == "message") {
-          alert("Error", "Invalid username or password")
+          Alert.alert('Error', 'Invalid username or password!')
         } else {
           this.setState({ isLoading: true })
           setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -57,7 +58,7 @@ export class LoginAnimation extends Component {
         .then((responseJson) => {
             checker = Object.keys(responseJson)[0];
             if (checker == "message") {
-              alert("Error", "That email is in use!")
+              Alert.alert("Error", "That email is in use!")
             } else {
               this.setState({ isLoading: true })
               setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -69,7 +70,7 @@ export class LoginAnimation extends Component {
 
 
     } else {
-        alert("Error", 'The passwords do not match!')
+        Alert.alert("Error", 'The passwords do not match!')
     }
   }
 
