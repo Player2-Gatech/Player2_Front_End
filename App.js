@@ -12,9 +12,9 @@ export class LoginAnimation extends Component {
 
   _simulateLogin = (username, password) => {
     // TODO replace alert to login logic
-    
+
     const base64 = require('base-64')
-    fetch("http://ec2-35-171-161-209.compute-1.amazonaws.com/api/token", {  
+    fetch("http://ec2-35-171-161-209.compute-1.amazonaws.com/api/token", {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -27,7 +27,7 @@ export class LoginAnimation extends Component {
         console.log(responseJson)
         checker = Object.keys(responseJson)[0];
         if (checker == "message") {
-          alert("incorrect username or password")
+          alert("Error", "Invalid username or password")
         } else {
           this.setState({ isLoading: true })
           setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -45,7 +45,7 @@ export class LoginAnimation extends Component {
             'email': username,
             'password': password,
         })
-        fetch("http://ec2-35-171-161-209.compute-1.amazonaws.com/api/player", {  
+        fetch("http://ec2-35-171-161-209.compute-1.amazonaws.com/api/player", {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -57,7 +57,7 @@ export class LoginAnimation extends Component {
         .then((responseJson) => {
             checker = Object.keys(responseJson)[0];
             if (checker == "message") {
-              alert(responseJson["message"])
+              alert("Error", "That email is in use!")
             } else {
               this.setState({ isLoading: true })
               setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -67,9 +67,9 @@ export class LoginAnimation extends Component {
             console.error(error);
         });
 
-        
+
     } else {
-        alert('passwords do not match')
+        alert("Error", 'The passwords do not match!')
     }
   }
 

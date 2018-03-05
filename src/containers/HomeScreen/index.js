@@ -52,7 +52,7 @@ export default class HomeScreen extends Component {
                         textStyle={styles.buttonText}
                     />
                 </View>
-                <View style={styles.redView}>
+                <View style={styles.blueView}>
                     <Text>Username :</Text>
                     <Text>Bio :</Text>
                     <Text>Yellow</Text>
@@ -130,10 +130,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: 'bold'
   },
-  redView: {
+  blueView: {
     height: 1000,
     justifyContent: 'flex-end',
-    backgroundColor: 'red'
+    backgroundColor: '#1976D2'
   }
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
