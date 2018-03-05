@@ -27,7 +27,7 @@ export class LoginAnimation extends Component {
         console.log(responseJson)
         checker = Object.keys(responseJson)[0];
         if (checker == "message") {
-          alert(responseJson["message"])
+          alert("incorrect username or password")
         } else {
           this.setState({ isLoading: true })
           setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
