@@ -1,0 +1,3 @@
+rootProject.name = 'Player2_Front_End'
+
+include ':app'
