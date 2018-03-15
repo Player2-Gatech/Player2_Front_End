@@ -13,14 +13,19 @@ export default class EditProfile extends Component {
         edit: PropTypes.bool.isRequired,
         username: PropTypes.string.isRequired,
         bio: PropTypes.string.isRequired,
-        done: PropTypes.func.isRequired
+        done: PropTypes.func.isRequired,
+        authKey: PropTypes.string.isRequired
     }
     
     //TODO Hee : set BIO max length / make scroll view for multiple lines
     //TODO Hee : like view
     state = {
         editUsername: '',
-        editBio: ''
+        editBio: '',
+        editPlayerRole: '',
+        editPartnerRole: '',
+        editGame: 'League of Legends',
+        editURL: '',
     }
     render () {
         const {editUsername, editBio} = this.state
@@ -53,7 +58,7 @@ export default class EditProfile extends Component {
                         text={'DONE'}
                         textStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={() => this.props.done(editUsername, editBio)}
+                        onPress={() => this.props.done(editUsername, editBio, this.props.authKey)}
                     />
                     
                     <Game/>

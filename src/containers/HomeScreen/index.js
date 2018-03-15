@@ -11,18 +11,24 @@ import Profile from './Profile'
 import ChatScreen from '../ChatScreen'
 import MatchingScreen from '../MatchingScreen'
 
-
+class HomeScreenTabNavigator extends Component {
+    render() {
+        return <Navigator screenProps={this.props} />; 
+    }
+}
 
 class HomeScreen extends Component {
-    static propTypes = {
-        logout: PropTypes.func
-    }
+    /*static propTypes = {
+        logout: PropTypes.func,
+        authKey: PropTypes.string.isRequired
+    }*/
     //TODO Hee: StatusBar background color
     render () {
+        const { logout, authKey } = this.props.screenProps
         return (
             <ScrollView>
                 <StatusBar barStyle="dark-content"/>
-                <Profile/>
+                <Profile authKey={authKey}/>
             </ScrollView>
         )
     }
@@ -34,7 +40,7 @@ class HomeScreen extends Component {
     ChatScreen: { screen: ChatScreen }
 })*/
 
-const HomeScreenTabNavigator = TabNavigator({
+const Navigator = TabNavigator({
     HomeScreen: { screen: HomeScreen },
     MatchingScreen: { screen: MatchingScreen },
     ChatScreen: { screen: ChatScreen }
@@ -52,4 +58,4 @@ const styles = StyleSheet.create({
 })
 
 export default HomeScreenTabNavigator;
-AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
+//AppRegistry.registerComponent('HomeScreenTabNavigator', () => HomeScreenTabNavigator);
