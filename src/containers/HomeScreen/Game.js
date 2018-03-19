@@ -7,11 +7,18 @@ import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 import GameInformation from './GameInformation'
 
-export default class EditProfile extends Component {
+export default class Game extends Component {
+    static propTypes = {
+        edit: PropTypes.bool.isRequired,
+        gameTitle: PropTypes.string.isRequired,
+        role: PropTypes.string.isRequired,
+        partnerRole: PropTypes.string.isRequired,
+    }
     state = {
         myPosition: "ADC",
         duoPosition: "SUP",
-        gameUsername: "HEE"
+        gameUsername: "HEE",
+        playedGame: "League of Legends"
     }
     render () {
         return (
@@ -29,6 +36,7 @@ export default class EditProfile extends Component {
                             <Text>Preferred Position : {this.state.myPosition}</Text>
                             <Text>Preferred Duo Position : {this.state.duoPosition}</Text>
                         </View>
+
                     </View>
                 </View>
                 

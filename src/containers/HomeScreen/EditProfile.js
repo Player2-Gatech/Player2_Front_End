@@ -28,7 +28,7 @@ export default class EditProfile extends Component {
         editURL: '',
     }
     render () {
-        const {editUsername, editBio} = this.state
+        const {editUsername, editBio, editPlayerRole, editPartnerRole, editGame, editURL} = this.state
         if (this.props.edit) {
             return (
                 <View style={styles.container}>
@@ -58,7 +58,7 @@ export default class EditProfile extends Component {
                         text={'DONE'}
                         textStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={() => this.props.done(editUsername, editBio, this.props.authKey)}
+                        onPress={() => this.props.done(editUsername, editBio,  this.props.authKey)}
                     />
                     
                     <Game/>
