@@ -10,103 +10,72 @@ import Game from './Game'
 
 export default class EditProfile extends Component {
     static propTypes = {
-        edit: PropTypes.bool.isRequired,
+        editProf: PropTypes.func.isRequired,
         username: PropTypes.string.isRequired,
-        bio: PropTypes.string.isRequired,
-        done: PropTypes.func.isRequired,
-        authKey: PropTypes.string.isRequired
+        bio     : PropTypes.string.isRequired,
     }
     
-    //TODO Hee : set BIO max length / make scroll view for multiple lines
-    //TODO Hee : like view
     state = {
         editUsername: '',
-        editBio: '',
-        editPlayerRole: '',
-        editPartnerRole: '',
-        editGame: 'League of Legends',
-        editURL: '',
+        editBio: ''
     }
+
+    //TODO Hee : like view
+
     render () {
-        const {editUsername, editBio, editPlayerRole, editPartnerRole, editGame, editURL} = this.state
-        if (this.props.edit) {
-            return (
-                <View style={styles.container}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.whiteText}>Profile</Text>
-                    </View>
-                    <View style={styles.imgContainer}>
-                        <Image style={styles.img} source={imgProfile}/>
-                    </View>
-                    <View style={styles.editUsernameContainer}>
-                        <TextInput
-                            ref={(ref) => this.usernameInputRef = ref}
-                            onSubmitEditing={() => this.bioInputRef.focus()}
-                            placeholder={this.props.username}
-                            onChangeText={(value) => this.setState({ editUsername: value})}
-                        />
-                    </View>
-                    <View style={styles.bioContainer}>
-                        <TextInput
-                            ref={(ref) => this.bioInputRef = ref}
-                            placeholder={this.props.bio}
-                            onChangeText={(value) => this.setState({ editBio: value})}
-                        />
-                    </View>
+        const { editProf, username, bio } = this.props
+        return (
+            <View style={styles.container}>
+                <View style={styles.imgContainer}>
+                    <Image style={styles.img} source={imgProfile}/>
+                </View>
+                <View style={styles.usernameContainer}>
+                    <Text style={styles.usernameTitle}>Username : </Text>
+                    <TextInput
+                        ref={(ref) => this.usernameInputRef = ref}
+                        onSubmitEditing={() => this.bioInputRef.focus()}
+                        placeholder={username}
+                        onChangeText={(value) => this.setState({ editUsername: value})}
+                        style={styles.usernameInput}
+                    />
+                </View>
+                <View style={styles.bioContainer}>
+                    <Text style={styles.bioTitle}>Bio : </Text>
+                    <TextInput
+                        ref={(ref) => this.bioInputRef = ref}
+                        placeholder={ bio }
+                        multiline={true}
+                        maxLength={180}
+                        onChangeText={(value) => this.setState({ editBio: value})}
+                        style={styles.bioInput}
+                    />
+                </View>
 
+                <View style={styles.buttonContainer}>
                     <CustomButton
-                        text={'DONE'}
+                        text={'UPDATE'}
                         textStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={() => this.props.done(editUsername, editBio,  this.props.authKey)}
+                        onPress={() => editProf(this.state.editUsername, this.state.editBio)}
                     />
-                    
-                    <Game/>
                 </View>
-            )
-        } else { 
-            return (
-                <View style={styles.container}>
-                    <View style={styles.titleContainer}>
-                        <Text style={styles.whiteText}>Profile</Text>
-                    </View>
-                    <View style={styles.imgContainer}>
-                        <Image style={styles.img} source={imgProfile}/>
-                    </View>
-                    <View style={styles.usernameContainer}>
-                        <Text style={styles.whiteText}>{this.props.username}</Text>
-                    </View>
-                    <View style={styles.bioContainer}>
-                        <Text>{this.props.bio}</Text>
-                    </View>
-
-                    <CustomButton
-                        text={'EDIT'}
-                        textStyle={styles.buttonText}
-                        buttonStyle={styles.button}
-                        onPress={() => this.props.done()}
-                    />
-                    
-                    <Game/>
-                </View>
-            )
-        }
+                
+            </View>
+        )
     }
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#1976D2",
+    backgroundColor: "#fff",
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    //alignItems: 'center',
     width: metrics.DEVICE_WIDTH
   },
-  titleContainer: {
-    marginTop: 20
-  },
   imgContainer: {
-    marginTop: 28
+    marginTop: 16,
+    alignSelf: 'center'
   },
   img: {
     alignItems: 'flex-start',
@@ -118,28 +87,44 @@ const styles = StyleSheet.create({
     borderRadius: 15
   },
   usernameContainer: {
-    marginTop: 10
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: 16,
+    marginHorizontal: 16
   },
-  whiteText: {
-    fontSize: 20,
+  usernameTitle: {
+    flex: 2,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: 'white'
+    justifyContent: 'center',
+    alignSelf: 'center',
+    color: '#1976D2'
+  },
+  usernameInput: {
+    flex: 4,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: '#99E7FF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
   },
   bioContainer: {
-    width: metrics.DEVICE_WIDTH - 100,
-    height: 80,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    borderWidth: 2,
-    borderColor: '#99E7FF',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-    marginTop: 10,
-    marginBottom: 10
+    flexDirection: 'row',
+    marginTop: 16,
+    marginHorizontal: 16
   },
-  editUsernameContainer: {
-    width: 200,
+  bioTitle: {
+    flex: 1,
+    fontSize: 16,
+    fontWeight: 'bold',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    color: '#1976D2'
+  },
+  bioInput: {
+    flex: 4,
     backgroundColor: 'white',
     borderRadius: 10,
     borderWidth: 2,
@@ -147,14 +132,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
-    marginTop: 10,
-    marginBottom: 10
+  },
+  buttonContainer: {
+    justifyContent: 'flex-end'
   },
   button: {
-    backgroundColor: 'white'
+    marginTop: 16,
+    marginHorizontal: 100,
+    backgroundColor: '#1976D2',
   },
   buttonText: {
-    color: 'black',
+    color: 'white',
     fontWeight: 'bold'
   }
 })

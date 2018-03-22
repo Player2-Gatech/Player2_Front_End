@@ -1,50 +1,67 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
+import {
+    StyleSheet, AppRegistry, ScrollView,
+    View, Text, TextInput, Image,
+    TouchableOpacity, TouchableHighlight
+} from 'react-native'
 
 import CustomButton from '../../components/CustomButton'
-import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 import GameInformation from './GameInformation'
+import AddModal from './AddModal'
 
 export default class Game extends Component {
-    static propTypes = {
-        edit: PropTypes.bool.isRequired,
-        gameTitle: PropTypes.string.isRequired,
-        role: PropTypes.string.isRequired,
-        partnerRole: PropTypes.string.isRequired,
+    constructor() {
+        super();
+        /*this.state = {
+            myPosition: "ADC",
+            duoPosition: "SUP",
+            gameUsername: "HEE"
+        }*/
     }
-    state = {
-        myPosition: "ADC",
-        duoPosition: "SUP",
-        gameUsername: "HEE",
-        playedGame: "League of Legends"
+    static propTypes = {
+        editGame: PropTypes.bool.isRequired,
+        editGameFunc: PropTypes.func.isRequired,
+        gameUsername: PropTypes.string.isRequired,
+        myPosition: PropTypes.string.isRequired,
+        duoPosition: PropTypes.string.isRequired
     }
     render () {
+        const { editGame, editGameFunc, gameUsername, myPosition, duoPosition } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.gameSectionContainer}>
+                    
                     <View style={styles.gameIconContainer}>
                         <Text style={styles.sectionTitle}>{'Game'}</Text>
                         <Image style={styles.gameIcon} source={require('../../images/lolicon.jpeg')}/>
                     </View>
+                    
                     <View style={styles.gameDescriptionContainer}>
-                        <View style={styles.editIconContainer}>
-                            <Image style={styles.editIcon} source={require('../../images/plusIcon.png')}/>
+                        <TouchableOpacity
+                            style={styles.editIconContainer}
+                            onPress={() => editGameFunc(editGame)}
+                        >
+                            <Image
+                                style={styles.editIcon}
+                                source={require('../../images/plusIcon.png')}
+                            />
+                        </TouchableOpacity>
+                        <View style={styles.searchOption}>
+                            <Text>Preferred Position : {myPosition}</Text>
+                            <Text>Preferred Duo Position : {duoPosition}</Text>
                         </View>
-                        <View>
-                            <Text>Preferred Position : {this.state.myPosition}</Text>
-                            <Text>Preferred Duo Position : {this.state.duoPosition}</Text>
-                        </View>
-
                     </View>
                 </View>
                 
                 <GameInformation
-                    myPosition={this.state.myPosition}
-                    duoPosition={this.state.duoPosition}
-                    gameUsername={this.state.gameUsername}
+                    myPosition={myPosition}
+                    duoPosition={duoPosition}
+                    gameUsername={gameUsername}
                 />
+                <AddModal ref={'addModal'}>
+                </AddModal>
             </View>
         )
     }
@@ -57,23 +74,16 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center'
   },
-  img: {
-    alignItems: 'flex-start',
-    flex: 1,
-    flexDirection: 'row',
-    height: 50,
-    width: 50
-  },
   editIcon: {
-    height: 16,
-    width: 16
+    height: 24,
+    width: 24
   },
   editIconContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginRight: 10,
-    marginBottom: 14
+    marginBottom: 8
   },
   sectionTitle: {
     fontSize: 16,
@@ -101,6 +111,10 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginTop: 10
+  },
+  searchOption: {
+    justifyContent: 'center',
   }
 })
+
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
