@@ -27,9 +27,9 @@ export default class SelectGame extends Component {
         addGameFunc: PropTypes.func.isRequired,
         modalSubmit: PropTypes.func.isRequired
     }
-    _onPressSelectGame() {
+    _onPressSelectGame(gameTitle) {
         //alert('fuck you')
-        this.refs.addModal.showAddModal();
+        this.refs.addModal.showAddModal('Edit Game Details', gameTitle);
     }
     _onSubmitModal(myPosition, duoPosition, gameUsername) {
         this.props.modalSubmit(myPosition, duoPosition, gameUsername)
@@ -40,24 +40,22 @@ export default class SelectGame extends Component {
             <View style={styles.container}>
                 <View style={styles.gameContainer}>
                     <TouchableOpacity
-                        onPress={() => this._onPressSelectGame()}
+                        onPress={() => this._onPressSelectGame('League of Legends')}
                     >
-                        <Image 
+                        <Image
                             style={styles.gameLogo}
                             source={require('../../images/lolLogo.png')}
-                            resizeMode={'stretch'}/>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.gameContainer}>
-                    <TouchableOpacity
-                        onPress={() => addGameFunc(addGame)}
-                    >
-                        <Image 
-                            style={styles.gameLogo}
-                            source={require('../../images/plusIcon.png')}
                             resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
+                  <TouchableOpacity
+                      onPress={() => addGameFunc(addGame)}
+                  >
+                      <Image
+                          style={styles.button}
+                          source={require('../../images/plusIconWhite.png')}
+                          resizeMode={'contain'}/>
+                  </TouchableOpacity>
                 <AddModal
                     ref={'addModal'}
                     parentScreen={this}
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
   gameContainer: {
     //flexDirection: 'row',
     //justifyContent: 'center',
-    //alignItems: 'center',
+    alignItems: 'center',
     width: metrics.DEVICE_WIDTH * 0.95,
     height: 100,
     marginVertical: 8,
@@ -92,13 +90,12 @@ const styles = StyleSheet.create({
     borderColor: '#99E7FF',
   },
   gameLogo: {
-    width: metrics.DEVICE_WIDTH * 0.95,
+    width: metrics.DEVICE_WIDTH * 0.60,
     height: 100,
   },
   button: {
-    width: metrics.DEVICE_WIDTH * 0.95,
     height: 50,
-    borderRadius: 16,
+    width: metrics.DEVICE_WIDTH * 0.95,
     backgroundColor: '#1976D2'
   },
 })

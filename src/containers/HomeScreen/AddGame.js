@@ -29,8 +29,8 @@ export default class AddGame extends Component {
     static propTypes = {
         modalSubmit: PropTypes.func.isRequired,
     }
-    _onPressAddGame() {
-        this.refs.addModal.showAddModal();
+    _onPressAddGame(gameTitle) {
+        this.refs.addModal.showAddModal('Add Game Details', gameTitle);
     }
     _onSubmitModal(myPosition, duoPosition, gameUsername) {
         this.props.modalSubmit(myPosition, duoPosition, gameUsername)
@@ -41,9 +41,9 @@ export default class AddGame extends Component {
             <View style={styles.container}>
                 <View style={styles.gameContainer}>
                     <TouchableOpacity
-                        onPress={() => this._onPressAddGame()}
+                        onPress={() => this._onPressAddGame('Overwatch')}
                     >
-                        <Image 
+                        <Image
                             style={styles.gameLogo}
                             source={require('../../images/overwatchLogo.png')}
                             resizeMode={'stretch'}/>
@@ -51,9 +51,9 @@ export default class AddGame extends Component {
                 </View>
                 <View style={styles.gameContainer}>
                     <TouchableOpacity
-                        onPress={() => this._onPressAddGame()}
+                        onPress={() => this._onPressAddGame('World of Warcraft')}
                     >
-                        <Image 
+                        <Image
                             style={styles.gameLogo}
                             source={require('../../images/wowLogo.png')}
                             resizeMode={'stretch'}/>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   gameContainer: {
     //flexDirection: 'row',
     //justifyContent: 'center',
-    //alignItems: 'center',
+    alignItems: 'center',
     width: metrics.DEVICE_WIDTH * 0.95,
     height: 100,
     marginVertical: 8,
@@ -93,15 +93,9 @@ const styles = StyleSheet.create({
     borderColor: '#99E7FF',
   },
   gameLogo: {
-    width: metrics.DEVICE_WIDTH * 0.95,
+    width: metrics.DEVICE_WIDTH * 0.60,
     height: 100,
   },
-  button: {
-    width: metrics.DEVICE_WIDTH * 0.95,
-    height: 50,
-    borderRadius: 16,
-    backgroundColor: '#1976D2'
-  }
 })
 
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

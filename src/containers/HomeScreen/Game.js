@@ -32,12 +32,12 @@ export default class Game extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.gameSectionContainer}>
-                    
+
                     <View style={styles.gameIconContainer}>
                         <Text style={styles.sectionTitle}>{'Game'}</Text>
                         <Image style={styles.gameIcon} source={require('../../images/lolicon.jpeg')}/>
                     </View>
-                    
+
                     <View style={styles.gameDescriptionContainer}>
                         <TouchableOpacity
                             style={styles.editIconContainer}
@@ -54,7 +54,7 @@ export default class Game extends Component {
                         </View>
                     </View>
                 </View>
-                
+
                 <GameInformation
                     myPosition={myPosition}
                     duoPosition={duoPosition}
@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    //justifyContent: 'center',
     alignItems: 'center'
   },
   editIcon: {
@@ -99,10 +98,8 @@ const styles = StyleSheet.create({
     borderColor: '#99E7FF'
   },
   gameIconContainer: {
-    flex: 1,
     marginRight:20,
     justifyContent: 'center',
-    alignItems: 'center'
   },
   gameDescriptionContainer: {
     flex: 3

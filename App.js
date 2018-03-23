@@ -5,6 +5,7 @@ import AuthScreen from './src/containers/AuthScreen'
 import HomeScreen from './src/containers/HomeScreen'
 
 global.baseUrl = "http://ec2-34-203-205-241.compute-1.amazonaws.com"
+global.authKey = null
 
 export class LoginAnimation extends Component {
   constructor(props) {
@@ -13,7 +14,6 @@ export class LoginAnimation extends Component {
       isLoggedIn: false, // Is the user authenticated?
       isLoading: false, // Is the user loggingIn/signinUp?
       isAppReady: false, // Has the app completed the login animation?
-      authKey: null,
     }
   }
 
@@ -35,7 +35,7 @@ export class LoginAnimation extends Component {
           Alert.alert('Error', 'Invalid username or password!')
         } else {
 
-          this.setState({ authKey: responseJson.token })
+          global.authKey = responseJson.token
           //console.log(this.state.authKey)
           this.setState({ isLoading: true })
           setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -84,7 +84,7 @@ export class LoginAnimation extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-          this.setState({ authKey: responseJson.token})
+          global.authKey = responseJson.token
         })
         .catch((error) => {
           console.error(error);

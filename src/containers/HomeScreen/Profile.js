@@ -26,7 +26,7 @@ export default class Profile extends Component {
         myPosition: "NONE",
         duoPosition: "NONE",
     }
-    
+
     _editProfile = (username, bio) => {
         alert('username : ' + username + 'bio : ' + bio)
         if (username == '' || bio == '') {
@@ -39,15 +39,15 @@ export default class Profile extends Component {
     _toggleEditMode = (editMode) => {
         this.setState({ editMode: editMode? false: true })
     }
-    
+
     _toggleEditGame = (editGame) => {
         this.setState({ editGame: editGame? false: true })
     }
-    
+
     _toggleAddGame = (addGame) => {
         this.setState({ addGame: addGame? false: true })
     }
-    
+
     _modalSubmit = (myPosition, duoPosition, gameUsername) => {
         this.setState({editMode: true, editGame: false, addGame: false,
                         myPosition: myPosition, duoPosition: duoPosition,
