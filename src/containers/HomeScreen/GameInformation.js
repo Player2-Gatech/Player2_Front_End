@@ -7,13 +7,16 @@ import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 
 export default class EditProfile extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     static propTypes = {
         myPosition: PropTypes.string.isRequired,
         duoPosition: PropTypes.string.isRequired,
-        gameUsername: PropTypes.string.isRequired
+        gameUsername: PropTypes.string.isRequired,
+        skillInfo: PropTypes.object.isRequired,
     }
-    //TODO get rank, win, loss, pref win, and pref loss
-    //TODO Hee: make pie chart to display win rate
     state = {
         rank: "Challenger",
         win: 10,
@@ -22,6 +25,7 @@ export default class EditProfile extends Component {
         prefLoss: 5
     }
     render () {
+        const { myPosition, duoPosition, gameUsername, skillInfo} = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.rowContainer}>
@@ -29,10 +33,10 @@ export default class EditProfile extends Component {
                         <Text style={styles.sectionTitle}>Rank</Text>
                     </View>
                     <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Most Pick</Text>
+                        <Text style={styles.sectionTitle}>Pocket Pick</Text>
                     </View>
                 </View>
-                
+
                 <View style={styles.rowContainer}>
                     <View style={styles.rankContainer}>
                         <View style={styles.rankContainer}>
@@ -41,8 +45,8 @@ export default class EditProfile extends Component {
                                     <Image style={styles.rankIcon} source={require('../../images/challengerIcon.png')}/>
                                 </View>
                                 <View style={styles.colmContainer}>
-                                    <Text>{this.props.gameUsername}</Text>
-                                    <Text>{this.state.rank}</Text>
+                                    <Text>{gameUsername}</Text>
+                                    <Text>{skillInfo ? skillInfo.rank : ""}</Text>
                                 </View>
                             </View>
                         </View>
@@ -53,27 +57,27 @@ export default class EditProfile extends Component {
                         </View>
                     </View>
                 </View>
-                
+
                 <View style={styles.rowContainer}>
                     <View style={styles.colmContainer}>
                         <Text style={styles.sectionTitle}>Recent Game Winrate</Text>
                     </View>
                     <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>{this.props.myPosition} Winrate</Text>
+                        <Text style={styles.sectionTitle}>{myPosition} Winrate</Text>
                     </View>
                 </View>
 
                 <View style={styles.rowContainer}>
                     <View style={styles.rankContainer}>
                         <View style={styles.rankIconContainer}>
-                            <Text>{this.state.win}</Text>
-                            <Text>{this.state.loss}</Text>
+                            <Text>{skillInfo ? skillInfo.wins : ""}</Text>
+                            <Text>{skillInfo ? skillInfo.losses : ""}</Text>
                         </View>
                     </View>
                     <View style={styles.mostPickContainer}>
                         <View style={styles.rankIconContainer}>
-                            <Text>{this.state.prefWin}</Text>
-                            <Text>{this.state.prefLoss}</Text>
+                            <Text>{skillInfo ? skillInfo.roleWins : ""}</Text>
+                            <Text>{skillInfo? skillInfo.roleLosses : ""}</Text>
                         </View>
                     </View>
                 </View>

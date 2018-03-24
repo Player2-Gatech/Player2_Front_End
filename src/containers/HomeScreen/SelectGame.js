@@ -30,9 +30,31 @@ export default class SelectGame extends Component {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
         this.refs.addModal.showAddModal('Edit Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
     }
-    _onSubmitModal(myPosition, duoPosition, gameUsername) {
-        // TODO post for player game role, not necessary for demo right now
-        this.props.modalSubmit(myPosition, duoPosition, gameUsername)
+    _onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle) {
+        let body = JSON.stringify({
+          'playerGameRole': {
+           'gameTitle': gameTitle,
+           'displayName': gameUsername,
+           'role': myPosition,
+           'partnerRole': duoPosition
+          }})
+        console.log(body)
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/player", {
+             method: 'PUT',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             },
+            body: body
+         }).then((response) => response.json())
+         .then((responseJson) => {
+            this.props.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
+         })
+         .catch((error) => {
+             console.error(error)
+         });
     }
     renderSelectGames(playerGames, allGameInfo) {
       const images = {

@@ -26,6 +26,7 @@ export default class Profile extends Component {
         duoPosition: "",
         playerGames: "",
         allGameInfo: "",
+        skillInfo: {},
     }
 
     componentDidMount() {
@@ -90,14 +91,28 @@ export default class Profile extends Component {
              this.setState({ playerGames: responseJson.userGames})
              // user profile only updates for a league of legends submit
              if (gameTitle == "League of Legends") {
-               this.setState({ myPosition: myPosition, duoPosition: duoPosition,
-                               gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
+                const base64 = require('base-64')
+                fetch(baseUrl + "/api/playerSkill", {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Basic ' + base64.encode(authKey+":")
+                    }
+                })
+                .then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson)
+                    this.setState({skillInfo: responseJson.playerSkill})
+                      this.setState({ myPosition: myPosition, duoPosition: duoPosition,
+                                      gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
              } else {
-               this.setState({editMode: true, editGame: false, addGame: false})
+                this.setState({editMode: true, editGame: false, addGame: false})
              }
-            })
-         .catch((error) => {
-             console.error(error)
          })
     }
 
@@ -114,7 +129,7 @@ export default class Profile extends Component {
          .then((response) => response.json())
          .then((responseJson) => {
              console.log(responseJson)
-             this.setState({ username: responseJson.displayName, bio: responseJson.bio })
+             this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0]})
          })
          .catch((error) => {
              console.error(error)
@@ -158,7 +173,7 @@ export default class Profile extends Component {
 
     render () {
         const { editMode, editGame, addGame, username, bio,
-                gameUsername, myPosition, duoPosition, playerGames, allGameInfo} = this.state
+                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo} = this.state
         return (
             <View>
                 <TopNavigationBar
@@ -181,6 +196,7 @@ export default class Profile extends Component {
                             gameUsername={ gameUsername }
                             myPosition={ myPosition }
                             duoPosition={ duoPosition }
+                            skillInfo = { skillInfo }
                             isEmpty={playerGames.length == 0}
                         />
                         <Video/>

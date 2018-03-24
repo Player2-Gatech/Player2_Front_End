@@ -21,11 +21,12 @@ export default class Game extends Component {
         gameUsername: PropTypes.string.isRequired,
         myPosition: PropTypes.string.isRequired,
         duoPosition: PropTypes.string.isRequired,
-        isEmpty: PropTypes.bool.isRequired
+        isEmpty: PropTypes.bool.isRequired,
+        skillInfo: PropTypes.object.isRequired
     }
 
     render () {
-        const { editGame, editGameFunc, gameUsername, myPosition, duoPosition, isEmpty} = this.props
+        const { editGame, editGameFunc, gameUsername, myPosition, duoPosition, isEmpty, skillInfo} = this.props
         if (isEmpty) { // if no games
           return (<View style={styles.container}>
               <View style={styles.gameSectionContainer}>
@@ -80,6 +81,7 @@ export default class Game extends Component {
                       myPosition={myPosition}
                       duoPosition={duoPosition}
                       gameUsername={gameUsername}
+                      skillInfo={skillInfo}
                   />
                   <AddModal ref={'addModal'}>
                   </AddModal>

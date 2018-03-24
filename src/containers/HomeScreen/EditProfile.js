@@ -6,8 +6,6 @@ import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/profileicon.png'
 import metrics from '../../config/metrics'
 
-import Game from './Game'
-
 export default class EditProfile extends Component {
     static propTypes = {
         editProf: PropTypes.func.isRequired,
