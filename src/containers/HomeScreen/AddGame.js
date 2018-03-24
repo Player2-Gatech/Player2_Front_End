@@ -20,47 +20,80 @@ export default class AddGame extends Component {
     constructor() {
         super();
         this.state = {
-            myPosition: "SELECT",
-            duoPosition: "SELECT",
-            gameUsername: "HEE"
+            myPosition: "",
+            duoPosition: "",
+            gameUsername: ""
         }
         this._onPressAddGame = this._onPressAddGame.bind(this)
     }
     static propTypes = {
         modalSubmit: PropTypes.func.isRequired,
+        playerGames: PropTypes.object.isRequired,
+        allGameInfo: PropTypes.object.isRequired,
     }
-    _onPressAddGame(gameTitle) {
-        // TODO fetch for game details
-        this.refs.addModal.showAddModal('Add Game Details', gameTitle, 'lol', [{value: 'ADC'}]);
+    _onPressAddGame(gameTitle, allGameInfo) {
+        var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
+        this.refs.addModal.showAddModal('Add Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
     }
-    _onSubmitModal(myPosition, duoPosition, gameUsername) {
-        // TODO post for player game role, not necessary for demo right now
-        this.props.modalSubmit(myPosition, duoPosition, gameUsername)
+    _onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle) {
+        let body = JSON.stringify({
+           'gameTitle': gameTitle,
+           'displayName': gameUsername,
+           'role': myPosition,
+           'partnerRole': duoPosition
+        })
+
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/playerGame", {
+             method: 'POST',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             },
+            body: body
+         }).then((response) => response.json())
+         .then((responseJson) => {
+            this.props.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
+         })
+         .catch((error) => {
+             console.error(error)
+         });
     }
+
+    renderAddGames(playerGames, allGameInfo) {
+      // add only games the player is signed up for
+      playerGameTitleList = playerGames.map(g => g.gameTitle)
+      const images = {
+        'League of Legends': require('../../images/lolLogo.png'),
+        'Overwatch': require('../../images/overwatchLogo.png'),
+        'World of Warcraft': require('../../images/wowLogo.png')
+      }
+      return allGameInfo.map((item) => {
+          if (playerGameTitleList.indexOf(item.title) < 0) {
+            return (
+                  <View style={styles.gameContainer}>
+                      <TouchableOpacity
+                          onPress={() => this._onPressAddGame(item.title, allGameInfo)}
+                      >
+                          <Image
+                              style={styles.gameLogo}
+                              source={images[item.title]}
+                              resizeMode={'contain'}/>
+                      </TouchableOpacity>
+                  </View>
+            );
+          }
+      });
+    }
+
     render () {
-        const { modalSubmit } = this.props
+        const { modalSubmit, playerGames, allGameInfo} = this.props
         return (
             <View style={styles.container}>
-                <View style={styles.gameContainer}>
-                    <TouchableOpacity
-                        onPress={() => this._onPressAddGame('Overwatch')}
-                    >
-                        <Image
-                            style={styles.gameLogo}
-                            source={require('../../images/overwatchLogo.png')}
-                            resizeMode={'stretch'}/>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.gameContainer}>
-                    <TouchableOpacity
-                        onPress={() => this._onPressAddGame('World of Warcraft')}
-                    >
-                        <Image
-                            style={styles.gameLogo}
-                            source={require('../../images/wowLogo.png')}
-                            resizeMode={'stretch'}/>
-                    </TouchableOpacity>
-                </View>
+              {
+                this.renderAddGames(playerGames, allGameInfo)
+              }
                 <AddModal
                     ref={'addModal'}
                     parentScreen={this}

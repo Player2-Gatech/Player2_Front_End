@@ -1,4 +1,3 @@
-/* @flow */
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
@@ -16,20 +15,22 @@ import Comment from './Comment'
 import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
-    // TODO : _editProfile : store the passed username and bio parameters into database,
     state = {
         editMode: true,
         editGame: false,
         addGame: false,
         username: "",
         bio: "",
-        gameUsername: "NONE",
-        myPosition: "NONE",
-        duoPosition: "NONE",
+        gameUsername: "",
+        myPosition: "",
+        duoPosition: "",
+        playerGames: "",
+        allGameInfo: "",
     }
 
     componentDidMount() {
       this._pullProfile()
+      this._pullGameData()
     }
 
     _editProfile = (username, bio) => {
@@ -41,6 +42,24 @@ export default class Profile extends Component {
         if (bio != '' ) {
             this.setState({bio:bio })
         }
+        let body = JSON.stringify({
+           'displayName': username ? username : this.state.username,
+           'bio': bio ? bio : this.state.bio,
+        })
+
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/player", {
+             method: 'PUT',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             },
+            body: body
+         })
+         .catch((error) => {
+             console.error(error)
+         });
     }
 
     _toggleEditMode = (editMode) => {
@@ -55,11 +74,33 @@ export default class Profile extends Component {
         this.setState({ addGame: addGame? false: true })
     }
 
-    _modalSubmit = (myPosition, duoPosition, gameUsername) => {
-        this.setState({editMode: true, editGame: false, addGame: false,
-                        myPosition: myPosition, duoPosition: duoPosition,
-                        gameUsername: gameUsername})
+    _modalSubmit = (myPosition, duoPosition, gameUsername, gameTitle) => {
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/playerGame", {
+             method: 'GET',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             }
+         })
+         .then((response) => response.json())
+         .then((responseJson) => {
+             console.log(responseJson)
+             this.setState({ playerGames: responseJson.userGames})
+             // user profile only updates for a league of legends submit
+             if (gameTitle == "League of Legends") {
+               this.setState({ myPosition: myPosition, duoPosition: duoPosition,
+                               gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
+             } else {
+               this.setState({editMode: true, editGame: false, addGame: false})
+             }
+            })
+         .catch((error) => {
+             console.error(error)
+         })
     }
+
      _pullProfile = () => {
          const base64 = require('base-64')
          fetch(baseUrl + "/api/player", {
@@ -74,17 +115,50 @@ export default class Profile extends Component {
          .then((responseJson) => {
              console.log(responseJson)
              this.setState({ username: responseJson.displayName, bio: responseJson.bio })
-             console.log(this.state.username)
+         })
+         .catch((error) => {
+             console.error(error)
+         });
+     }
+     _pullGameData = () => {
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/games", {
+             method: 'GET',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json'
+             }
+         })
+         .then((response) => response.json())
+         .then((responseJson) => {
+             console.log(responseJson)
+             this.setState({allGameInfo: responseJson.games})
+         })
+         .catch((error) => {
+             console.error(error)
+         });
+
+         fetch(baseUrl + "/api/playerGame", {
+             method: 'GET',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             }
+         })
+         .then((response) => response.json())
+         .then((responseJson) => {
+             console.log(responseJson)
+             this.setState({ playerGames: responseJson.userGames})
          })
          .catch((error) => {
              console.error(error)
          });
      }
 
-
     render () {
         const { editMode, editGame, addGame, username, bio,
-                gameUsername, myPosition, duoPosition } = this.state
+                gameUsername, myPosition, duoPosition, playerGames, allGameInfo} = this.state
         return (
             <View>
                 <TopNavigationBar
@@ -107,16 +181,21 @@ export default class Profile extends Component {
                             gameUsername={ gameUsername }
                             myPosition={ myPosition }
                             duoPosition={ duoPosition }
+                            isEmpty={playerGames.length == 0}
                         />
                         <Video/>
                         <Comment/>
                     </View>}
                     {editMode && editGame && !addGame && <SelectGame
+                            playerGames= {playerGames}
+                            allGameInfo= {allGameInfo}
                             addGame = { addGame }
                             addGameFunc = { this._toggleAddGame }
                             modalSubmit={ this._modalSubmit }
                     />}
                     {editMode && addGame && <AddGame
+                            playerGames= {playerGames}
+                            allGameInfo= {allGameInfo}
                             modalSubmit={ this._modalSubmit }
                     />}
                     {!editMode && <View style={styles.container}>

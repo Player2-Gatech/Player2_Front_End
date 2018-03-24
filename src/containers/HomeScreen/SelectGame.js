@@ -7,15 +7,11 @@ import {
 } from 'react-native'
 import Modal from 'react-native-modalbox'
 
-//import ModalPicker from 'react-native-modal-picker'
-
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 import GameInformation from './GameInformation'
 import AddModal from './AddModal'
-
-//const data = require('./ActionBarMenuList.js')
 
 export default class SelectGame extends Component {
     constructor(props) {
@@ -25,61 +21,61 @@ export default class SelectGame extends Component {
     static propTypes = {
         addGame: PropTypes.bool.isRequired,
         addGameFunc: PropTypes.func.isRequired,
-        modalSubmit: PropTypes.func.isRequired
+        modalSubmit: PropTypes.func.isRequired,
+        playerGames: PropTypes.object.isRequired,
+        allGameInfo: PropTypes.object.isRequired,
     }
-    _onPressSelectGame(gameTitle) {
-        // TODO fetch player game details
-        fetch(baseUrl + "/api/games", { method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          if (checker == "message") {
-              checker = Object.keys(responseJson)[0];
-              Alert.alert('Error', responseJson.checker)
-          } else {
-            console.log("YO")
-            console.log(responseJson)
-          }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        this.refs.addModal.showAddModal('Edit Game Details', gameTitle, 'lol', [{value: 'ADC'}]);
+
+    _onPressSelectGame(gameTitle, allGameInfo) {
+        var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
+        this.refs.addModal.showAddModal('Edit Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
     }
     _onSubmitModal(myPosition, duoPosition, gameUsername) {
         // TODO post for player game role, not necessary for demo right now
         this.props.modalSubmit(myPosition, duoPosition, gameUsername)
     }
-    render () {
-        const { addGame, addGameFunc, modalSubmit } = this.props
-        return (
-            <View style={styles.container}>
+    renderSelectGames(playerGames, allGameInfo) {
+      const images = {
+        'League of Legends': require('../../images/lolLogo.png'),
+        'Overwatch': require('../../images/overwatchLogo.png'),
+        'World of Warcraft': require('../../images/wowLogo.png')
+      }
+      return playerGames.map((item) => {
+          return (
                 <View style={styles.gameContainer}>
                     <TouchableOpacity
-                        onPress={() => this._onPressSelectGame('League of Legends')}
+                        onPress={() => this._onPressSelectGame(item.gameTitle, allGameInfo)}
                     >
                         <Image
                             style={styles.gameLogo}
-                            source={require('../../images/lolLogo.png')}
+                            source={images[item.gameTitle]}
                             resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
-                  <TouchableOpacity
-                      onPress={() => addGameFunc(addGame)}
-                  >
-                      <Image
-                          style={styles.button}
-                          source={require('../../images/plusIconWhite.png')}
-                          resizeMode={'contain'}/>
-                  </TouchableOpacity>
-                <AddModal
-                    ref={'addModal'}
-                    parentScreen={this}
-                />
+          );
+        });
+    }
+    render () {
+        const { addGame, addGameFunc, modalSubmit, playerGames, allGameInfo} = this.props
+        return (
+            <View style={styles.container}>
+              {
+                this.renderSelectGames(playerGames, allGameInfo)
+              }
+              <View style={styles.buttonContainer}>
+                <TouchableOpacity
+                    onPress={() => addGameFunc(addGame)}
+                >
+                  <Image
+                      style={styles.button}
+                      source={require('../../images/plusIconWhite.png')}
+                      resizeMode={'contain'}/>
+                </TouchableOpacity>
+              </View>
+              <AddModal
+                  ref={'addModal'}
+                  parentScreen={this}
+              />
             </View>
         )
     }
@@ -112,6 +108,14 @@ const styles = StyleSheet.create({
   gameLogo: {
     width: metrics.DEVICE_WIDTH * 0.60,
     height: 100,
+  },
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: metrics.DEVICE_WIDTH * 0.95,
+    height: 100,
+    marginVertical: 8,
   },
   button: {
     height: 50,

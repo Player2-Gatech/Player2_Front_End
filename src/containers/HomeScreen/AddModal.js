@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types'
 import {
@@ -16,11 +17,11 @@ export default class AddModal extends Component {
         this.state = {
             modalTitle: '',
             gameTitle:'',
-            ignIdentifier:'username',
+            ignIdentifier:'',
             myPosition: '',
             duoPosition: '',
             gameUsername: '',
-            roleList: null
+            roleList: ''
         };
     }
     showAddModal(modalTitle, gameTitle, ignIdentifier, roleList) {
@@ -39,19 +40,16 @@ export default class AddModal extends Component {
     }
 
     render() {
-        const { myPosition, duoPosition, gameUsername } = this.state
+        const { myPosition, duoPosition, gameUsername, roleList, ignIdentifier, gameTitle} = this.state
         var images = {
           'League of Legends': require('../../images/lolicon.jpeg'),
           'Overwatch': require('../../images/overwatchicon.png'),
           'World of Warcraft': require('../../images/wowicon.png')
         }
-         let data = [{
-            value: 'ADC',
-          }, {
-            value: 'MID',
-          }, {
-            value: 'TOP',
-          }];
+        var data = []
+        for (var i = 0; i < roleList.length; i++) {
+          data.push({value : roleList[i]})
+        }
 
         return (
             <Modal
@@ -60,7 +58,6 @@ export default class AddModal extends Component {
                 backdrop={true}
                 position='top'
                 onClosed={() => {
-                    this.props.parentScreen._onSubmitModal(myPosition, duoPosition, gameUsername)
                 }}
             >
                 <TextInput editable={false} underlineColorAndroid='transparent' defaultValue={this.state.modalTitle} style={styles.title}></TextInput>
@@ -93,10 +90,10 @@ export default class AddModal extends Component {
                     buttonStyle={styles.button}
                     onPress={()=>{
                         if (gameUsername.length == 0 || myPosition.length == 0 || duoPosition.length == 0) {
-                            Alert.alert("Fill out all of the fields!");
+                            Alert.alert("Please fill out all of the fields!");
                             return;
                         }
-                        Alert.alert(myPosition)
+                        this.props.parentScreen._onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle)
                         this.refs.myModal.close();
                     }}
                 />
