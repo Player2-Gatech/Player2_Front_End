@@ -28,10 +28,30 @@ export default class SelectGame extends Component {
         modalSubmit: PropTypes.func.isRequired
     }
     _onPressSelectGame(gameTitle) {
-        //alert('fuck you')
-        this.refs.addModal.showAddModal('Edit Game Details', gameTitle);
+        // TODO fetch player game details
+        fetch(baseUrl + "/api/games", { method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+          if (checker == "message") {
+              checker = Object.keys(responseJson)[0];
+              Alert.alert('Error', responseJson.checker)
+          } else {
+            console.log("YO")
+            console.log(responseJson)
+          }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+        this.refs.addModal.showAddModal('Edit Game Details', gameTitle, 'lol', [{value: 'ADC'}]);
     }
     _onSubmitModal(myPosition, duoPosition, gameUsername) {
+        // TODO post for player game role, not necessary for demo right now
         this.props.modalSubmit(myPosition, duoPosition, gameUsername)
     }
     render () {

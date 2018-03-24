@@ -4,11 +4,11 @@ import {
     AppRegistry,
     StyleSheet,
     Text,Image,
-    View, 
+    View,
     TouchableOpacity,
 } from 'react-native';
 import NavigationBar from 'navigationbar-react-native';
- 
+
 const ComponentLeft = ({ editMode, editModeFunc }) => {
     return(
         <View style={{ flex: 1, alignItems: 'flex-start'}} >
@@ -16,7 +16,7 @@ const ComponentLeft = ({ editMode, editModeFunc }) => {
                 style={{justifyContent:'center', flexDirection: 'row'}}
                 onPress={() => editModeFunc(editMode)}
             >
-                <Image 
+                <Image
                     source = {require('../../images/backIcon.png')}
                     style  = { styles.icon }
                 />
@@ -25,7 +25,7 @@ const ComponentLeft = ({ editMode, editModeFunc }) => {
         </View>
     );
 };
- 
+
 const ComponentProfileCenter = () => {
     return(
         <View style={{ flex: 1, }}>
@@ -49,21 +49,21 @@ const ComponentAddGameCenter = () => {
         </View>
     );
 };
- 
+
 const ComponentProfileRight = ({ editMode, editModeFunc }) => {
     return(
         <View style={{ flex: 1, alignItems: 'flex-end', }}>
             <TouchableOpacity onPress={() => editModeFunc(editMode)}>
-                <Image 
+                <Image
                     source = { require('../../images/pencilIcon.png') }
                     style  = { styles.icon }
                 />
-                
+
             </TouchableOpacity>
         </View>
     );
 };
- 
+
 export default class TopNavigationBar extends Component {
     static propTypes = {
         editMode: PropTypes.bool.isRequired,
@@ -77,7 +77,7 @@ export default class TopNavigationBar extends Component {
         const { editMode, editModeFunc, editGame, editGameFunc, addGame, addGameFunc } = this.props
         if (!editMode) {
             return (
-                <NavigationBar 
+                <NavigationBar
                     componentLeft     =     {<ComponentLeft
                                                     editMode={ editMode }
                                                     editModeFunc={ editModeFunc }/>}
@@ -89,7 +89,7 @@ export default class TopNavigationBar extends Component {
         } else {
             if (!editGame) {
                 return (
-                    <NavigationBar 
+                    <NavigationBar
                         componentCenter   =     {<ComponentProfileCenter />}
                         componentRight    =     {<ComponentProfileRight
                                                         editMode={ editMode }
@@ -101,7 +101,7 @@ export default class TopNavigationBar extends Component {
             } else {
                 if (addGame) {
                     return (
-                        <NavigationBar 
+                        <NavigationBar
                             componentLeft     =     {<ComponentLeft
                                                             editMode={ addGame }
                                                             editModeFunc={ addGameFunc }/>}
@@ -112,7 +112,7 @@ export default class TopNavigationBar extends Component {
                     );
                 } else {
                     return (
-                        <NavigationBar 
+                        <NavigationBar
                             componentLeft     =     {<ComponentLeft
                                                             editMode={ editGame }
                                                             editModeFunc={ editGameFunc }/>}
@@ -140,12 +140,12 @@ const styles = StyleSheet.create({
         width: 20,
         height: 20,
         marginHorizontal: 16,
-        alignSelf: 'center' 
+        alignSelf: 'center'
     },
     title: {
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-        alignSelf: 'center' 
+        alignSelf: 'center'
     }
 })

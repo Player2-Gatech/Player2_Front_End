@@ -1,3 +1,4 @@
+/* @flow */
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
@@ -20,19 +21,25 @@ export default class Profile extends Component {
         editMode: true,
         editGame: false,
         addGame: false,
-        username: "MY NAME",
-        bio: "BIO",
+        username: "",
+        bio: "",
         gameUsername: "NONE",
         myPosition: "NONE",
         duoPosition: "NONE",
     }
 
+    componentDidMount() {
+      this._pullProfile()
+    }
+
     _editProfile = (username, bio) => {
-        alert('username : ' + username + 'bio : ' + bio)
-        if (username == '' || bio == '') {
-            this.setState({ editMode:true, username:'MY NAME', bio:'BIO' })
-        } else {
-            this.setState({ editMode:true, username:username, bio:bio })
+        this.setState({editMode:true})
+        if (username != '' ) {
+            this.setState({username:username })
+        }
+
+        if (bio != '' ) {
+            this.setState({bio:bio })
         }
     }
 
@@ -53,6 +60,27 @@ export default class Profile extends Component {
                         myPosition: myPosition, duoPosition: duoPosition,
                         gameUsername: gameUsername})
     }
+     _pullProfile = () => {
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/player", {
+             method: 'GET',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             }
+         })
+         .then((response) => response.json())
+         .then((responseJson) => {
+             console.log(responseJson)
+             this.setState({ username: responseJson.displayName, bio: responseJson.bio })
+             console.log(this.state.username)
+         })
+         .catch((error) => {
+             console.error(error)
+         });
+     }
+
 
     render () {
         const { editMode, editGame, addGame, username, bio,

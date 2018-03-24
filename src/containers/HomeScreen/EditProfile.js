@@ -14,7 +14,7 @@ export default class EditProfile extends Component {
         username: PropTypes.string.isRequired,
         bio     : PropTypes.string.isRequired,
     }
-    
+
     state = {
         editUsername: '',
         editBio: ''
@@ -30,7 +30,7 @@ export default class EditProfile extends Component {
                     <Image style={styles.img} source={imgProfile}/>
                 </View>
                 <View style={styles.usernameContainer}>
-                    <Text style={styles.usernameTitle}>Username : </Text>
+                    <Text style={styles.usernameTitle}>Display Name</Text>
                     <TextInput
                         ref={(ref) => this.usernameInputRef = ref}
                         onSubmitEditing={() => this.bioInputRef.focus()}
@@ -40,7 +40,7 @@ export default class EditProfile extends Component {
                     />
                 </View>
                 <View style={styles.bioContainer}>
-                    <Text style={styles.bioTitle}>Bio : </Text>
+                    <Text style={styles.bioTitle}>Bio</Text>
                     <TextInput
                         ref={(ref) => this.bioInputRef = ref}
                         placeholder={ bio }
@@ -59,7 +59,7 @@ export default class EditProfile extends Component {
                         onPress={() => editProf(this.state.editUsername, this.state.editBio)}
                     />
                 </View>
-                
+
             </View>
         )
     }
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     marginTop: 16,
-    marginHorizontal: 16
+    marginHorizontal: 10
   },
   usernameTitle: {
     flex: 2,

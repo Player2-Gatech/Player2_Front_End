@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    //justifyContent: 'center',
     alignItems: 'center'
   },
   editIcon: {
@@ -98,8 +99,10 @@ const styles = StyleSheet.create({
     borderColor: '#99E7FF'
   },
   gameIconContainer: {
+    flex: 1,
     marginRight:20,
     justifyContent: 'center',
+    alignItems: 'center'
   },
   gameDescriptionContainer: {
     flex: 3

@@ -30,9 +30,11 @@ export default class AddGame extends Component {
         modalSubmit: PropTypes.func.isRequired,
     }
     _onPressAddGame(gameTitle) {
-        this.refs.addModal.showAddModal('Add Game Details', gameTitle);
+        // TODO fetch for game details
+        this.refs.addModal.showAddModal('Add Game Details', gameTitle, 'lol', [{value: 'ADC'}]);
     }
     _onSubmitModal(myPosition, duoPosition, gameUsername) {
+        // TODO post for player game role, not necessary for demo right now
         this.props.modalSubmit(myPosition, duoPosition, gameUsername)
     }
     render () {

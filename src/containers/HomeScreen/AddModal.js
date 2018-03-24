@@ -1,4 +1,3 @@
-/* @flow */
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types'
 import {
@@ -21,11 +20,14 @@ export default class AddModal extends Component {
             myPosition: '',
             duoPosition: '',
             gameUsername: '',
+            roleList: null
         };
     }
-    showAddModal(title, gameTitle) {
-        this.setState({modalTitle : title});
+    showAddModal(modalTitle, gameTitle, ignIdentifier, roleList) {
+        this.setState({modalTitle : modalTitle});
         this.setState({gameTitle : gameTitle});
+        this.setState({ignIdentifier : ignIdentifier});
+        this.setState({roleList : roleList});
         this.refs.myModal.open();
     }
     onPlayerRoleSelected(text) {
