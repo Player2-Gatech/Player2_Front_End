@@ -4,6 +4,9 @@ import { Alert } from 'react-native'
 import AuthScreen from './src/containers/AuthScreen'
 import HomeScreen from './src/containers/HomeScreen'
 
+global.baseUrl = "http://ec2-34-203-205-241.compute-1.amazonaws.com"
+global.authKey = null
+
 export class LoginAnimation extends Component {
   constructor(props) {
     super(props);
@@ -11,14 +14,13 @@ export class LoginAnimation extends Component {
       isLoggedIn: false, // Is the user authenticated?
       isLoading: false, // Is the user loggingIn/signinUp?
       isAppReady: false, // Has the app completed the login animation?
-      authKey: null,
     }
   }
 
   _simulateLogin = (username, password) => {
 
     const base64 = require('base-64')
-    fetch("http://ec2-54-86-68-14.compute-1.amazonaws.com/api/token", {
+    fetch(baseUrl + "/api/token", {
         method: 'GET',
         headers: {
             Accept: 'application/json',
@@ -33,7 +35,7 @@ export class LoginAnimation extends Component {
           Alert.alert('Error', 'Invalid username or password!')
         } else {
 
-          this.setState({ authKey: responseJson.token })
+          global.authKey = responseJson.token
           //console.log(this.state.authKey)
           this.setState({ isLoading: true })
           setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
@@ -46,13 +48,12 @@ export class LoginAnimation extends Component {
 
   _simulateSignup = (username, password, confirmPassword) => {
     const base64 = require('base-64')
-    // TODO replace alert to signup logic
     if (password == confirmPassword) {
         let body = JSON.stringify({
             'email': username,
             'password': password,
         })
-        fetch("http://ec2-54-86-68-14.compute-1.amazonaws.com/api/player", {
+        fetch(baseUrl + "/api/player", {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -73,7 +74,7 @@ export class LoginAnimation extends Component {
         .catch((error) => {
             console.error(error);
         });
-        fetch("http://ec2-54-86-68-14.compute-1.amazonaws.com/api/token", {
+        fetch(baseUrl + "/api/token", {
           method: 'GET',
           headers: {
               Accept: 'application/json',
@@ -83,7 +84,7 @@ export class LoginAnimation extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-          this.setState({ authKey: responseJson.token})
+          global.authKey = responseJson.token
         })
         .catch((error) => {
           console.error(error);
@@ -100,7 +101,7 @@ export class LoginAnimation extends Component {
    * If the user is authenticated (isAppReady) show the HomeScreen, otherwise show the AuthScreen
    */
   render () {
-   
+
     if (this.state.isAppReady) {
       return (
         <HomeScreen

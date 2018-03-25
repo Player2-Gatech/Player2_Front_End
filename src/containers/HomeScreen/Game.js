@@ -14,61 +14,85 @@ import AddModal from './AddModal'
 export default class Game extends Component {
     constructor() {
         super();
-        /*this.state = {
-            myPosition: "ADC",
-            duoPosition: "SUP",
-            gameUsername: "HEE"
-        }*/
     }
     static propTypes = {
         editGame: PropTypes.bool.isRequired,
         editGameFunc: PropTypes.func.isRequired,
         gameUsername: PropTypes.string.isRequired,
         myPosition: PropTypes.string.isRequired,
-        duoPosition: PropTypes.string.isRequired
+        duoPosition: PropTypes.string.isRequired,
+        isEmpty: PropTypes.bool.isRequired,
+        skillInfo: PropTypes.object.isRequired,
     }
+
     render () {
-        const { editGame, editGameFunc, gameUsername, myPosition, duoPosition } = this.props
-        return (
-            <View style={styles.container}>
-                <View style={styles.gameSectionContainer}>
-                    
-                    <View style={styles.gameIconContainer}>
-                        <Text style={styles.sectionTitle}>{'Game'}</Text>
-                        <Image style={styles.gameIcon} source={require('../../images/lolicon.jpeg')}/>
-                    </View>
-                    
-                    <View style={styles.gameDescriptionContainer}>
-                        <TouchableOpacity
-                            style={styles.editIconContainer}
-                            onPress={() => editGameFunc(editGame)}
-                        >
-                            <Image
-                                style={styles.editIcon}
-                                source={require('../../images/plusIcon.png')}
-                            />
-                        </TouchableOpacity>
-                        <View style={styles.searchOption}>
-                            <Text>Preferred Position : {myPosition}</Text>
-                            <Text>Preferred Duo Position : {duoPosition}</Text>
-                        </View>
-                    </View>
-                </View>
-                
-                <GameInformation
-                    myPosition={myPosition}
-                    duoPosition={duoPosition}
-                    gameUsername={gameUsername}
-                />
-                <AddModal ref={'addModal'}>
-                </AddModal>
-            </View>
-        )
+        const { editGame, editGameFunc, gameUsername, myPosition, duoPosition, isEmpty, skillInfo} = this.props
+        if (isEmpty) { // if no games
+          return (<View style={styles.container}>
+              <View style={styles.gameSectionContainer}>
+
+                  <View style={styles.gameIconContainer}>
+                      <Text style={styles.sectionTitle}>{'Game'}</Text>
+                  </View>
+                  <View style={styles.emptyStateTextContainer}>
+                    <Text style={styles.emptyStateText}>{'Start by adding a game!'}</Text>
+                  </View>
+                  <View style={styles.gameDescriptionContainer}>
+                      <TouchableOpacity
+                          style={styles.editIconContainer}
+                          onPress={() => editGameFunc(editGame)}
+                      >
+                          <Image
+                              style={styles.editIcon}
+                              source={require('../../images/plusIcon.png')}
+                          />
+                      </TouchableOpacity>
+                  </View>
+              </View>
+          </View>)
+        } else {
+          return (
+              <View style={styles.container}>
+                  <View style={styles.gameSectionContainer}>
+
+                      <View style={styles.gameIconContainer}>
+                          <Text style={styles.sectionTitle}>{'Game'}</Text>
+                          <Image style={styles.gameIcon} source={require('../../images/lolicon.jpeg')}/>
+                      </View>
+
+                      <View style={styles.gameDescriptionContainer}>
+                          <TouchableOpacity
+                              style={styles.editIconContainer}
+                              onPress={() => editGameFunc(editGame)}
+                          >
+                              <Image
+                                  style={styles.editIcon}
+                                  source={require('../../images/plusIcon.png')}
+                              />
+                          </TouchableOpacity>
+                          <View style={styles.searchOption}>
+                              <Text>Preferred Position : {myPosition}</Text>
+                              <Text>Preferred Duo Position : {duoPosition}</Text>
+                          </View>
+                      </View>
+                  </View>
+
+                  <GameInformation
+                      myPosition={myPosition}
+                      duoPosition={duoPosition}
+                      gameUsername={gameUsername}
+                      skillInfo={skillInfo}
+                  />
+                  <AddModal ref={'addModal'}>
+                  </AddModal>
+              </View>
+          )
+        }
     }
 }
 
 const styles = StyleSheet.create({
-  container: {
+   container: {
     flex: 1,
     backgroundColor: '#fff',
     //justifyContent: 'center',
@@ -104,6 +128,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  emptyContainer: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    flex: 1
+  },
   gameDescriptionContainer: {
     flex: 3
   },
@@ -114,7 +143,15 @@ const styles = StyleSheet.create({
   },
   searchOption: {
     justifyContent: 'center',
-  }
+  },
+  emptyStateTextContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  emptyStateText: {
+    textAlign: 'right',
+    fontSize: 13,
+  },
 })
 
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
