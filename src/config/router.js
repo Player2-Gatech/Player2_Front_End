@@ -7,6 +7,38 @@ import Profile from '../containers/HomeScreen/Profile';
 import ChatScreen from '../containers/ChatScreen/index';
 import MatchingScreen from '../containers/MatchingScreen/index';
 
+import Search from '../containers/MatchingScreen/Search';
+import MatchingProfile from '../containers/MatchingScreen/Profile';
+
+export const MatchingStack = StackNavigator({
+    Search: {
+        screen: Search,
+        navigationOptions: {
+            title: 'Search',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2'
+            }
+        },
+    },
+    MatchingProfile: {
+        screen: MatchingProfile,
+        navigationOptions: {
+            title: 'Matching',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+            }
+        },
+    }
+});
+
 export const Tabs = TabNavigator({
     Profile: { 
         screen: Profile,
