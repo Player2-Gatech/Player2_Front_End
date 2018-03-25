@@ -5,6 +5,8 @@ import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, Stat
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/profileicon.png'
 import metrics from '../../config/metrics'
+import PhotoUpload from 'react-native-photo-upload'
+
 
 export default class EditProfile extends Component {
     static propTypes = {
@@ -25,7 +27,20 @@ export default class EditProfile extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.imgContainer}>
-                    <Image style={styles.img} source={imgProfile}/>
+                     <PhotoUpload
+                      onPhotoSelect={avatar => {
+                        if (avatar) {
+                          console.log('Image base64 string: ', avatar)
+                        }
+                      }}
+                    >
+                      <Image
+                        style={styles.img}
+                        resizeMode='contain'
+                        source={imgProfile
+                        }
+                      />
+                    </PhotoUpload>
                 </View>
                 <View style={styles.usernameContainer}>
                     <Text style={styles.usernameTitle}>Display Name</Text>
