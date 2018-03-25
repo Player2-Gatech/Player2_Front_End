@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import {
     StyleSheet, AppRegistry, ScrollView,
-    View, Text, TextInput, Image,
+    View, Text, TextInput, Image, ActivityIndicator,
     TouchableOpacity, TouchableHighlight
 } from 'react-native'
 
@@ -30,6 +30,7 @@ export default class AddGame extends Component {
         modalSubmit: PropTypes.func.isRequired,
         playerGames: PropTypes.object.isRequired,
         allGameInfo: PropTypes.object.isRequired,
+        skillSpinner: PropTypes.bool.isRequired
     }
     _onPressAddGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
@@ -87,9 +88,18 @@ export default class AddGame extends Component {
       });
     }
 
-    render () {
-        const { modalSubmit, playerGames, allGameInfo} = this.props
+    renderSpinner(enableSpinner) {
+      if (enableSpinner) {
         return (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )
+      }
+    }
+
+    render () {
+        const { modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
+        return (
+          <View>
             <View style={styles.container}>
               {
                 this.renderAddGames(playerGames, allGameInfo)
@@ -99,6 +109,12 @@ export default class AddGame extends Component {
                     parentScreen={this}
                 />
             </View>
+          <View style={styles.spinnerContainer}>
+          {
+            this.renderSpinner(skillSpinner)
+          }
+          </View>
+        </View>
         )
     }
 }
@@ -110,6 +126,15 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center',
     height: metrics.DEVICE_HEIGHT
+  },
+  spinnerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   sectionTitle: {
     fontSize: 16,

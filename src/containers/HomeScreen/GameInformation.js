@@ -5,6 +5,7 @@ import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } fro
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
+import {rankImages, champImages} from './ImageMap'
 
 export default class EditProfile extends Component {
     constructor(props) {
@@ -17,72 +18,74 @@ export default class EditProfile extends Component {
         gameUsername: PropTypes.string.isRequired,
         skillInfo: PropTypes.object.isRequired,
     }
-    state = {
-        rank: "Challenger",
-        win: 10,
-        loss: 5,
-        prefWin: 10,
-        prefLoss: 5
-    }
     render () {
         const { myPosition, duoPosition, gameUsername, skillInfo} = this.props
-        return (
-            <View style={styles.container}>
-                <View style={styles.rowContainer}>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Rank</Text>
-                    </View>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Pocket Pick</Text>
-                    </View>
-                </View>
+        if (skillInfo) {
+          return (
+              <View style={styles.container}>
+                  <View style={styles.rowContainer}>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>Rank</Text>
+                      </View>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>Pocket Pick</Text>
+                      </View>
+                  </View>
 
-                <View style={styles.rowContainer}>
-                    <View style={styles.rankContainer}>
-                        <View style={styles.rankContainer}>
-                            <View style={styles.rowContainer}>
-                                <View style={styles.colmContainer}>
-                                    <Image style={styles.rankIcon} source={require('../../images/challengerIcon.png')}/>
-                                </View>
-                                <View style={styles.colmContainer}>
-                                    <Text>{gameUsername}</Text>
-                                    <Text>{skillInfo ? skillInfo.rank : ""}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.mostPickContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Image style={styles.rankIcon} source={require('../../images/ezreal.jpeg')}/>
-                        </View>
-                    </View>
-                </View>
+                  <View style={styles.rowContainer}>
+                      <View style={styles.rankContainer}>
+                          <View style={styles.rankContainer}>
+                              <View style={styles.rowContainer}>
+                                  <View style={styles.colmContainer}>
+                                      <Image style={styles.rankIcon} source={rankImages[skillInfo.tier]}/>
+                                  </View>
+                                  <View style={styles.colmContainer}>
+                                      <Text>{gameUsername}</Text>
+                                      <Text>{skillInfo.tier + " " + skillInfo.rank}</Text>
+                                  </View>
+                              </View>
+                          </View>
+                      </View>
+                      <View style={styles.mostPickContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Image style={styles.rankIcon} source={champImages[skillInfo.rolePick]}/>
+                          </View>
+                      </View>
+                  </View>
 
-                <View style={styles.rowContainer}>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Recent Game Winrate</Text>
-                    </View>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>{myPosition} Winrate</Text>
-                    </View>
-                </View>
+                  <View style={styles.rowContainer}>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>Recent Game Winrate</Text>
+                      </View>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>{myPosition} Winrate</Text>
+                      </View>
+                  </View>
 
-                <View style={styles.rowContainer}>
-                    <View style={styles.rankContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Text>{skillInfo ? skillInfo.wins : ""}</Text>
-                            <Text>{skillInfo ? skillInfo.losses : ""}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.mostPickContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Text>{skillInfo ? skillInfo.roleWins : ""}</Text>
-                            <Text>{skillInfo? skillInfo.roleLosses : ""}</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        )
+                  <View style={styles.rowContainer}>
+                      <View style={styles.rankContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Text>{skillInfo.wins}</Text>
+                              <Text>{skillInfo.losses}</Text>
+                          </View>
+                      </View>
+                      <View style={styles.mostPickContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Text>{skillInfo.roleWins}</Text>
+                              <Text>{skillInfo.roleLosses}</Text>
+                          </View>
+                      </View>
+                  </View>
+              </View>
+          )
+        } else {
+          return (
+              <View style={styles.container}>
+                  <Text style={styles.errorText}>We had trouble finding your game stats...wrong IGN?</Text>
+                  <Image style={styles.rankIcon} source={require('../../images/notfound.png')}/>
+              </View>
+          )
+        }
     }
 }
 
@@ -121,6 +124,13 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     textAlign: 'left'
   },
+  errorText: {
+    fontSize: 14,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 10,
+    textAlign: 'left'
+  },
   rankContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -132,8 +142,8 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rankIcon: {
-    width: 50,
-    height: 50
-  }
+    width: 75,
+    height: 75
+  },
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

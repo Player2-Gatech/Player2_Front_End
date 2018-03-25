@@ -27,6 +27,7 @@ export default class Profile extends Component {
         playerGames: "",
         allGameInfo: "",
         skillInfo: {},
+        skillSpinner: false,
     }
 
     componentDidMount() {
@@ -89,10 +90,11 @@ export default class Profile extends Component {
          .then((responseJson) => {
              console.log(responseJson)
              this.setState({ playerGames: responseJson.userGames})
+             this.setState({ skillSpinner: 1})
              // user profile only updates for a league of legends submit
              if (gameTitle == "League of Legends") {
                 const base64 = require('base-64')
-                fetch(baseUrl + "/api/playerSkill", {
+                fetch(baseUrl + "/api/playerSkill?update=1", {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',
@@ -103,15 +105,36 @@ export default class Profile extends Component {
                 .then((response) => response.json())
                 .then((responseJson) => {
                     console.log(responseJson)
-                    this.setState({skillInfo: responseJson.playerSkill})
-                      this.setState({ myPosition: myPosition, duoPosition: duoPosition,
-                                      gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
-                })
+
+                    // kind of tricky, but we have to make a third request to put the old gameUsername/role info back in case the update was invalid
+                    // We'll only know if the update was invalid after we get the response of the skills route
+                    if (!responseJson.playerSkill) {
+                      let body = JSON.stringify({
+                        'playerGameRole': {
+                        'gameTitle': gameTitle,
+                        'displayName': this.state.gameUsername,
+                        'role': this.state.myPosition,
+                        'partnerRole': this.state.duoPosition
+                        }})
+                        const base64 = require('base-64')
+                        fetch(baseUrl + "/api/player", {
+                            method: 'PUT',
+                            headers: {
+                                Accept: 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': 'Basic ' + base64.encode(authKey+":")
+                            },
+                            body: body
+                      })
+                    }
+                    this.setState({skillInfo: responseJson.playerSkill, skillSpinner: 0, myPosition: myPosition, duoPosition:
+                                  duoPosition,gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
+                  })
                 .catch((error) => {
                     console.error(error)
                 })
              } else {
-                this.setState({editMode: true, editGame: false, addGame: false})
+                this.setState({editMode: true, editGame: false, addGame: false, skillSpinner: 0})
              }
          })
     }
@@ -129,7 +152,13 @@ export default class Profile extends Component {
          .then((response) => response.json())
          .then((responseJson) => {
              console.log(responseJson)
-             this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0]})
+             var playerGame = responseJson.playerGameRole.filter(g => g.gameTitle == "League of Legends")[0]
+             if (playerGame) {
+              this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0], myPosition: playerGame.role,
+                            duoPosition: playerGame.partnerRole, gameUsername: playerGame.displayName})
+            } else {
+              this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0]})
+            }
          })
          .catch((error) => {
              console.error(error)
@@ -173,7 +202,7 @@ export default class Profile extends Component {
 
     render () {
         const { editMode, editGame, addGame, username, bio,
-                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo} = this.state
+                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner} = this.state
         return (
             <View>
                 <TopNavigationBar
@@ -207,11 +236,13 @@ export default class Profile extends Component {
                             allGameInfo= {allGameInfo}
                             addGame = { addGame }
                             addGameFunc = { this._toggleAddGame }
+                            skillSpinner = { skillSpinner }
                             modalSubmit={ this._modalSubmit }
                     />}
                     {editMode && addGame && <AddGame
                             playerGames= {playerGames}
                             allGameInfo= {allGameInfo}
+                            skillSpinner = { skillSpinner }
                             modalSubmit={ this._modalSubmit }
                     />}
                     {!editMode && <View style={styles.container}>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import {
     StyleSheet, AppRegistry, ScrollView,
-    View, Text, TextInput, Image, Alert,
+    View, Text, TextInput, Image, Alert, ActivityIndicator,
     TouchableOpacity, TouchableHighlight
 } from 'react-native'
 import Modal from 'react-native-modalbox'
@@ -24,6 +24,7 @@ export default class SelectGame extends Component {
         modalSubmit: PropTypes.func.isRequired,
         playerGames: PropTypes.object.isRequired,
         allGameInfo: PropTypes.object.isRequired,
+        skillSpinner: PropTypes.bool.isRequired
     }
 
     _onPressSelectGame(gameTitle, allGameInfo) {
@@ -77,9 +78,18 @@ export default class SelectGame extends Component {
           );
         });
     }
-    render () {
-        const { addGame, addGameFunc, modalSubmit, playerGames, allGameInfo} = this.props
+    renderSpinner(enableSpinner) {
+      if (enableSpinner) {
         return (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )
+      }
+    }
+
+    render () {
+        const { addGame, addGameFunc, modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
+        return (
+          <View>
             <View style={styles.container}>
               {
                 this.renderSelectGames(playerGames, allGameInfo)
@@ -99,7 +109,13 @@ export default class SelectGame extends Component {
                   parentScreen={this}
               />
             </View>
-        )
+          <View style={styles.spinnerContainer}>
+          {
+            this.renderSpinner(skillSpinner)
+          }
+          </View>
+        </View>
+      )
     }
 }
 
@@ -144,4 +160,13 @@ const styles = StyleSheet.create({
     width: metrics.DEVICE_WIDTH * 0.95,
     backgroundColor: '#1976D2'
   },
+  spinnerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
 })

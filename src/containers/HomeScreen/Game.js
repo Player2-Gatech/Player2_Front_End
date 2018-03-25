@@ -22,7 +22,7 @@ export default class Game extends Component {
         myPosition: PropTypes.string.isRequired,
         duoPosition: PropTypes.string.isRequired,
         isEmpty: PropTypes.bool.isRequired,
-        skillInfo: PropTypes.object.isRequired
+        skillInfo: PropTypes.object.isRequired,
     }
 
     render () {
