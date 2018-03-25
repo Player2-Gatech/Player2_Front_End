@@ -1,28 +1,23 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, StatusBar, Button } from 'react-native'
+import {
+    StyleSheet,
+    AppRegistry,
+} from 'react-native'
 
-import CustomButton from '../../components/CustomButton'
-import imgProfile from '../../images/logo.png'
-import metrics from '../../config/metrics'
+import { MatchingStack } from '../../config/router';
+import Profile from './Profile'
+import Search from './Search'
 
-export default class MatchingScreen extends Component {
+export default class HomeScreen extends Component {
+    static propTypes = {
+        logout: PropTypes.func
+    }
     render () {
         return (
-            <ScrollView>
-                <Text>Matching Screen</Text>
-            </ScrollView>
+            <MatchingStack />
         )
     }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    //justifyContent: 'center',
-    alignItems: 'center'
-  },
-})
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
-//export default MatchingScreen;
