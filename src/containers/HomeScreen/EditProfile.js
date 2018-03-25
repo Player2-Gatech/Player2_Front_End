@@ -36,9 +36,7 @@ export default class EditProfile extends Component {
                     >
                       <Image
                         style={styles.img}
-                        resizeMode='contain'
-                        source={imgProfile
-                        }
+                        source={imgProfile}
                       />
                     </PhotoUpload>
                 </View>
