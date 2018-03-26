@@ -12,50 +12,70 @@ import Comment from './Comment'
 import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
-    // TODO : _editProfile : store the passed username and bio parameters into database,
     state = {
-        username: "MY NAME",
-        bio: "BIO",
-        gameUsername: "NONE",
-        myPosition: "NONE",
-        duoPosition: "NONE",
+      matchIndex: 0
     }
-    
+
     render () {
-        const { username, bio, gameUsername, myPosition, duoPosition } = this.state
-        return (
-            <View>
-                <ScrollView>
-                    <View style={styles.container}>
-                        <ViewProfile
-                            username={ username }
-                            bio={ bio }
-                        />
-                        <Game
-                            gameUsername={ gameUsername }
-                            myPosition={ myPosition }
-                            duoPosition={ duoPosition }
-                        />
-                        <Video/>
-                        <Comment/>
-                    </View>
-                </ScrollView>
-                <View style={styles.buttonContainer}>
-                    <CustomButton
-                        onPress={() => {alert('show another user profile')}}
-                        buttonStyle={styles.skipButton}
-                        textStyle={styles.skipButtonText}
-                        text={'SKIP'}
-                    />
-                    <CustomButton
-                        onPress={() => {alert('implement notification')}}
-                        buttonStyle={styles.acceptButton}
-                        textStyle={styles.acceptButtonText}
-                        text={'DUO'}
-                    />
-                </View>
-            </View>
-        )
+        const {matchIndex} = this.state
+        const {matchingProfiles} = this.props.navigation.state.params;
+        const { navigate } = this.props.navigation
+           if (matchIndex < matchingProfiles.length) {
+              return (
+              <View>
+                  <ScrollView>
+                      <View style={styles.container}>
+                          <ViewProfile
+                              username={matchingProfiles[matchIndex].displayName }
+                              bio={matchingProfiles[matchIndex].bio }
+                              photo={matchingProfiles[matchIndex].profilePhoto}
+                          />
+                          <Game
+                              gameUsername={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].displayName }
+                              myPosition={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].role }
+                              duoPosition={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
+                              skillInfo={matchingProfiles[matchIndex].playerSkill[0]}
+                          />
+                          <Video/>
+                          <Comment/>
+                      </View>
+                  </ScrollView>
+                  <View style={styles.buttonContainer}>
+                      <CustomButton
+                          onPress={() => {this.setState({matchIndex: matchIndex+1})}}
+                          buttonStyle={styles.skipButton}
+                          textStyle={styles.skipButtonText}
+                          text={'SKIP'}
+                      />
+                      <CustomButton
+                          onPress={() => {
+                            alert('Request sent!')
+                            this.setState({matchIndex: matchIndex+1})
+                          }}
+                          buttonStyle={styles.acceptButton}
+                          textStyle={styles.acceptButtonText}
+                          text={'DUO'}
+                      />
+                  </View>
+              </View>
+              )
+           } else {
+             return (
+               <View style={styles.noMoreContainer}>
+                  <Text style={styles.noMoreText}> No more potential matches to view!</Text>
+                  <Image style={styles.img} source={require('../../images/sad.gif')} resize={'contain'}/>
+                  <CustomButton
+                      onPress={() => {
+                        this.setState({matchIndex: 0})
+                        navigate("Search", {screen: "Search"})
+                      }}
+                      buttonStyle={styles.button}
+                      textStyle={styles.buttonText}
+                      text={'Reconfigure Search'}
+                  />
+               </View>
+             )
+           }
     }
 }
 
@@ -103,5 +123,34 @@ const styles = StyleSheet.create({
   acceptButtonText: {
     color: 'green',
     fontWeight: 'bold'
-  }
+  },
+  noMoreContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  noMoreText: {
+    fontSize: 20,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 10,
+    textAlign: 'center'
+  },
+  button: {
+    backgroundColor: '#9B9FA4',
+    height: 60,
+    width: 200
+  },
+  buttonText: {
+    fontSize: 15,
+    color: 'white',
+  },
+  img: {
+    height: 150,
+    width: 150
+  },
 })

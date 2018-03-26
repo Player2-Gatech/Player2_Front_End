@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator } from 'react-native'
 
 import TopNavigationBar from './TopNavigationBar'
 
@@ -16,6 +16,7 @@ import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
     state = {
+        profileSpinner: false,
         editMode: true,
         editGame: false,
         addGame: false,
@@ -31,9 +32,8 @@ export default class Profile extends Component {
         skillSpinner: false,
     }
 
-    componentDidMount() {
+    componentWillMount() {
       this._pullProfile()
-      this._pullGameData()
     }
 
     _editProfile = (username, bio, photo) => {
@@ -146,6 +146,7 @@ export default class Profile extends Component {
     }
 
      _pullProfile = () => {
+        this.setState({profileSpinner : true})
          const base64 = require('base-64')
          fetch(baseUrl + "/api/player", {
              method: 'GET',
@@ -165,6 +166,7 @@ export default class Profile extends Component {
             } else {
               this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0]})
             }
+            this._pullGameData()
          })
          .catch((error) => {
              console.error(error)
@@ -183,6 +185,7 @@ export default class Profile extends Component {
          .then((responseJson) => {
              console.log(responseJson)
              this.setState({allGameInfo: responseJson.games})
+             this.setState({profileSpinner : false})
          })
          .catch((error) => {
              console.error(error)
@@ -208,61 +211,69 @@ export default class Profile extends Component {
 
     render () {
         const { editMode, editGame, addGame, username, bio, photo,
-                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner} = this.state
-        return (
-            <View>
-                <TopNavigationBar
-                    editMode = { editMode }
-                    editModeFunc = { this._toggleEditMode }
-                    editGame = { editGame }
-                    editGameFunc = { this._toggleEditGame }
-                    addGame = { addGame }
-                    addGameFunc = { this._toggleAddGame }
-                />
-                <ScrollView>
-                    {editMode && !editGame && <View style={styles.container}>
-                        <ViewProfile
-                            username={ username }
-                            bio={ bio }
-                            photo= {photo}
-                        />
-                        <Game
-                            editGame={ editGame }
-                            editGameFunc={ this._toggleEditGame }
-                            gameUsername={ gameUsername }
-                            myPosition={ myPosition }
-                            duoPosition={ duoPosition }
-                            skillInfo = { skillInfo }
-                            isEmpty={playerGames.length == 0}
-                        />
-                        <Video/>
-                        <Comment/>
-                    </View>}
-                    {editMode && editGame && !addGame && <SelectGame
-                            playerGames= {playerGames}
-                            allGameInfo= {allGameInfo}
-                            addGame = { addGame }
-                            addGameFunc = { this._toggleAddGame }
-                            skillSpinner = { skillSpinner }
-                            modalSubmit={ this._modalSubmit }
-                    />}
-                    {editMode && addGame && <AddGame
-                            playerGames= {playerGames}
-                            allGameInfo= {allGameInfo}
-                            skillSpinner = { skillSpinner }
-                            modalSubmit={ this._modalSubmit }
-                    />}
-                    {!editMode && <View style={styles.container}>
-                        <EditProfile
-                            editProf={ this._editProfile }
-                            username={ username }
-                            bio={ bio }
-                            photo= { photo}
-                        />
-                    </View>}
-                </ScrollView>
-            </View>
-        )
+                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner, profileSpinner} = this.state
+        if (profileSpinner) {
+            return (
+                <View style={styles.spinnerContainer}>
+                  <ActivityIndicator size="large" color="#99E7FF" />
+                </View>
+            )
+        } else {
+          return (
+              <View>
+                  <TopNavigationBar
+                      editMode = { editMode }
+                      editModeFunc = { this._toggleEditMode }
+                      editGame = { editGame }
+                      editGameFunc = { this._toggleEditGame }
+                      addGame = { addGame }
+                      addGameFunc = { this._toggleAddGame }
+                  />
+                  <ScrollView>
+                      {editMode && !editGame && <View style={styles.container}>
+                          <ViewProfile
+                              username={ username }
+                              bio={ bio }
+                              photo= {photo}
+                          />
+                          <Game
+                              editGame={ editGame }
+                              editGameFunc={ this._toggleEditGame }
+                              gameUsername={ gameUsername }
+                              myPosition={ myPosition }
+                              duoPosition={ duoPosition }
+                              skillInfo = { skillInfo }
+                              isEmpty={playerGames.length == 0}
+                          />
+                          <Video/>
+                          <Comment/>
+                      </View>}
+                      {editMode && editGame && !addGame && <SelectGame
+                              playerGames= {playerGames}
+                              allGameInfo= {allGameInfo}
+                              addGame = { addGame }
+                              addGameFunc = { this._toggleAddGame }
+                              skillSpinner = { skillSpinner }
+                              modalSubmit={ this._modalSubmit }
+                      />}
+                      {editMode && addGame && <AddGame
+                              playerGames= {playerGames}
+                              allGameInfo= {allGameInfo}
+                              skillSpinner = { skillSpinner }
+                              modalSubmit={ this._modalSubmit }
+                      />}
+                      {!editMode && <View style={styles.container}>
+                          <EditProfile
+                              editProf={ this._editProfile }
+                              username={ username }
+                              bio={ bio }
+                              photo= { photo}
+                          />
+                      </View>}
+                  </ScrollView>
+              </View>
+          )
+        }
     }
 }
 
@@ -280,6 +291,15 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: 'bold'
-  }
+  },
+  spinnerContainer: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

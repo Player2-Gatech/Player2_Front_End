@@ -88,17 +88,18 @@ export default class AddGame extends Component {
       });
     }
 
-    renderSpinner(enableSpinner) {
-      if (enableSpinner) {
-        return (
-          <ActivityIndicator size="large" color="#0000ff" />
-        )
-      }
-    }
-
     render () {
         const { modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
-        return (
+        if (skillSpinner) {
+          return (
+            <View style={styles.spinnerContainer}>
+            {
+              <ActivityIndicator size="large" color="#0000ff" />
+            }
+            </View>
+          )
+        } else {
+          return (
           <View>
             <View style={styles.container}>
               {
@@ -109,13 +110,9 @@ export default class AddGame extends Component {
                     parentScreen={this}
                 />
             </View>
-          <View style={styles.spinnerContainer}>
-          {
-            this.renderSpinner(skillSpinner)
-          }
-          </View>
         </View>
         )
+        }
     }
 }
 

@@ -22,7 +22,11 @@ export default class EditProfile extends Component {
     }
 
     computePercentage(wins, losses) {
-      return Math.round(100 * wins / (wins + losses))
+      if (wins != null && losses != null) {
+        return Math.round(100 * wins / (wins + losses))
+      } else {
+        return ""
+      }
     }
     render () {
         const { myPosition, duoPosition, gameUsername, skillInfo} = this.props
