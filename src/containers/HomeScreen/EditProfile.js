@@ -13,61 +13,63 @@ export default class EditProfile extends Component {
         editProf: PropTypes.func.isRequired,
         username: PropTypes.string.isRequired,
         bio     : PropTypes.string.isRequired,
+        photo     : PropTypes.string.isRequired,
     }
 
     state = {
         editUsername: '',
-        editBio: ''
+        editBio: '',
+        editPhoto: ''
     }
 
     //TODO Hee : like view
 
     render () {
-        const { editProf, username, bio } = this.props
+        const { editProf, username, bio, photo} = this.props
         return (
             <View style={styles.container}>
-                <View style={styles.imgContainer}>
-                     <PhotoUpload
-                      onPhotoSelect={avatar => {
-                        if (avatar) {
-                          console.log('Image base64 string: ', avatar)
-                        }
-                      }}
-                    >
-                      <Image
-                        style={styles.img}
-                        source={imgProfile}
-                      />
-                    </PhotoUpload>
-                </View>
-                <View style={styles.usernameContainer}>
-                    <Text style={styles.usernameTitle}>Display Name</Text>
-                    <TextInput
-                        ref={(ref) => this.usernameInputRef = ref}
-                        onSubmitEditing={() => this.bioInputRef.focus()}
-                        placeholder={username}
-                        onChangeText={(value) => this.setState({ editUsername: value})}
-                        style={styles.usernameInput}
-                    />
-                </View>
-                <View style={styles.bioContainer}>
-                    <Text style={styles.bioTitle}>Bio</Text>
-                    <TextInput
-                        ref={(ref) => this.bioInputRef = ref}
-                        placeholder={ bio }
-                        multiline={true}
-                        maxLength={180}
-                        onChangeText={(value) => this.setState({ editBio: value})}
-                        style={styles.bioInput}
-                    />
-                </View>
+              <PhotoUpload
+              onPhotoSelect={avatar => {
+                if (avatar) {
+                  this.setState({editPhoto: avatar})
+                }
+                }}
+                >
+                <Image
+                  resizeMode='cover'
+
+                  style={styles.img}
+                  source={photo ?  {uri: `data:image/png;base64,${photo}`} : imgProfile}
+                />
+              </PhotoUpload>
+              <View style={styles.usernameContainer}>
+                  <Text style={styles.usernameTitle}>Display Name</Text>
+                  <TextInput
+                      ref={(ref) => this.usernameInputRef = ref}
+                      onSubmitEditing={() => this.bioInputRef.focus()}
+                      placeholder={username}
+                      onChangeText={(value) => this.setState({ editUsername: value})}
+                      style={styles.usernameInput}
+                  />
+              </View>
+              <View style={styles.bioContainer}>
+                  <Text style={styles.bioTitle}>Bio</Text>
+                  <TextInput
+                      ref={(ref) => this.bioInputRef = ref}
+                      placeholder={ bio }
+                      multiline={true}
+                      maxLength={180}
+                      onChangeText={(value) => this.setState({ editBio: value})}
+                      style={styles.bioInput}
+                  />
+              </View>
 
                 <View style={styles.buttonContainer}>
                     <CustomButton
                         text={'UPDATE'}
                         textStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={() => editProf(this.state.editUsername, this.state.editBio)}
+                        onPress={() => editProf(this.state.editUsername, this.state.editBio, this.state.editPhoto)}
                     />
                 </View>
 
@@ -81,16 +83,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     flex: 1,
     justifyContent: 'center',
+    marginTop: 10,
     //alignItems: 'center',
     width: metrics.DEVICE_WIDTH
   },
   imgContainer: {
     marginTop: 16,
-    alignSelf: 'center'
   },
   img: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
     //width: metrics.Device_WIDTH / 3,
     //height: metrics.Device_WIDTH / 3,
     width: 112,

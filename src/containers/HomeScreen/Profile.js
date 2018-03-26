@@ -21,6 +21,7 @@ export default class Profile extends Component {
         addGame: false,
         username: "",
         bio: "",
+        photo: "",
         gameUsername: "",
         myPosition: "",
         duoPosition: "",
@@ -35,7 +36,7 @@ export default class Profile extends Component {
       this._pullGameData()
     }
 
-    _editProfile = (username, bio) => {
+    _editProfile = (username, bio, photo) => {
         this.setState({editMode:true})
         if (username != '' ) {
             this.setState({username:username })
@@ -44,9 +45,14 @@ export default class Profile extends Component {
         if (bio != '' ) {
             this.setState({bio:bio })
         }
+
+        if (photo != '' ) {
+            this.setState({photo:photo })
+        }
         let body = JSON.stringify({
            'displayName': username ? username : this.state.username,
            'bio': bio ? bio : this.state.bio,
+           'profilePhoto' : photo ? photo : this.state.photo
         })
 
          const base64 = require('base-64')
@@ -154,10 +160,10 @@ export default class Profile extends Component {
              console.log(responseJson)
              var playerGame = responseJson.playerGameRole.filter(g => g.gameTitle == "League of Legends")[0]
              if (playerGame) {
-              this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0], myPosition: playerGame.role,
+              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], myPosition: playerGame.role,
                             duoPosition: playerGame.partnerRole, gameUsername: playerGame.displayName})
             } else {
-              this.setState({ username: responseJson.displayName, bio: responseJson.bio, skillInfo: responseJson.playerSkill[0]})
+              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0]})
             }
          })
          .catch((error) => {
@@ -201,7 +207,7 @@ export default class Profile extends Component {
      }
 
     render () {
-        const { editMode, editGame, addGame, username, bio,
+        const { editMode, editGame, addGame, username, bio, photo,
                 gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner} = this.state
         return (
             <View>
@@ -218,6 +224,7 @@ export default class Profile extends Component {
                         <ViewProfile
                             username={ username }
                             bio={ bio }
+                            photo= {photo}
                         />
                         <Game
                             editGame={ editGame }
@@ -250,6 +257,7 @@ export default class Profile extends Component {
                             editProf={ this._editProfile }
                             username={ username }
                             bio={ bio }
+                            photo= { photo}
                         />
                     </View>}
                 </ScrollView>

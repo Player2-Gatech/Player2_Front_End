@@ -9,14 +9,15 @@ import metrics from '../../config/metrics'
 export default class ViewProfile extends Component {
     static propTypes = {
         username: PropTypes.string.isRequired,
-        bio: PropTypes.string.isRequired
+        bio: PropTypes.string.isRequired,
+        photo: PropTypes.string.isRequired
     }
     render () {
-        const { username, bio } = this.props
+        const { username, bio, photo } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.imgContainer}>
-                    <Image style={styles.img} source={imgProfile}/>
+                    <Image style={styles.img} source={photo ? {uri: `data:image/png;base64,${photo}`} : imgProfile}/>
                 </View>
                 <View style={styles.usernameContainer}>
                     <Text style={[username ? styles.whiteText : styles.emptyText]}>{ [username ? username : 'No display name set!'] }</Text>
