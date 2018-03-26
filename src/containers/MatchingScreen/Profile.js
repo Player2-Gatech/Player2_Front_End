@@ -42,7 +42,9 @@ export default class Profile extends Component {
                   </ScrollView>
                   <View style={styles.buttonContainer}>
                       <CustomButton
-                          onPress={() => {this.setState({matchIndex: matchIndex+1})}}
+                          onPress={() => {
+                            console.log(matchingProfiles[matchIndex + 1])
+                            this.setState({matchIndex: matchIndex+1})}}
                           buttonStyle={styles.skipButton}
                           textStyle={styles.skipButtonText}
                           text={'SKIP'}

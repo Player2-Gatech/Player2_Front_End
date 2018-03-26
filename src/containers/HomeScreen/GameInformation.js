@@ -22,10 +22,10 @@ export default class EditProfile extends Component {
     }
 
     computePercentage(wins, losses) {
-      if (wins != null && losses != null) {
+      if (wins + losses != 0) {
         return Math.round(100 * wins / (wins + losses))
       } else {
-        return ""
+        return 0
       }
     }
     render () {

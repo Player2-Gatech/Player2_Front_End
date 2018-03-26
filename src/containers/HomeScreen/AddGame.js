@@ -88,18 +88,20 @@ export default class AddGame extends Component {
       });
     }
 
+    renderSpinner(enableSpinner) {
+      if (enableSpinner) {
+        return (
+          <View>
+            <Text style={styles.spinnerText}>{'Getting stats...'}</Text>
+            <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+        )
+      }
+    }
+
     render () {
         const { modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
-        if (skillSpinner) {
-          return (
-            <View style={styles.spinnerContainer}>
-            {
-              <ActivityIndicator size="large" color="#0000ff" />
-            }
-            </View>
-          )
-        } else {
-          return (
+        return (
           <View>
             <View style={styles.container}>
               {
@@ -110,9 +112,13 @@ export default class AddGame extends Component {
                     parentScreen={this}
                 />
             </View>
+          <View style={styles.spinnerContainer}>
+          {
+            this.renderSpinner(skillSpinner)
+          }
+          </View>
         </View>
         )
-        }
     }
 }
 
@@ -152,6 +158,13 @@ const styles = StyleSheet.create({
   gameLogo: {
     width: metrics.DEVICE_WIDTH * 0.60,
     height: 100,
+  },
+  spinnerText: {
+    fontSize: 20,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 10,
+    textAlign: 'center'
   },
 })
 

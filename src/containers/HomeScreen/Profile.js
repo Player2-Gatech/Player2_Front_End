@@ -28,7 +28,7 @@ export default class Profile extends Component {
         duoPosition: "",
         playerGames: "",
         allGameInfo: "",
-        skillInfo: {},
+        skillInfo: "",
         skillSpinner: false,
     }
 
@@ -185,7 +185,6 @@ export default class Profile extends Component {
          .then((responseJson) => {
              console.log(responseJson)
              this.setState({allGameInfo: responseJson.games})
-             this.setState({profileSpinner : false})
          })
          .catch((error) => {
              console.error(error)
@@ -203,6 +202,7 @@ export default class Profile extends Component {
          .then((responseJson) => {
              console.log(responseJson)
              this.setState({ playerGames: responseJson.userGames})
+             this.setState({profileSpinner : false})
          })
          .catch((error) => {
              console.error(error)

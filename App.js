@@ -67,30 +67,25 @@ export class LoginAnimation extends Component {
             if (checker == "message") {
               Alert.alert("Error", "That email is in use!")
             } else {
-              this.setState({ isLoading: true })
-              setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
+              fetch(baseUrl + "/api/token", {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Basic ' + base64.encode(username+":"+password)
+                }
+              })
+              .then((response) => response.json())
+              .then((responseJson) => {
+                global.authKey = responseJson.token
+                this.setState({ isLoading: true })
+                setTimeout(() => this.setState({ isLoggedIn: true, isLoading: false }), 1000)
+              })
             }
-        })
-        .catch((error) => {
-            console.error(error);
-        });
-        fetch(baseUrl + "/api/token", {
-          method: 'GET',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Basic ' + base64.encode(username+":"+password)
-          }
-        })
-        .then((response) => response.json())
-        .then((responseJson) => {
-          global.authKey = responseJson.token
         })
         .catch((error) => {
           console.error(error);
         });
-
-
     } else {
         Alert.alert("Error", 'The passwords do not match!')
     }

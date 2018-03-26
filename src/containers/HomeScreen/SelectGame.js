@@ -81,7 +81,10 @@ export default class SelectGame extends Component {
     renderSpinner(enableSpinner) {
       if (enableSpinner) {
         return (
+        <View>
+          <Text style={styles.spinnerText}>{'Getting stats...'}</Text>
           <ActivityIndicator size="large" color="#0000ff" />
+        </View>
         )
       }
     }
@@ -168,5 +171,13 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center'
-  }
+  },
+  spinnerText: {
+    fontSize: 20,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 10,
+    textAlign: 'center'
+  },
+
 })
