@@ -146,7 +146,8 @@ const styles = StyleSheet.create({
   },
   emptyStateTextContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    flexDirection: 'row'
   },
   emptyStateText: {
     textAlign: 'right',

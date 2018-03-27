@@ -36,7 +36,7 @@ export default class EditProfile extends Component {
                 }}
                 >
                 <Image
-                  resizeMode='cover'
+                  resizeMode='contain'
 
                   style={styles.img}
                   source={photo ?  {uri: `data:image/png;base64,${photo}`} : imgProfile}

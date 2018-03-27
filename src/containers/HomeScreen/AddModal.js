@@ -60,7 +60,7 @@ export default class AddModal extends Component {
                 }}
             >
                 <TextInput editable={false} underlineColorAndroid='transparent' defaultValue={this.state.modalTitle} style={styles.title}></TextInput>
-                <Image style={styles.gameIcon} source={images[this.state.gameTitle]} resizeMode='stretch'/>
+                <Image style={styles.gameIcon} source={images[this.state.gameTitle]} resizeMode='contain'/>
                 <TextInput
                     style={styles.input}
                     underlineColorAndroid='transparent'
