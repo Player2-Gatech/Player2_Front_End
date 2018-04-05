@@ -10,6 +10,10 @@ import MatchingScreen from '../containers/MatchingScreen/index';
 import Search from '../containers/MatchingScreen/Search';
 import MatchingProfile from '../containers/MatchingScreen/Profile';
 
+import FriendList from '../containers/ChatScreen/FriendList';
+import UserDetail from '../containers/ChatScreen/UserDetail';
+import PendingProfile from '../containers/ChatScreen/Profile';
+
 export const MatchingStack = StackNavigator({
     Search: {
         screen: Search,
@@ -36,6 +40,52 @@ export const MatchingStack = StackNavigator({
                 backgroundColor: '#1976D2',
             }
         },
+    }
+});
+
+export const ChatStack = StackNavigator({
+    FriendList: {
+        screen: FriendList,
+        navigationOptions: {
+            title: 'Chat',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+                borderBottomWidth: 0,
+            }
+        },
+    },
+    PendingProfile: {
+        screen: PendingProfile,
+        navigationOptions: ({ navigation }) => ({
+            title: `${navigation.state.params.name.first.toUpperCase()} ${'Profile'}`,
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+                borderBottomWidth: 0,
+            }
+        }),
+    },
+    // TODO : change Details to chatting room screen
+    Details: {
+        screen: UserDetail,
+        navigationOptions: ({ navigation }) => ({
+            title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+                borderBottomWidth: 0,
+            }
+        }),
     }
 });
 

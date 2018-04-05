@@ -6,12 +6,12 @@ import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 
+import { ChatStack } from '../../config/router';
+
 export default class ChatScreen extends Component {
     render () {
         return (
-            <ScrollView>
-                <Text>Chat Screen</Text>
-            </ScrollView>
+            <ChatStack />
         )
     }
 }
