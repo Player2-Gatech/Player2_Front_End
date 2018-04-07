@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, Alert } from 'react-native'
+import ActionButton from 'react-native-action-button'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 import metrics from '../../config/metrics'
 
@@ -10,6 +12,7 @@ import ViewProfile from './ViewProfile'
 import Game from './Game'
 import Video from './Video'
 import Comment from './Comment'
+import AddModal from './AddModal'
 
 import CustomButton from '../../components/CustomButton'
 
@@ -22,10 +25,15 @@ export default class Profile extends Component {
         myPosition: "NONE",
         duoPosition: "NONE",
     }
-    
+    _onPressComment() {
+        this.refs.commentModal.showAddModal()
+    }
+    _onSubmitModal(starCount, comment) {
+        alert("likes : " + starCount + " comment : " + comment)
+    }
     render () {
         const { username, bio, gameUsername, myPosition, duoPosition } = this.state
-        const { picture, name, email } = this.props.navigation.state.params;
+        const { picture, name, email, isPending } = this.props.navigation.state.params;
         return (
             <View>
                 <ScrollView>
@@ -44,7 +52,14 @@ export default class Profile extends Component {
                         <Comment/>
                     </View>
                 </ScrollView>
-                <View style={styles.buttonContainer}>
+                { !isPending && <ActionButton buttonColor='#1976D2'>
+                    <ActionButton.Item buttonColor='#9b59b6'
+                                        title='leave comment'
+                                        onPress = {() => this._onPressComment()}>
+                        <Icon name='md-create'/>
+                    </ActionButton.Item>
+                </ActionButton>}
+                { isPending && <View style={styles.buttonContainer}>
                     <CustomButton
                         onPress={() => {alert('Delete the selected pending item from DB. Also, reload the list of items')}}
                         buttonStyle={styles.skipButton}
@@ -57,7 +72,11 @@ export default class Profile extends Component {
                         textStyle={styles.acceptButtonText}
                         text={'DUO'}
                     />
-                </View>
+                </View>}
+                <AddModal
+                    ref={'commentModal'}
+                    parentScreen={this}
+                />
             </View>
         )
     }
