@@ -3,14 +3,16 @@ import {
   Text,
   View,
   ScrollView,
-  StyleSheet
+  StyleSheet,
+  Image, Alert
 } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Avatar } from 'react-native-elements';
 import { users, pendingUsers } from '../../config/data';
 
 class FriendList extends Component {
-  onLearnMore = (user) => {
-    this.props.navigation.navigate('PendingProfile', { ...user });
+  onLearnMore = (user, bool) => {
+    isPending = bool ? true : false
+    this.props.navigation.navigate('PendingProfile', { ...user, isPending });
   };
   // TODO : change navigation to chatting room screen
   onChating = (user) => {
@@ -33,7 +35,7 @@ class FriendList extends Component {
               avatar={{ uri: user.picture.thumbnail }}
               title={`${user.name.first.toUpperCase()} ${user.name.last.toUpperCase()}`}
               subtitle={user.email}
-              onPress={() => this.onLearnMore(user)}
+              onPress={() => this.onLearnMore(user, true)}
             />
           ))}
         </List>
@@ -46,8 +48,11 @@ class FriendList extends Component {
           {users.map((user) => (
             <ListItem
               key={user.login.username}
-              roundAvatar
-              avatar={{ uri: user.picture.thumbnail }}
+              avatar={<Avatar
+                        rounded
+                        source={{uri: user.picture.thumbnail}}
+                        onPress={() => this.onLearnMore(user, false)}
+                        />}
               title={`${user.name.first.toUpperCase()} ${user.name.last.toUpperCase()}`}
               subtitle={user.email}
               onPress={() => this.onChating(user)}
