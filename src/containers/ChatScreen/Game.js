@@ -12,28 +12,24 @@ import GameInformation from './GameInformation'
 export default class Game extends Component {
     constructor() {
         super();
-        /*this.state = {
-            myPosition: "ADC",
-            duoPosition: "SUP",
-            gameUsername: "HEE"
-        }*/
     }
     static propTypes = {
         gameUsername: PropTypes.string.isRequired,
         myPosition: PropTypes.string.isRequired,
-        duoPosition: PropTypes.string.isRequired
+        duoPosition: PropTypes.string.isRequired,
+        skillInfo: PropTypes.object.isRequired
     }
     render () {
-        const { gameUsername, myPosition, duoPosition } = this.props
+        const { gameUsername, myPosition, duoPosition, skillInfo} = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.gameSectionContainer}>
-                    
+
                     <View style={styles.gameIconContainer}>
                         <Text style={styles.sectionTitle}>{'Game'}</Text>
                         <Image style={styles.gameIcon} source={require('../../images/lolicon.jpeg')}/>
                     </View>
-                    
+
                     <View style={styles.gameDescriptionContainer}>
                         <View style={styles.searchOption}>
                             <Text>Preferred Position : {myPosition}</Text>
@@ -41,11 +37,12 @@ export default class Game extends Component {
                         </View>
                     </View>
                 </View>
-                
+
                 <GameInformation
                     myPosition={myPosition}
                     duoPosition={duoPosition}
                     gameUsername={gameUsername}
+                    skillInfo={skillInfo}
                 />
             </View>
         )

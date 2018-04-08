@@ -11,7 +11,7 @@ import { ChatStack } from '../../config/router';
 export default class ChatScreen extends Component {
     render () {
         return (
-            <ChatStack />
+            <ChatStack/>
         )
     }
 }

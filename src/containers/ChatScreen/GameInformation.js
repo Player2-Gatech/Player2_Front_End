@@ -1,90 +1,117 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, View, Text, Image } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
 
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
+import {rankImages, champImages} from './ImageMap'
+import Pie from 'react-native-pie'
+
 
 export default class EditProfile extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     static propTypes = {
         myPosition: PropTypes.string.isRequired,
         duoPosition: PropTypes.string.isRequired,
-        gameUsername: PropTypes.string.isRequired
+        gameUsername: PropTypes.string.isRequired,
+        skillInfo: PropTypes.object.isRequired,
     }
-    //TODO get rank, win, loss, pref win, and pref loss
-    //TODO Hee: make pie chart to display win rate
-    state = {
-        rank: "Challenger",
-        win: 10,
-        loss: 5,
-        prefWin: 10,
-        prefLoss: 5
+
+    computePercentage(wins, losses) {
+      if (wins + losses != 0) {
+        return Math.round(100 * wins / (wins + losses))
+      } else {
+        return 0
+      }
     }
     render () {
-        return (
-            <View style={styles.container}>
-                <View style={styles.rowContainer}>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Rank</Text>
-                    </View>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Most Pick</Text>
-                    </View>
-                </View>
-                
-                <View style={styles.rowContainer}>
-                    <View style={styles.rankContainer}>
-                        <View style={styles.rankContainer}>
-                            <View style={styles.rowContainer}>
-                                <View style={styles.colmContainer}>
-                                    <Image
-                                        style={styles.rankIcon}
-                                        source={require('../../images/challengerIcon.png')}
-                                    />
-                                </View>
-                                <View style={styles.colmContainer}>
-                                    <Text>{this.props.gameUsername}</Text>
-                                    <Text>{this.state.rank}</Text>
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.mostPickContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Image
-                                style={styles.rankIcon}
-                                source={require('../../images/ezreal.jpeg')}
-                            />
-                        </View>
-                    </View>
-                </View>
-                
-                <View style={styles.rowContainer}>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>Recent Game Winrate</Text>
-                    </View>
-                    <View style={styles.colmContainer}>
-                        <Text style={styles.sectionTitle}>{this.props.myPosition} Winrate</Text>
-                    </View>
-                </View>
+        const { myPosition, duoPosition, gameUsername, skillInfo} = this.props
+        if (skillInfo) {
+          return (
+              <View style={styles.container}>
+                  <View style={styles.rowContainer}>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>Rank</Text>
+                      </View>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.sectionTitle}>Pocket Pick</Text>
+                      </View>
+                  </View>
 
-                <View style={styles.rowContainer}>
-                    <View style={styles.rankContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Text>{this.state.win}</Text>
-                            <Text>{this.state.loss}</Text>
-                        </View>
-                    </View>
-                    <View style={styles.mostPickContainer}>
-                        <View style={styles.rankIconContainer}>
-                            <Text>{this.state.prefWin}</Text>
-                            <Text>{this.state.prefLoss}</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        )
+                  <View style={styles.rowContainer}>
+                      <View style={styles.rankContainer}>
+                          <View style={styles.rankContainer}>
+                              <View style={styles.rowContainer}>
+                                  <View style={styles.colmContainer}>
+                                      <Image style={styles.rankIcon} source={rankImages[skillInfo.tier]}/>
+                                  </View>
+                                  <View style={styles.colmContainer}>
+                                      <Text>{gameUsername}</Text>
+                                      <Text>{skillInfo.tier + " " + skillInfo.rank}</Text>
+                                  </View>
+                              </View>
+                          </View>
+                      </View>
+                      <View style={styles.mostPickContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Image style={styles.rankIcon} source={champImages[skillInfo.rolePick]}/>
+                          </View>
+                      </View>
+                  </View>
+
+                  <View style={styles.rowContainer}>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.chartTitle}>Recent Game Winrate</Text>
+                          <View style={styles.gauge}>
+                            <Pie
+                              radius={50}
+                              innerRadius={45}
+                              series={[this.computePercentage(skillInfo.wins, skillInfo.losses)]}
+                              colors={['#1976D2']}
+                              backgroundColor='#ddd' />
+                              <Text style={styles.gaugeText}>{this.computePercentage(skillInfo.wins, skillInfo.losses)}%</Text>
+                          </View>
+                      </View>
+                      <View style={styles.colmContainer}>
+                          <Text style={styles.chartTitle}>{myPosition} Winrate</Text>
+                          <View style={styles.gauge}>
+                            <Pie
+                              radius={50}
+                              innerRadius={45}
+                              series={[this.computePercentage(skillInfo.roleWins, skillInfo.roleLosses)]}
+                              colors={['#1976D2']}
+                              backgroundColor='#ddd' />
+                              <Text style={styles.gaugeText}>{this.computePercentage(skillInfo.roleWins, skillInfo.roleLosses)}%</Text>
+                          </View>
+                      </View>
+                  </View>
+
+                  <View style={styles.rowContainer}>
+                      <View style={styles.rankContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Text>{"W: " +  skillInfo.wins + " - L: " + skillInfo.losses}</Text>
+                          </View>
+                      </View>
+                      <View style={styles.mostPickContainer}>
+                          <View style={styles.rankIconContainer}>
+                              <Text>{"W: " +  skillInfo.roleWins + " - L: " + skillInfo.roleLosses}</Text>
+                          </View>
+                      </View>
+                  </View>
+              </View>
+          )
+        } else {
+          return (
+              <View style={styles.container}>
+                  <Text style={styles.errorText}>{'We had trouble loading this user\'s game stats...'}</Text>
+                  <Image style={styles.rankIcon} source={require('../../images/notfound.png')}/>
+              </View>
+          )
+        }
     }
 }
 
@@ -123,6 +150,20 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     textAlign: 'left'
   },
+  chartTitle: {
+    fontSize: 14,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 8,
+    textAlign: 'left'
+  },
+  errorText: {
+    fontSize: 14,
+    color: '#9B9FA4',
+    marginHorizontal: 8,
+    marginVertical: 10,
+    textAlign: 'left'
+  },
   rankContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -134,8 +175,18 @@ const styles = StyleSheet.create({
     flex: 1
   },
   rankIcon: {
-    width: 50,
-    height: 50
-  }
+    width: 75,
+    height: 75
+  },
+  gauge: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+   gaugeText: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    color: '#000',
+    fontSize: 24,
+  },
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
