@@ -12,6 +12,7 @@ import MatchingProfile from '../containers/MatchingScreen/Profile';
 
 import FriendList from '../containers/ChatScreen/FriendList';
 import PendingProfile from '../containers/ChatScreen/Profile';
+import ChatRoom from '../containers/ChatScreen/ChatRomm';
 
 export const MatchingStack = StackNavigator({
     Search: {
@@ -71,6 +72,22 @@ export const ChatStack = StackNavigator({
             }
         },
     },
+    // TODO : change Details to chatting room screen
+    ChatRoom: {
+        screen: ChatRoom,
+        navigationOptions: ({ navigation }) => ({
+            //title: `${navigation.state.params.name.first.toUpperCase()} ${'Chat'}`,
+            title: 'Chat',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+                borderBottomWidth: 0,
+            }
+        }),
+    }
 });
 
 export const Tabs = TabNavigator({
