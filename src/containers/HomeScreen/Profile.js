@@ -12,6 +12,7 @@ import Game from './Game'
 import Video from './Video'
 import Comment from './Comment'
 
+import AddVideoModal from './AddVideoModal'
 import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
@@ -30,6 +31,8 @@ export default class Profile extends Component {
         allGameInfo: "",
         skillInfo: "",
         skillSpinner: false,
+        videoUrl: "",
+        playerVideo: null,
     }
 
     componentWillMount() {
@@ -80,6 +83,54 @@ export default class Profile extends Component {
 
     _toggleAddGame = (addGame) => {
         this.setState({ addGame: addGame? false: true })
+    }
+
+    _onPressAddVideo(videoUrl) {
+        this.refs.addVideoModal.showAddVideoModal('Add Video Url', videoUrl);
+    }
+
+    _onSubmitVideoModal(videoUrl) {
+        let body = JSON.stringify({
+           'videoUrl': videoUrl
+        })
+
+         const base64 = require('base-64')
+         fetch(baseUrl + "/api/playerVideo", {
+             method: 'PUT',
+             headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json',
+                 'Authorization': 'Basic ' + base64.encode(authKey+":")
+             },
+            body: body
+         }).then((response) => response.json())
+         .then((responseJson) => {
+            console.log(responseJson)
+            this._modalVideoSubmit(videoUrl)
+         })
+         .catch((error) => {
+             console.error(error)
+         });
+    }
+
+    _modalVideoSubmit = (videoUrl) => {
+      const base64 = require('base-64')
+      fetch(baseUrl + "/api/player", {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + base64.encode(authKey+":")
+          }
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+        this.setState({playerVideo: responseJson.playerVideo})
+        if (this.state.playerVideo != null) {
+          this.setState({videoUrl: this.state.playerVideo[0].video_url})
+        }
+      })
     }
 
     _modalSubmit = (myPosition, duoPosition, gameUsername, gameTitle) => {
@@ -162,9 +213,9 @@ export default class Profile extends Component {
              var playerGame = responseJson.playerGameRole.filter(g => g.gameTitle == "League of Legends")[0]
              if (playerGame) {
               this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], myPosition: playerGame.role,
-                            duoPosition: playerGame.partnerRole, gameUsername: playerGame.displayName})
+                            duoPosition: playerGame.partnerRole, gameUsername: playerGame.displayName, playerVideo: responseJson.playerVideo})
             } else {
-              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0]})
+              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], playerVideo: responseJson.playerVideo})
             }
             this._pullGameData()
          })
@@ -211,7 +262,7 @@ export default class Profile extends Component {
 
     render () {
         const { editMode, editGame, addGame, username, bio, photo,
-                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner, profileSpinner} = this.state
+                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner, profileSpinner, playerVideo, videoUrl} = this.state
         if (profileSpinner) {
             return (
                 <View style={styles.spinnerContainer}>
@@ -245,8 +296,16 @@ export default class Profile extends Component {
                               skillInfo = { skillInfo }
                               isEmpty={playerGames.length == 0}
                           />
-                          <Video/>
+                          <Video
+                            videoUrl={ videoUrl }
+                            isEmpty={videoUrl == ""}
+                            onVideoPress={ this._onPressAddVideo.bind(this) }
+                          />
                           <Comment/>
+                          <AddVideoModal
+                            ref={'addVideoModal'}
+                            parentScreen={this}
+                          />
                       </View>}
                       {editMode && editGame && !addGame && <SelectGame
                               playerGames= {playerGames}
