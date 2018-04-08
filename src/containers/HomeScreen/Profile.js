@@ -217,6 +217,10 @@ export default class Profile extends Component {
             } else {
               this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], playerVideo: responseJson.playerVideo})
             }
+            var playerVideo = responseJson.playerVideo
+            if (playerVideo.length > 0) {
+              this.setState({videoUrl: playerVideo[0].video_url})
+            }
             this._pullGameData()
          })
          .catch((error) => {

@@ -80,7 +80,9 @@ export default class Profile extends Component {
                             duoPosition={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
                             skillInfo={user.playerSkill[0]}
                         />
-                        <Video/>
+                        <Video
+                            playerVideo={ user.playerVideo }
+                        />
                         <Comment/>
                     </View>
                 </ScrollView>

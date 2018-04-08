@@ -14,6 +14,7 @@ import CustomButton from '../../components/CustomButton'
 export default class Profile extends Component {
     state = {
       matchIndex: 0,
+      videoUrl: "",
     }
 
     _sendPendingRequest(matchingUserId) {
@@ -38,10 +39,10 @@ export default class Profile extends Component {
     }
 
     render () {
-        const {matchIndex} = this.state
+        const {matchIndex, videoUrl} = this.state
         const {matchingProfiles} = this.props.navigation.state.params;
         const { navigate } = this.props.navigation
-           if (matchIndex < matchingProfiles.length) {
+          if (matchIndex < matchingProfiles.length) {
               return (
               <View>
                   <ScrollView>
@@ -57,7 +58,9 @@ export default class Profile extends Component {
                               duoPosition={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
                               skillInfo={matchingProfiles[matchIndex].playerSkill[0]}
                           />
-                          <Video/>
+                          <Video
+                              playerVideo={matchingProfiles[matchIndex].playerVideo}
+                          />
                           <Comment/>
                       </View>
                   </ScrollView>
