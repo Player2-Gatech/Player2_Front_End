@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, Image } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, StatusBar} from 'react-native'
 
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/profileicon.png'
@@ -8,22 +8,22 @@ import metrics from '../../config/metrics'
 
 export default class ViewProfile extends Component {
     static propTypes = {
-        pricture: PropTypes.object,
-        username: PropTypes.object.isRequired,
-        bio: PropTypes.string.isRequired
+        username: PropTypes.string.isRequired,
+        bio: PropTypes.string.isRequired,
+        photo: PropTypes.string.isRequired
     }
     render () {
-        const { picture, username, bio } = this.props
+        const { username, bio, photo } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.imgContainer}>
-                    <Image style={styles.img} source={{ uri: picture.large}}/>
+                    <Image style={styles.img} source={photo ? {uri: `data:image/png;base64,${photo}`} : imgProfile}/>
                 </View>
                 <View style={styles.usernameContainer}>
-                    <Text style={styles.whiteText}>{ username.first.toUpperCase() }</Text>
+                    <Text style={[username ? styles.whiteText : styles.emptyText]}>{ [username ? username : 'No display name set!'] }</Text>
                 </View>
                 <View style={styles.bioContainer}>
-                    <Text style={styles.bioText} adjustsFontSizeToFit={true}>{ bio }</Text>
+                    <Text style={[bio ? styles.bioText : styles.emptyBio]} adjustsFontSizeToFit={true}>{ [bio ? bio : 'Nothing to see here...'] }</Text>
                 </View>
             </View>
         )
@@ -36,7 +36,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
     width: metrics.DEVICE_WIDTH
   },
   imgContainer: {
@@ -61,6 +60,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white'
   },
+  emptyText: {
+    fontSize: 15,
+    fontStyle: 'italic',
+    color: 'white'
+  },
   bioContainer: {
     width: metrics.DEVICE_WIDTH - 100,
     height: 80,
@@ -76,6 +80,10 @@ const styles = StyleSheet.create({
   },
   bioText: {
     color: "#1976D2",
+  },
+  emptyBioText: {
+    color: "#1976D2",
+    fontStyle: 'italic',
   }
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

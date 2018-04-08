@@ -10,7 +10,7 @@ export default class Video extends Component {
     render () {
         return (
             <View style={styles.container}>
-                
+
                 <View style={styles.sectionTitleContainer}>
                     <Text style={styles.sectionTitle}>{'Video'}</Text>
                 </View>
@@ -18,12 +18,14 @@ export default class Video extends Component {
                 <View style={styles.gameSectionContainer}>
                     <ScrollView horizontal={true} style={styles.gameDescriptionContainer}>
                         <View style={styles.videoClipContainer}>
+                          <Image source={require('../../images/videoClip.png')} resizeMode="contain"/>
                         </View>
                         <View style={styles.videoClipContainer}>
+                          <Image source={require('../../images/videoClip.png')} resizeMode="contain"/>
                         </View>
                     </ScrollView>
                 </View>
-            
+
             </View>
         )
     }
@@ -71,13 +73,13 @@ const styles = StyleSheet.create({
   },
   videoClipContainer: {
     //width: metrics.Device_WIDTH,
-    width: 200,
+    width: 175,
     height: 100,
     marginHorizontal: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 15,
     borderColor: '#9B9FA4',
-    backgroundColor: 'yellow',
+    backgroundColor: "#9B9FA4",
     //justifyContent: 'center',
     alignItems: 'center'
   }

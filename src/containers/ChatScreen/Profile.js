@@ -6,8 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 import metrics from '../../config/metrics'
 
-import { users, pendingUsers } from '../../config/data';
-
 import ViewProfile from './ViewProfile'
 import Game from './Game'
 import Video from './Video'
@@ -17,36 +15,70 @@ import AddModal from './AddModal'
 import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
-    // TODO : _editProfile : store the passed username and bio parameters into database,
-    state = {
-        username: "MY NAME",
-        bio: "BIO",
-        gameUsername: "NONE",
-        myPosition: "NONE",
-        duoPosition: "NONE",
+    _onPressComment(user) {
+        this.refs.commentModal.showAddModal(user)
     }
-    _onPressComment() {
-        this.refs.commentModal.showAddModal()
+    _onSubmitModal(user, starCount, comment) {
+        let body = JSON.stringify({
+            'user_id': user.user_id,
+            'message': comment,
+            'rating': starCount
+        })
+        const base64 = require('base-64')
+        fetch(baseUrl + "/api/playerComment", {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Basic ' + base64.encode(authKey+":")
+            },
+            body: body
+        })
+        .then((response) => response.json())
+        // TODO update profile since comment has been posted?
     }
-    _onSubmitModal(starCount, comment) {
-        alert("likes : " + starCount + " comment : " + comment)
+
+    _onRespondToRequest(user, skipped, updateFriends) {
+      let body = JSON.stringify({
+          'matchUserId': user.user_id,
+          'pending': false,
+          'delete': skipped,
+          'retUpdated': true
+      })
+
+      const base64 = require('base-64')
+      fetch(baseUrl + "/api/playerFriends", {
+          method: 'PUT',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + base64.encode(authKey+":")
+          },
+          body: body
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+           updateFriends(responseJson.pending, responseJson.friends)
+            this.props.navigation.navigate('FriendList', {screen: 'FriendList'})
+      })
     }
+
     render () {
-        const { username, bio, gameUsername, myPosition, duoPosition } = this.state
-        const { picture, name, email, isPending } = this.props.navigation.state.params;
+        const { user, isPending, updateFriends} = this.props.navigation.state.params;
         return (
             <View>
                 <ScrollView>
                     <View style={styles.container}>
                         <ViewProfile
-                            picture = { picture }
-                            username= { name }
-                            bio     = { email }
+                            username={user.displayName }
+                            bio={user.bio }
+                            photo={user.profilePhoto}
                         />
                         <Game
-                            gameUsername={ gameUsername }
-                            myPosition={ myPosition }
-                            duoPosition={ duoPosition }
+                            gameUsername={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].displayName }
+                            myPosition={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].role }
+                            duoPosition={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
+                            skillInfo={user.playerSkill[0]}
                         />
                         <Video/>
                         <Comment/>
@@ -55,19 +87,19 @@ export default class Profile extends Component {
                 { !isPending && <ActionButton buttonColor='#1976D2'>
                     <ActionButton.Item buttonColor='#9b59b6'
                                         title='leave comment'
-                                        onPress = {() => this._onPressComment()}>
+                                        onPress = {() => this._onPressComment(user)}>
                         <Icon name='md-create'/>
                     </ActionButton.Item>
                 </ActionButton>}
                 { isPending && <View style={styles.buttonContainer}>
                     <CustomButton
-                        onPress={() => {alert('Delete the selected pending item from DB. Also, reload the list of items')}}
+                        onPress={() => {this._onRespondToRequest(user, true, updateFriends)}}
                         buttonStyle={styles.skipButton}
                         textStyle={styles.skipButtonText}
-                        text={'SKIP'}
+                        text={'REJECT'}
                     />
                     <CustomButton
-                        onPress={() => {alert('Delete the selected pending item from DB and Add to friend list from DB. Also, reload the list of items')}}
+                        onPress={() => {this._onRespondToRequest(user, false, updateFriends)}}
                         buttonStyle={styles.acceptButton}
                         textStyle={styles.acceptButtonText}
                         text={'DUO'}

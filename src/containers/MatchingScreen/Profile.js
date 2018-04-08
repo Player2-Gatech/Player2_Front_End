@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, Alert } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator } from 'react-native'
 
 import metrics from '../../config/metrics'
 
@@ -13,7 +13,28 @@ import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
     state = {
-      matchIndex: 0
+      matchIndex: 0,
+    }
+
+    _sendPendingRequest(matchingUserId) {
+      let body = JSON.stringify({
+          'matchUserId': matchingUserId,
+          'pending': true,
+      })
+
+      const base64 = require('base-64')
+      fetch(baseUrl + "/api/playerFriends", {
+          method: 'PUT',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + base64.encode(authKey+":")
+          },
+          body: body
+      })
+      .then((response) =>
+          this.setState({matchIndex: this.state.matchIndex+1})
+      )
     }
 
     render () {
@@ -51,8 +72,7 @@ export default class Profile extends Component {
                       />
                       <CustomButton
                           onPress={() => {
-                            alert('Request sent!')
-                            this.setState({matchIndex: matchIndex+1})
+                            this._sendPendingRequest(matchingProfiles[matchIndex].user_id)
                           }}
                           buttonStyle={styles.acceptButton}
                           textStyle={styles.acceptButtonText}

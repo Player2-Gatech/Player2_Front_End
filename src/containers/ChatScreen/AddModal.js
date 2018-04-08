@@ -13,23 +13,25 @@ import metrics from '../../config/metrics'
 export default class AddModal extends Component {
     state = {
         comment: '',
-        starCount: 0
+        starCount: 0,
+        user: null
     }
-    showAddModal = () => {
+    showAddModal = (user) => {
+        this.setState({user: user})
         this.refs.myModal.open()
     }
     onStarRatingPress(rating) {
         this.setState({starCount: rating})
     }
-    onSubmit(starCount, comment) {
-        this.props.parentScreen._onSubmitModal(starCount, comment)
+    onSubmit(user, starCount, comment) {
+        this.props.parentScreen._onSubmitModal(user, starCount, comment)
     }
                 /*onClosed={() => {
                     this.props.parentScreen._onSubmitModal(starCount, comment)
                 }}*/
                         //this.refs.myModal.close();
     render() {
-        const { starCount, comment } = this.state
+        const { starCount, comment, user} = this.state
         return (
             <Modal
                 ref={'myModal'}
@@ -53,9 +55,10 @@ export default class AddModal extends Component {
                     style={styles.input}
                     placeholder='Leave Comment'
                     value={comment}
+                    underlineColorAndroid='rgba(0,0,0,0)'
                     onChangeText={(text) => this.setState({ comment: text})}
                 />
-                <CustomButton 
+                <CustomButton
                     text={'SUBMIT'}
                     buttonStyle={styles.button}
                     onPress={()=>{
@@ -64,7 +67,7 @@ export default class AddModal extends Component {
                             return;
                         }
                         this.refs.myModal.close()
-                        this.onSubmit(starCount, comment)
+                        this.onSubmit(user, starCount, comment)
                     }}
                 />
             </Modal>

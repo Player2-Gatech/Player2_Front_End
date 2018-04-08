@@ -49,7 +49,7 @@ export default class Search extends Component {
                         onPress={() => this.getMatches(navigate)}
                         buttonStyle={styles.button}
                         textStyle={styles.buttonText}
-                        text={'Search'}
+                        text={enableSpinner ? '' : 'Search'}
                     />
                 </View>
                 <View style={styles.spinnerContainer}>

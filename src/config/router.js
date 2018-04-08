@@ -11,7 +11,6 @@ import Search from '../containers/MatchingScreen/Search';
 import MatchingProfile from '../containers/MatchingScreen/Profile';
 
 import FriendList from '../containers/ChatScreen/FriendList';
-import UserDetail from '../containers/ChatScreen/UserDetail';
 import PendingProfile from '../containers/ChatScreen/Profile';
 
 export const MatchingStack = StackNavigator({
@@ -60,8 +59,8 @@ export const ChatStack = StackNavigator({
     },
     PendingProfile: {
         screen: PendingProfile,
-        navigationOptions: ({ navigation }) => ({
-            title: `${navigation.state.params.name.first.toUpperCase()} ${'Profile'}`,
+        navigationOptions: {
+            title: 'User Profile',
             headerTitleStyle: {
                 color: 'white'
             },
@@ -70,27 +69,12 @@ export const ChatStack = StackNavigator({
                 backgroundColor: '#1976D2',
                 borderBottomWidth: 0,
             }
-        }),
+        },
     },
-    // TODO : change Details to chatting room screen
-    Details: {
-        screen: UserDetail,
-        navigationOptions: ({ navigation }) => ({
-            title: `${navigation.state.params.name.first.toUpperCase()} ${navigation.state.params.name.last.toUpperCase()}`,
-            headerTitleStyle: {
-                color: 'white'
-            },
-            headerTintColor: 'white',
-            headerStyle: {
-                backgroundColor: '#1976D2',
-                borderBottomWidth: 0,
-            }
-        }),
-    }
 });
 
 export const Tabs = TabNavigator({
-    Profile: { 
+    Profile: {
         screen: Profile,
         navigationOptions: {
             tabBarLabel: 'Profile',
