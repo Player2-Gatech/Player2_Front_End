@@ -32,7 +32,7 @@ class ChatRoom extends Component {
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
 
-    this.socket = io('http://10.0.0.114:8001');
+    this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
     this.socket.emit('join', {room: 'roomName'});
     this.socket.on('from_server', this.onReceivedMessage);
   }

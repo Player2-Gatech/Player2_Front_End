@@ -12,7 +12,7 @@ import MatchingProfile from '../containers/MatchingScreen/Profile';
 
 import FriendList from '../containers/ChatScreen/FriendList';
 import PendingProfile from '../containers/ChatScreen/Profile';
-import ChatRoom from '../containers/ChatScreen/ChatRomm';
+import ChatRoom from '../containers/ChatScreen/ChatRoom';
 
 export const MatchingStack = StackNavigator({
     Search: {

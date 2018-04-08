@@ -25,7 +25,7 @@ class FriendList extends Component {
     loadingSpinner: true
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this._getFriends()
   }
 
