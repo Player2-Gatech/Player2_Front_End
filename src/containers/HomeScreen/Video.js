@@ -44,7 +44,7 @@ export default class Video extends Component {
                                 />
                             </TouchableOpacity>
                           </View>
-                      
+
                   </View>
               </View>
         )
@@ -53,10 +53,10 @@ export default class Video extends Component {
               <View style={styles.container}>
                   <View style={styles.videoShowContainer}>
                       <View style={styles.videoDescriptionContainer}>
+                        <View style={styles.sectionTitleContainer}>
                           <Text style={styles.sectionTitle}>{'Video'}</Text>
-                          <View style={styles.emptyStateTextContainer}>
-                            <Text style={styles.blankSpaceText}>{'                                                                                                '}</Text>
-                          </View>
+                        </View>
+                        <View style={styles.tempContainer2}>
                           <TouchableOpacity
                               style={styles.editIconContainer}
                               onPress={() => onVideoPress(videoUrl)}
@@ -66,7 +66,8 @@ export default class Video extends Component {
                                   source={require('../../images/plusIcon.png')}
                               />
                           </TouchableOpacity>
-                          
+                        </View>
+
                       </View>
                       <WebView
                             source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
@@ -77,9 +78,9 @@ export default class Video extends Component {
           )
         }
       }
-        
+
     }
-  
+
 
 const styles = StyleSheet.create({
   container: {
@@ -162,6 +163,14 @@ const styles = StyleSheet.create({
   },
   tempContainer: {
     flex: 3,
+  },
+  tempContainer2: {
+    flex: 1,
+    justifyContent: 'flex-start',
+  },
+  sectionTitleContainer: {
+    flex: 1,
+    justifyContent: 'flex-start',
   }
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

@@ -13,21 +13,14 @@ export default class Video extends Component {
   constructor() {
     super();
   }
-  state = {
-    videoUrl: "",
-    isEmpty: true,
-  }
+
   static PropTypes = {
     playerVideo: PropTypes.array,
   }
 
     render () {
       const { playerVideo } = this.props
-      const { videoUrl, isEmpty } = this.state
-      if (playerVideo.length > 0) {
-        this.setState({isEmpty: false, videoUrl: playerVideo[0].video_url})
-      }
-      if (isEmpty) {
+      if (playerVideo.length == 0) {
         return (
             <View style={styles.container}>
                   <View style={styles.videoSectionContainer}>
@@ -37,7 +30,7 @@ export default class Video extends Component {
                           <View style={styles.emptyStateTextContainer}>
                             <Text style={styles.emptyStateText}>{'Looks like there is nothing here!'}</Text>
                           </View>
-                      
+
                   </View>
               </View>
         )
@@ -50,10 +43,10 @@ export default class Video extends Component {
                           <View style={styles.emptyStateTextContainer}>
                             <Text style={styles.blankSpaceText}>{'                                                                                                '}</Text>
                           </View>
-                          
+
                       </View>
                       <WebView
-                            source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
+                            source={{uri: "https://www.youtube.com/embed/" + playerVideo[0].video_url}}
                             style={styles.videoClipContainer}
                       />
                   </View>
@@ -61,9 +54,9 @@ export default class Video extends Component {
           )
         }
       }
-        
+
     }
-  
+
 
 const styles = StyleSheet.create({
   container: {
@@ -105,7 +98,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 15,
     justifyContent: 'center',
-    alignItems: 'center'
   },
   emptyContainer: {
     flexDirection: 'row',
@@ -122,7 +114,7 @@ const styles = StyleSheet.create({
   },
   emptyStateTextContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'row'
   },
   emptyStateText: {

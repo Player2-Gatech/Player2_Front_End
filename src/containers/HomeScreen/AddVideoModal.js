@@ -18,7 +18,7 @@ export default class AddVideoModal extends Component {
             videoUrl: '',
         };
     }
-    
+
 
     showAddVideoModal(modalTitle, videoUrl) {
         this.setState({modalTitle: modalTitle});
@@ -36,7 +36,7 @@ export default class AddVideoModal extends Component {
                 ref={'myVideoModal'}
                 style={styles.modal}
                 backdrop={true}
-                position='top'
+                position='center'
                 onClosed={() => {
                 }}
             >

@@ -37,7 +37,7 @@ export default class Video extends Component {
                           <View style={styles.emptyStateTextContainer}>
                             <Text style={styles.emptyStateText}>{'Looks like there is nothing here!'}</Text>
                           </View>
-                      
+
                   </View>
               </View>
         )
@@ -50,7 +50,7 @@ export default class Video extends Component {
                           <View style={styles.emptyStateTextContainer}>
                             <Text style={styles.blankSpaceText}>{'                                                                                                '}</Text>
                           </View>
-                          
+
                       </View>
                       <WebView
                             source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
@@ -61,9 +61,9 @@ export default class Video extends Component {
           )
         }
       }
-        
+
     }
-  
+
 
 const styles = StyleSheet.create({
   container: {
@@ -105,7 +105,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 15,
     justifyContent: 'center',
-    alignItems: 'center'
   },
   emptyContainer: {
     flexDirection: 'row',
@@ -122,7 +121,7 @@ const styles = StyleSheet.create({
   },
   emptyStateTextContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     flexDirection: 'row'
   },
   emptyStateText: {
