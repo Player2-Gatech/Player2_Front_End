@@ -118,7 +118,7 @@ class FriendList extends Component {
                   />}
                 title={user.friendProfile.displayName ? user.friendProfile.displayName : 'Anonymous'}
                 subtitle={user.friendProfile.email}
-                onPress={() => this.onChatting(user.friendProfile)}
+                onPress={() => this.onChatting()}
               />
             ))}
           </List>
