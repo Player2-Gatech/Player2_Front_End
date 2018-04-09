@@ -9,30 +9,24 @@ import {
 } from 'react-native';
 import { List, ListItem, Avatar } from 'react-native-elements';
 import { users, pendingUsers } from '../../config/data';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 
 class ChatRoom extends Component {
   constructor(props) {
     super(props);
+    const { user } = this.props.navigation.state.params;
     this.state = {
-      messages: [
-        {
-          _id: 1,
-          text: 'You wanna duo?',
-          createdAt: new Date(),
-          user: {
-            _id: 1,
-            name: 'Other User'
-          }
-        }
-      ],
-      userId: 1
+      messages: [],
+      user: {
+        _id: user.idA
+      }
     };
     this.roomName = 'roomName';
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
 
     this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
+    //this.socket = io('128.61.30.127:8001');
     this.socket.emit('join', {room: 'roomName'});
     this.socket.on('from_server', this.onReceivedMessage);
   }
@@ -49,13 +43,27 @@ class ChatRoom extends Component {
     });
   }
 
+  renderBubble(props) {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          left: {
+            backgroundColor: '#ccc',
+          },
+        }}
+      />
+    );
+  }
 
   render() {
     return (
       <GiftedChat
         messages={this.state.messages}
+        user={this.state.user}
         onSend={this.onSend}
-        user={this.state.userId}
+        renderBubble={this.renderBubble.bind(this)}
+        renderAvatar={null}
       />
     );
   }
