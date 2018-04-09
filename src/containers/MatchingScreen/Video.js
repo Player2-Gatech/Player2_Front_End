@@ -13,21 +13,14 @@ export default class Video extends Component {
   constructor() {
     super();
   }
-  state = {
-    videoUrl: "",
-    isEmpty: true,
-  }
+
   static PropTypes = {
     playerVideo: PropTypes.array,
   }
 
     render () {
       const { playerVideo } = this.props
-      const { videoUrl, isEmpty } = this.state
-      if (playerVideo.length > 0) {
-        this.setState({isEmpty: false, videoUrl: playerVideo[0].video_url})
-      }
-      if (isEmpty) {
+      if (playerVideo.length == 0) {
         return (
             <View style={styles.container}>
                   <View style={styles.videoSectionContainer}>
@@ -48,12 +41,12 @@ export default class Video extends Component {
                       <View style={styles.videoDescriptionContainer}>
                           <Text style={styles.sectionTitle}>{'Video'}</Text>
                           <View style={styles.emptyStateTextContainer}>
-                            <Text style={styles.blankSpaceText}>{'                                                                                                '}</Text>
+                            <Text style={styles.blankSpaceText}>{'                                                                                      '}</Text>
                           </View>
 
                       </View>
                       <WebView
-                            source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
+                            source={{uri: "https://www.youtube.com/embed/" + playerVideo[0].video_url}}
                             style={styles.videoClipContainer}
                       />
                   </View>
