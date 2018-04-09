@@ -15,8 +15,8 @@ class FriendList extends Component {
     this.props.navigation.navigate('PendingProfile', {screen: 'PendingProfile', user: user, isPending: isPending, updateFriends: this._update});
   };
   // TODO : change navigation to chatting room screen
-  onChatting = () => {
-    this.props.navigation.navigate('ChatRoom');
+  onChatting = (user) => {
+    this.props.navigation.navigate('ChatRoom', {user: user});
   };
 
   state = {
@@ -103,7 +103,7 @@ class FriendList extends Component {
                 key={"Empty State"}
                 title={"No friends added!"}
                 hideChevron={true}
-                onPress={() => this.onChatting()}
+                onPress={() => this.onChatting(user)}
               />
             }
             {friendUsers.map((user) => (
@@ -118,7 +118,7 @@ class FriendList extends Component {
                   />}
                 title={user.friendProfile.displayName ? user.friendProfile.displayName : 'Anonymous'}
                 subtitle={user.friendProfile.email}
-                onPress={() => this.onChatting()}
+                onPress={() => this.onChatting(user)}
               />
             ))}
           </List>
