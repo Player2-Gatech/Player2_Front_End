@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#9B9FA4',
     marginHorizontal: 8
   },

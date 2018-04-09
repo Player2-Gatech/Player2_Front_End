@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
     marginBottom: 10,
     borderBottomWidth: 2,
     borderColor: '#99E7FF',
@@ -104,9 +103,10 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#9B9FA4',
-    marginHorizontal: 8
+    marginHorizontal: 8,
+    textAlign: 'left'
   },
   videoSectionContainer: {
     flexDirection: 'row',
@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
   sectionTitleContainer: {
     flex: 1,
     marginRight: 15,
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: 'row',
+    alignItems: 'flex-start'
   },
   emptyContainer: {
     flexDirection: 'row',
@@ -140,11 +140,18 @@ const styles = StyleSheet.create({
   emptyStateTextContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'column'
   },
   emptyStateText: {
     textAlign: 'right',
-    fontSize: 13,
+    fontSize: 11,
+  },
+  emptySectionContainer: {
+    flex: 1,
+    marginRight:20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row'
   },
   blankSpaceText: {
     textAlign: 'right',
@@ -163,14 +170,11 @@ const styles = StyleSheet.create({
   },
   tempContainer: {
     flex: 3,
+    alignItems: 'flex-end'
   },
   tempContainer2: {
     flex: 1,
     justifyContent: 'flex-start',
   },
-  sectionTitleContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  }
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

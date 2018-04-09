@@ -47,7 +47,7 @@ export const ChatStack = StackNavigator({
     FriendList: {
         screen: FriendList,
         navigationOptions: {
-            title: 'Chat',
+            title: 'Friends List',
             headerTitleStyle: {
                 color: 'white'
             },

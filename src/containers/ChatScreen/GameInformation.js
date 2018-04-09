@@ -50,8 +50,8 @@ export default class EditProfile extends Component {
                                       <Image style={styles.rankIcon} source={rankImages[skillInfo.tier]}/>
                                   </View>
                                   <View style={styles.colmContainer}>
-                                      <Text>{gameUsername}</Text>
-                                      <Text>{skillInfo.tier + " " + skillInfo.rank}</Text>
+                                      <Text style={styles.nameText}>{gameUsername}</Text>
+                                      <Text style={styles.rankText}>{skillInfo.tier + " " + skillInfo.rank}</Text>
                                   </View>
                               </View>
                           </View>
@@ -168,6 +168,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1
+  },
+  nameText: {
+    fontSize: 12,
+  },
+  rankText: {
+    fontSize: 10,
   },
   mostPickContainer: {
     justifyContent: 'center',

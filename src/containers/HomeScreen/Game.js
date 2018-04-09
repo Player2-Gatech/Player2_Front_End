@@ -31,7 +31,7 @@ export default class Game extends Component {
           return (<View style={styles.container}>
               <View style={styles.gameSectionContainer}>
 
-                  <View style={styles.gameIconContainer}>
+                  <View style={styles.emptySectionContainer}>
                       <Text style={styles.sectionTitle}>{'Game'}</Text>
                   </View>
                   <View style={styles.emptyStateTextContainer}>
@@ -110,9 +110,9 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#9B9FA4',
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
   gameSectionContainer: {
     flexDirection: 'row',
@@ -128,10 +128,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
-  emptyContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    flex: 1
+  emptySectionContainer: {
+    flex: 1,
+    marginRight:20,
+    flexDirection: 'row'
   },
   gameDescriptionContainer: {
     flex: 3
@@ -147,11 +147,11 @@ const styles = StyleSheet.create({
   emptyStateTextContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'column'
   },
   emptyStateText: {
     textAlign: 'right',
-    fontSize: 13,
+    fontSize: 11,
   },
 })
 
