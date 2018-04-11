@@ -22,63 +22,61 @@ export default class Video extends Component {
 
     render () {
       const { onVideoPress, videoUrl, isEmpty } = this.props
-       if (isEmpty) {
+      if (isEmpty) {
         return (
-            <View style={styles.container}>
-                  <View style={styles.videoSectionContainer}>
-                          <View style={styles.sectionTitleContainer}>
-                            <Text style={styles.sectionTitle}>{'Video'}</Text>
-                          </View>
-                          <View style={styles.emptyStateTextContainer}>
-                            <Text style={styles.emptyStateText}>{'Start by Adding a Video! '}</Text>
-                          </View>
-                          <View style={styles.tempContainer}>
-
-                            <TouchableOpacity
-                                style={styles.editIconContainer}
-                                onPress={() => onVideoPress(videoUrl)}
-                            >
-                                <Image
-                                    style={styles.editIcon}
-                                    source={require('../../images/plusIcon.png')}
-                                />
-                            </TouchableOpacity>
-                          </View>
-
-                  </View>
+          <View style={styles.container}>
+            <View style={styles.noVideoContainer}>
+              <View style={styles.emptySectionContainer}>
+                <Text style={styles.sectionTitle}>{'Video'}</Text>
               </View>
+              <View style={styles.emptyStateTextContainer}>
+                <Text style={styles.emptyStateText}>{'Start by adding a video!'}</Text>
+              </View>
+              <View style={{flex: 3}}>
+                <TouchableOpacity
+                  style={styles.editIconContainer}
+                  onPress={() => onVideoPress(videoUrl)}
+                >
+                  <Image
+                    style={styles.editIcon}
+                    source={require('../../images/plusIcon.png')}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         )
       } else {
         return (
-              <View style={styles.container}>
-                  <View style={styles.videoShowContainer}>
-                      <View style={styles.videoDescriptionContainer}>
-                        <View style={styles.sectionTitleContainer}>
-                          <Text style={styles.sectionTitle}>{'Video'}</Text>
-                        </View>
-                        <View style={styles.tempContainer2}>
-                          <TouchableOpacity
-                              style={styles.editIconContainer}
-                              onPress={() => onVideoPress(videoUrl)}
-                          >
-                              <Image
-                                  style={styles.editIcon}
-                                  source={require('../../images/plusIcon.png')}
-                              />
-                          </TouchableOpacity>
-                        </View>
-
-                      </View>
-                      <WebView
-                            source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
-                            style={styles.videoClipContainer}
-                      />
+          <View style={styles.container}>
+              <View style={styles.videoShowContainer}>
+                <View style={styles.sectionTitleContainer}>
+                  <View style={styles.emptySectionContainer}>
+                    <Text style={styles.sectionTitle}>{'Video'}</Text>
                   </View>
+                  <View style={styles.emptySectionContainer}>
+                  </View>
+                  <View style={{flex: 3, justifyContent: "flex-end"}}>
+                    <TouchableOpacity
+                      style={styles.editIconContainer}
+                      onPress={() => onVideoPress(videoUrl)}
+                    >
+                      <Image
+                        style={styles.editIcon}
+                        source={require('../../images/plusIcon.png')}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <WebView
+                  source={{uri: "https://www.youtube.com/embed/" + videoUrl}}
+                  style={styles.videoClipContainer}
+                />
               </View>
+          </View>
           )
         }
       }
-
     }
 
 
@@ -89,7 +87,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 2,
     borderColor: '#99E7FF',
-    paddingVertical: 10,
     alignItems: 'center'
   },
   editIcon: {
@@ -101,76 +98,47 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginRight: 10,
-    marginBottom: 8
   },
   sectionTitle: {
     fontSize: 14,
     color: '#9B9FA4',
     marginHorizontal: 8,
-    textAlign: 'left'
   },
-  videoSectionContainer: {
+  emptyStateText: {
+  textAlign: 'right',
+  fontSize: 11,
+  },
+  noVideoContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   videoShowContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   sectionTitleContainer: {
     flex: 1,
-    marginRight: 15,
     flexDirection: 'row',
-    alignItems: 'flex-start'
-  },
-  emptyContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    flex: 1
-  },
-  videoDescriptionContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  searchOption: {
-    justifyContent: 'center',
-  },
-  emptyStateTextContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'column'
   },
-  emptyStateText: {
-    textAlign: 'right',
-    fontSize: 11,
+  videoClipContainer: {
+    width: 280,
+    height: 170,
+    marginHorizontal: 10,
+    backgroundColor: "#9B9FA4",
+    alignContent: 'center'
   },
   emptySectionContainer: {
     flex: 1,
     marginRight:20,
-    justifyContent: 'center',
-    alignItems: 'center',
     flexDirection: 'row'
   },
-  videoClipContainer: {
-    //width: metrics.Device_WIDTH,
 
-    width: 240,
-    height: 160,
-    marginHorizontal: 10,
-    backgroundColor: "#9B9FA4",
-    //justifyContent: 'center',
-    alignContent: 'center'
-  },
-  tempContainer: {
-    flex: 3,
-    alignItems: 'flex-end'
-  },
-  tempContainer2: {
-    flex: 1,
-    justifyContent: 'flex-start',
-  },
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
