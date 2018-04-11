@@ -40,7 +40,7 @@ export default class Game extends Component {
                   <View style={styles.gameDescriptionContainer}>
                       <TouchableOpacity
                           style={styles.editIconContainer}
-                          onPress={() => editGameFunc(editGame)}
+                          onPress={() => editGameFunc()}
                       >
                           <Image
                               style={styles.editIcon}
@@ -63,7 +63,7 @@ export default class Game extends Component {
                       <View style={styles.gameDescriptionContainer}>
                           <TouchableOpacity
                               style={styles.editIconContainer}
-                              onPress={() => editGameFunc(editGame)}
+                              onPress={() => editGameFunc()}
                           >
                               <Image
                                   style={styles.editIcon}

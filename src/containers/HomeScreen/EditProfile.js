@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, StatusBar} from 'react-native'
+import { NavigationActions } from 'react-navigation'
 
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/profileicon.png'
@@ -9,40 +10,36 @@ import PhotoUpload from 'react-native-photo-upload'
 
 
 export default class EditProfile extends Component {
-    static propTypes = {
-        editProf: PropTypes.func.isRequired,
-        username: PropTypes.string.isRequired,
-        bio     : PropTypes.string.isRequired,
-        photo     : PropTypes.string.isRequired,
-    }
-
     state = {
-        editUsername: '',
-        editBio: '',
-        editPhoto: ''
+        editUsername: "",
+        editBio: "",
+        editPhoto: "",
     }
-
-    //TODO Hee : like view
-
+    
+    handleSubmit = (_editProfile) => {
+        _editProfile(this.state.editUsername, this.state.editBio, this.state.editPhoto)
+        this.props.navigation.dispatch(NavigationActions.back())
+    }
+    
     render () {
-        const { editProf, username, bio, photo} = this.props
+        const { _editProfile, username, bio, photo} = this.props.navigation.state.params
         return (
+            <ScrollView>
             <View style={styles.container}>
-              <PhotoUpload
-              onPhotoSelect={avatar => {
-                if (avatar) {
-                  this.setState({editPhoto: avatar})
-                }
-                }}
+                <PhotoUpload
+                    onPhotoSelect={avatar => {
+                        if (avatar) { 
+                            this.setState({editPhoto: avatar}) 
+                        }
+                    }}
                 >
                 <Image
                   resizeMode='contain'
-
                   style={styles.img}
                   source={photo ?  {uri: `data:image/png;base64,${photo}`} : imgProfile}
                 />
-              </PhotoUpload>
-              <View style={styles.usernameContainer}>
+                </PhotoUpload>
+                <View style={styles.usernameContainer}>
                   <Text style={styles.usernameTitle}>Display Name</Text>
                   <TextInput
                       ref={(ref) => this.usernameInputRef = ref}
@@ -51,8 +48,8 @@ export default class EditProfile extends Component {
                       onChangeText={(value) => this.setState({ editUsername: value})}
                       style={styles.usernameInput}
                   />
-              </View>
-              <View style={styles.bioContainer}>
+                </View>
+                <View style={styles.bioContainer}>
                   <Text style={styles.bioTitle}>Bio</Text>
                   <TextInput
                       ref={(ref) => this.bioInputRef = ref}
@@ -62,37 +59,37 @@ export default class EditProfile extends Component {
                       onChangeText={(value) => this.setState({ editBio: value})}
                       style={styles.bioInput}
                   />
-              </View>
+                </View>
 
                 <View style={styles.buttonContainer}>
                     <CustomButton
                         text={'UPDATE'}
                         textStyle={styles.buttonText}
                         buttonStyle={styles.button}
-                        onPress={() => editProf(this.state.editUsername, this.state.editBio, this.state.editPhoto)}
+                        onPress={() => this.handleSubmit(_editProfile)}
                     />
                 </View>
 
             </View>
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
+  containerTop: {
+    flex: 1,
+  },
   container: {
     backgroundColor: "#fff",
     flex: 1,
-    justifyContent: 'center',
     marginTop: 10,
-    //alignItems: 'center',
     width: metrics.DEVICE_WIDTH
   },
   imgContainer: {
     marginTop: 16,
   },
   img: {
-    //width: metrics.Device_WIDTH / 3,
-    //height: metrics.Device_WIDTH / 3,
     width: 112,
     height: 112,
     borderRadius: 15

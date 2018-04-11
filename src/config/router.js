@@ -4,8 +4,10 @@ import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import Profile from '../containers/HomeScreen/Profile';
-import ChatScreen from '../containers/ChatScreen/index';
-import MatchingScreen from '../containers/MatchingScreen/index';
+
+import EditProfile from '../containers/HomeScreen/EditProfile';
+import AddGame from '../containers/HomeScreen/AddGame';
+import SelectGame from '../containers/HomeScreen/SelectGame';
 
 import Search from '../containers/MatchingScreen/Search';
 import MatchingProfile from '../containers/MatchingScreen/Profile';
@@ -13,6 +15,61 @@ import MatchingProfile from '../containers/MatchingScreen/Profile';
 import FriendList from '../containers/ChatScreen/FriendList';
 import PendingProfile from '../containers/ChatScreen/Profile';
 import ChatRoom from '../containers/ChatScreen/ChatRoom';
+
+export const HomeStack = StackNavigator({
+    HomeProfile: {
+        screen: Profile,
+        navigationOptions: {
+            title: 'My Profile',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+            }
+        },
+    },
+    EditProfile: {
+        screen: EditProfile,
+        navigationOptions: {
+            title: 'Edit Profile',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+            }
+        },
+    },
+    SelectGame: {
+        screen: SelectGame,
+        navigationOptions: {
+            title: 'Select Game',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+            }
+        },
+    },
+    AddGame: {
+        screen: AddGame,
+        navigationOptions: {
+            title: 'AddGame',
+            headerTitleStyle: {
+                color: 'white'
+            },
+            headerTintColor: 'white',
+            headerStyle: {
+                backgroundColor: '#1976D2',
+            }
+        },
+    },
+});
 
 export const MatchingStack = StackNavigator({
     Search: {
@@ -92,7 +149,7 @@ export const ChatStack = StackNavigator({
 
 export const Tabs = TabNavigator({
     Profile: {
-        screen: Profile,
+        screen: HomeStack,
         navigationOptions: {
             tabBarLabel: 'Profile',
             tabBarIcon: ({tintColor}) => (
@@ -104,7 +161,7 @@ export const Tabs = TabNavigator({
         }
     },
     MatchingScreen: {
-        screen: MatchingScreen,
+        screen: MatchingStack,
         navigationOptions: {
             tabBarLabel: 'Match',
             tabBarIcon: ({tintColor}) => (
@@ -116,7 +173,7 @@ export const Tabs = TabNavigator({
         }
     },
     ChatScreen: {
-        screen: ChatScreen,
+        screen: ChatStack,
         navigationOptions: {
             tabBarLabel: 'Chat',
             tabBarIcon: ({tintColor}) => (
@@ -142,3 +199,9 @@ export const Tabs = TabNavigator({
     }
 });
 
+export const Root = StackNavigator({
+    Tabs: {
+        screen: Tabs,
+    },
+    
+});

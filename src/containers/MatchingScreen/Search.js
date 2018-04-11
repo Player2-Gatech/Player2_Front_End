@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView,
+         View, Text, TextInput, Image,
+         ActivityIndicator, TouchableOpacity } from 'react-native'
 
 import CustomButton from '../../components/CustomButton'
 
@@ -20,7 +22,7 @@ export default class Search extends Component {
       }
     }
 
-    getMatches(navigate) {
+    getMatches() {
       this.setState({enableSpinner : true})
       // just league for now
       const base64 = require('base-64')
@@ -36,7 +38,7 @@ export default class Search extends Component {
       .then((responseJson) => {
           console.log(responseJson.matches)
           this.setState({enableSpinner : false})
-          navigate("MatchingProfile", {screen: "MatchingProfile", matchingProfiles: responseJson.matches})
+          this.props.navigation.navigate("MatchingProfile", { matchingProfiles: responseJson.matches })
       })
     }
     render () {
@@ -46,21 +48,35 @@ export default class Search extends Component {
             <View style={styles.container}>
                 <View style={styles.mainContainer}>
                     <CustomButton
-                        onPress={() => this.getMatches(navigate)}
+                        onPress={() => this.getMatches()}
                         buttonStyle={styles.button}
                         textStyle={styles.buttonText}
                         text={enableSpinner ? '' : 'Search'}
                     />
-                </View>
                 <View style={styles.spinnerContainer}>
                 {
                   this.renderSpinner(enableSpinner)
                 }
                 </View>
+                </View>
             </View>
         )
     }
 }
+                /*<View style={styles.spinnerContainer}>
+                {
+                  this.renderSpinner(enableSpinner)
+                }
+                </View>
+                    <TouchableOpacity onPress={() => this.getMatches()}>
+                        <Text>"SEARCH"</Text>
+                    </TouchableOpacity>
+                    <CustomButton
+                        onPress={() => this.getMatches()}
+                        buttonStyle={styles.button}
+                        textStyle={styles.buttonText}
+                        text={enableSpinner ? '' : 'Search'}
+                    />*/
 
 const styles = StyleSheet.create({
   container: {

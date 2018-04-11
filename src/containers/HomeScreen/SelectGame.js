@@ -18,19 +18,20 @@ export default class SelectGame extends Component {
         super(props);
         this._onPressSelectGame = this._onPressSelectGame.bind(this)
     }
-    static propTypes = {
+    /*static propTypes = {
         addGame: PropTypes.bool.isRequired,
         addGameFunc: PropTypes.func.isRequired,
         modalSubmit: PropTypes.func.isRequired,
         playerGames: PropTypes.object.isRequired,
         allGameInfo: PropTypes.object.isRequired,
         skillSpinner: PropTypes.bool.isRequired
-    }
+    }*/
 
     _onPressSelectGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
         this.refs.addModal.showAddModal('Edit Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
     }
+
     _onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle) {
         let body = JSON.stringify({
           'playerGameRole': {
@@ -51,20 +52,19 @@ export default class SelectGame extends Component {
             body: body
          }).then((response) => response.json())
          .then((responseJson) => {
-            this.props.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
+            this.props.navigation.state.params.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
          })
          .catch((error) => {
              console.error(error)
          });
     }
+
     renderSelectGames(playerGames, allGameInfo) {
-      const images = {
-        'League of Legends': require('../../images/lolLogo.png'),
-        'Overwatch': require('../../images/overwatchLogo.png'),
-        'World of Warcraft': require('../../images/wowLogo.png')
-      }
-      return playerGames.map((item) => {
-          return (
+        const images = { 'League of Legends': require('../../images/lolLogo.png'),
+                         'Overwatch': require('../../images/overwatchLogo.png'),
+                         'World of Warcraft': require('../../images/wowLogo.png') }
+        return playerGames.map((item) => {
+            return (
                 <View style={styles.gameContainer}>
                     <TouchableOpacity
                         onPress={() => this._onPressSelectGame(item.gameTitle, allGameInfo)}
@@ -75,9 +75,10 @@ export default class SelectGame extends Component {
                             resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
-          );
+            );
         });
     }
+
     renderSpinner(enableSpinner) {
       if (enableSpinner) {
         return (
@@ -90,7 +91,12 @@ export default class SelectGame extends Component {
     }
 
     render () {
-        const { addGame, addGameFunc, modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
+        const { addGameFunc,
+                modalSubmit,
+                playerGames,
+                allGameInfo,
+                skillSpinner
+                } = this.props.navigation.state.params;
         return (
           <View>
             <View style={styles.container}>
@@ -99,7 +105,7 @@ export default class SelectGame extends Component {
               }
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={() => addGameFunc(addGame)}
+                    onPress={() => addGameFunc()}
                 >
                   <Image
                       style={styles.button}
@@ -113,9 +119,7 @@ export default class SelectGame extends Component {
               />
             </View>
           <View style={styles.spinnerContainer}>
-          {
-            this.renderSpinner(skillSpinner)
-          }
+            { this.renderSpinner(skillSpinner) }
           </View>
         </View>
       )

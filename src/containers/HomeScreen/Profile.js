@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator } from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView, View,
+         Text, TextInput, Image, ActivityIndicator,
+         TouchableOpacity, Button } from 'react-native'
 
 import TopNavigationBar from './TopNavigationBar'
 
@@ -20,7 +22,6 @@ export default class Profile extends Component {
         profileSpinner: false,
         editMode: true,
         editGame: false,
-        addGame: false,
         username: "",
         bio: "",
         photo: "",
@@ -34,11 +35,41 @@ export default class Profile extends Component {
         videoUrl: "",
         playerVideo: null,
     }
+    
+    static navigationOptions = ({ navigation }) => {
+        const params = navigation.state.params || {};
 
-    componentWillMount() {
-      this._pullProfile()
+        return {
+            headerRight: (
+                <View style={{ flex: 1, alignItems: 'flex-end', }}>
+                    <TouchableOpacity onPress={ params.handleEditProfile } >
+                        <Image
+                            source = { require('../../images/pencilIcon.png') }
+                            style  = {{ resizeMode: 'contain',
+                                        tintColor: 'white',
+                                        width: 20,
+                                        height: 20,
+                                        marginHorizontal: 16,
+                                        alignSelf: 'center' }}
+                        />
+
+                    </TouchableOpacity>
+                </View>
+            )
+        }
     }
 
+    componentWillMount() {
+        this._pullProfile()
+        this.props.navigation.setParams({ handleEditProfile : this._navigateToEditProfile });
+    }
+    _navigateToEditProfile = () => {
+        this.props.navigation.navigate('EditProfile', { _editProfile: this._editProfile, 
+                                                        username: this.state.username,
+                                                        bio     : this.state.bio,
+                                                        photo   : this.state.photo})
+    }
+    
     _editProfile = (username, bio, photo) => {
         this.setState({editMode:true})
         if (username != '' ) {
@@ -73,18 +104,25 @@ export default class Profile extends Component {
          });
     }
 
-    _toggleEditMode = (editMode) => {
-        this.setState({ editMode: editMode? false: true })
+    _toggleEditMode() {
+        this.props.navigation.navigate('EditProfile');
+    }
+    
+    _toggleEditGame = () => {
+        this.props.navigation.navigate('SelectGame', {playerGames: this.state.playerGames,
+                                                      allGameInfo: this.state.allGameInfo,
+                                                      addGameFunc: this._toggleAddGame,
+                                                      skillSpinner: this.state.skillSpinner,
+                                                      modalSubmit: this._modalSubmit});
     }
 
-    _toggleEditGame = (editGame) => {
-        this.setState({ editGame: editGame? false: true })
+    _toggleAddGame = () => {
+        this.props.navigation.navigate('AddGame', {playerGames: this.state.playerGames,
+                                                    allGameInfo: this.state.allGameInfo,
+                                                    skillSpinner: this.state.skillSpinner,
+                                                    modalSubmit: this._modalSubmit});
     }
-
-    _toggleAddGame = (addGame) => {
-        this.setState({ addGame: addGame? false: true })
-    }
-
+    
     _onPressAddVideo(videoUrl) {
         this.refs.addVideoModal.showAddVideoModal('Add Video Url', videoUrl);
     }
@@ -163,7 +201,8 @@ export default class Profile extends Component {
                 .then((responseJson) => {
                     console.log(responseJson)
 
-                    // kind of tricky, but we have to make a third request to put the old gameUsername/role info back in case the update was invalid
+                    // kind of tricky, but we have to make a third request to put the old gameUsername
+                    //role info back in case the update was invalid
                     // We'll only know if the update was invalid after we get the response of the skills route
                     if (!responseJson.playerSkill) {
                       let body = JSON.stringify({
@@ -184,14 +223,19 @@ export default class Profile extends Component {
                             body: body
                       })
                     }
-                    this.setState({skillInfo: responseJson.playerSkill, skillSpinner: 0, myPosition: myPosition, duoPosition:
-                                  duoPosition,gameUsername: gameUsername, editMode: true, editGame: false, addGame: false})
+                    this.setState({ skillInfo: responseJson.playerSkill,
+                                    skillSpinner: 0,
+                                    myPosition: myPosition,
+                                    duoPosition: duoPosition,
+                                    gameUsername: gameUsername,
+                                    editMode: true,
+                                    editGame: false})
                   })
                 .catch((error) => {
                     console.error(error)
                 })
              } else {
-                this.setState({editMode: true, editGame: false, addGame: false, skillSpinner: 0})
+                this.setState({editMode: true, editGame: false, skillSpinner: 0})
              }
          })
     }
@@ -212,10 +256,20 @@ export default class Profile extends Component {
              console.log(responseJson)
              var playerGame = responseJson.playerGameRole.filter(g => g.gameTitle == "League of Legends")[0]
              if (playerGame) {
-              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], myPosition: playerGame.role,
-                            duoPosition: playerGame.partnerRole, gameUsername: playerGame.displayName, playerVideo: responseJson.playerVideo})
+              this.setState({ username: responseJson.displayName,
+                              bio: responseJson.bio,
+                              photo: responseJson.profilePhoto,
+                              skillInfo: responseJson.playerSkill[0],
+                              myPosition: playerGame.role,
+                              duoPosition: playerGame.partnerRole,
+                              gameUsername: playerGame.displayName,
+                              playerVideo: responseJson.playerVideo})
             } else {
-              this.setState({ username: responseJson.displayName, bio: responseJson.bio, photo: responseJson.profilePhoto, skillInfo: responseJson.playerSkill[0], playerVideo: responseJson.playerVideo})
+              this.setState({ username: responseJson.displayName,
+                              bio: responseJson.bio,
+                              photo: responseJson.profilePhoto,
+                              skillInfo: responseJson.playerSkill[0],
+                              playerVideo: responseJson.playerVideo})
             }
             var playerVideo = responseJson.playerVideo
             if (playerVideo.length > 0) {
@@ -227,6 +281,7 @@ export default class Profile extends Component {
              console.error(error)
          });
      }
+
      _pullGameData = () => {
          const base64 = require('base-64')
          fetch(baseUrl + "/api/games", {
@@ -265,8 +320,11 @@ export default class Profile extends Component {
      }
 
     render () {
-        const { editMode, editGame, addGame, username, bio, photo,
-                gameUsername, myPosition, duoPosition, playerGames, allGameInfo, skillInfo, skillSpinner, profileSpinner, playerVideo, videoUrl} = this.state
+        const { editMode, editGame, username, bio, photo,
+                gameUsername, myPosition, duoPosition, playerGames,
+                allGameInfo, skillInfo, skillSpinner, profileSpinner,
+                playerVideo, videoUrl} = this.state
+        
         if (profileSpinner) {
             return (
                 <View style={styles.spinnerContainer}>
@@ -275,66 +333,34 @@ export default class Profile extends Component {
             )
         } else {
           return (
-              <View>
-                  <TopNavigationBar
-                      editMode = { editMode }
-                      editModeFunc = { this._toggleEditMode }
-                      editGame = { editGame }
-                      editGameFunc = { this._toggleEditGame }
-                      addGame = { addGame }
-                      addGameFunc = { this._toggleAddGame }
-                  />
-                  <ScrollView>
-                      {editMode && !editGame && <View style={styles.container}>
-                          <ViewProfile
-                              username={ username }
-                              bio={ bio }
-                              photo= {photo}
-                          />
-                          <Game
-                              editGame={ editGame }
-                              editGameFunc={ this._toggleEditGame }
-                              gameUsername={ gameUsername }
-                              myPosition={ myPosition }
-                              duoPosition={ duoPosition }
-                              skillInfo = { skillInfo }
-                              isEmpty={playerGames.length == 0}
-                          />
-                          <Video
-                            videoUrl={ videoUrl }
-                            isEmpty={videoUrl == ""}
-                            onVideoPress={ this._onPressAddVideo.bind(this) }
-                          />
-                          <Comment/>
-                          <AddVideoModal
-                            ref={'addVideoModal'}
-                            parentScreen={this}
-                          />
-                      </View>}
-                      {editMode && editGame && !addGame && <SelectGame
-                              playerGames= {playerGames}
-                              allGameInfo= {allGameInfo}
-                              addGame = { addGame }
-                              addGameFunc = { this._toggleAddGame }
-                              skillSpinner = { skillSpinner }
-                              modalSubmit={ this._modalSubmit }
-                      />}
-                      {editMode && addGame && <AddGame
-                              playerGames= {playerGames}
-                              allGameInfo= {allGameInfo}
-                              skillSpinner = { skillSpinner }
-                              modalSubmit={ this._modalSubmit }
-                      />}
-                      {!editMode && <View style={styles.container}>
-                          <EditProfile
-                              editProf={ this._editProfile }
-                              username={ username }
-                              bio={ bio }
-                              photo= { photo}
-                          />
-                      </View>}
-                  </ScrollView>
-              </View>
+              <ScrollView>
+                  <View style={styles.container}>
+                      <ViewProfile
+                          username={ username }
+                          bio={ bio }
+                          photo= {photo}
+                      />
+                      <Game
+                          editGame={ editGame }
+                          editGameFunc={ this._toggleEditGame }
+                          gameUsername={ gameUsername }
+                          myPosition={ myPosition }
+                          duoPosition={ duoPosition }
+                          skillInfo = { skillInfo }
+                          isEmpty={playerGames.length == 0}
+                      />
+                      <Video
+                        videoUrl={ videoUrl }
+                        isEmpty={videoUrl == ""}
+                        onVideoPress={ this._onPressAddVideo.bind(this) }
+                      />
+                      <Comment/>
+                      <AddVideoModal
+                        ref={'addVideoModal'}
+                        parentScreen={this}
+                      />
+                  </View>
+              </ScrollView>
           )
         }
     }
@@ -344,7 +370,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    //justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 70
   },

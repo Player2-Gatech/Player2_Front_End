@@ -26,16 +26,18 @@ export default class AddGame extends Component {
         }
         this._onPressAddGame = this._onPressAddGame.bind(this)
     }
-    static propTypes = {
+    /*static propTypes = {
         modalSubmit: PropTypes.func.isRequired,
         playerGames: PropTypes.object.isRequired,
         allGameInfo: PropTypes.object.isRequired,
         skillSpinner: PropTypes.bool.isRequired
-    }
+    }*/
+    
     _onPressAddGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
         this.refs.addModal.showAddModal('Add Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
     }
+
     _onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle) {
         let body = JSON.stringify({
            'gameTitle': gameTitle,
@@ -55,7 +57,7 @@ export default class AddGame extends Component {
             body: body
          }).then((response) => response.json())
          .then((responseJson) => {
-            this.props.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
+            this.props.navigation.state.params.modalSubmit(myPosition, duoPosition, gameUsername, gameTitle)
          })
          .catch((error) => {
              console.error(error)
@@ -100,7 +102,10 @@ export default class AddGame extends Component {
     }
 
     render () {
-        const { modalSubmit, playerGames, allGameInfo, skillSpinner} = this.props
+        const { modalSubmit,
+                playerGames,
+                allGameInfo,
+                skillSpinner} = this.props.navigation.state.params;
         return (
           <View>
             <View style={styles.container}>
