@@ -22,35 +22,38 @@ export default class Video extends Component {
       const { playerVideo } = this.props
       if (playerVideo.length == 0) {
         return (
-            <View style={styles.container}>
-                  <View style={styles.videoSectionContainer}>
-                          <View style={styles.sectionTitleContainer}>
-                            <Text style={styles.sectionTitle}>{'Video'}</Text>
-                          </View>
-                          <View style={styles.emptyStateTextContainer}>
-                            <Text style={styles.emptyStateText}>{'Looks like there is nothing here!'}</Text>
-                          </View>
-
-                  </View>
+          <View style={styles.container}>
+            <View style={styles.noVideoContainer}>
+              <View style={styles.emptySectionContainer}>
+                <Text style={styles.sectionTitle}>{'Video'}</Text>
               </View>
+              <View style={styles.emptyStateTextContainer}>
+                <Text style={styles.emptyStateText}>{'Looks like there is nothing here!'}</Text>
+              </View>
+              <View style={{flex: 2}}>
+              </View>
+            </View>
+          </View>
         )
       } else {
         return (
-              <View style={styles.container}>
-                  <View style={styles.videoShowContainer}>
-                      <View style={styles.videoDescriptionContainer}>
-                          <Text style={styles.sectionTitle}>{'Video'}</Text>
-                          <View style={styles.emptyStateTextContainer}>
-                            <Text style={styles.blankSpaceText}>{'                                                                                       '}</Text>
-                          </View>
-
-                      </View>
-                      <WebView
-                            source={{uri: "https://www.youtube.com/embed/" + playerVideo[0].video_url}}
-                            style={styles.videoClipContainer}
-                      />
+          <View style={styles.container}>
+              <View style={styles.videoShowContainer}>
+                <View style={styles.sectionTitleContainer}>
+                  <View style={styles.emptySectionContainer}>
+                    <Text style={styles.sectionTitle}>{'Video'}</Text>
                   </View>
+                  <View style={styles.emptySectionContainer}>
+                  </View>
+                  <View style={{flex: 2}}>
+                  </View>
+                </View>
+                <WebView
+                  source={{uri: "https://www.youtube.com/embed/" + playerVideo[0].video_url}}
+                  style={styles.videoClipContainer}
+                />
               </View>
+          </View>
           )
         }
       }
@@ -62,82 +65,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    padding: 10,
     marginBottom: 10,
     borderBottomWidth: 2,
     borderColor: '#99E7FF',
     alignItems: 'center'
   },
-  editIcon: {
-    height: 24,
-    width: 24
-  },
-  editIconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end',
-    marginRight: 10,
-    marginBottom: 8
-  },
   sectionTitle: {
     fontSize: 14,
     color: '#9B9FA4',
-    marginHorizontal: 8
+    marginHorizontal: 8,
   },
-  videoSectionContainer: {
+  emptyStateText: {
+  textAlign: 'right',
+  fontSize: 11,
+  },
+  noVideoContainer: {
+    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   videoShowContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   sectionTitleContainer: {
     flex: 1,
-    marginRight: 15,
-    justifyContent: 'center',
-  },
-  emptyContainer: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    flex: 1
-  },
-  videoDescriptionContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-end'
-  },
-  searchOption: {
-    justifyContent: 'center',
-  },
-  emptyStateTextContainer: {
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    flexDirection: 'row'
-  },
-  emptyStateText: {
-    textAlign: 'right',
-    fontSize: 13,
-  },
-  blankSpaceText: {
-    textAlign: 'right',
-    fontSize: 13,
-    paddingRight: 5
+    justifyContent: 'center',
   },
   videoClipContainer: {
-    //width: metrics.Device_WIDTH,
-
-    width: 240,
-    height: 160,
+    width: 280,
+    height: 170,
     marginHorizontal: 10,
     backgroundColor: "#9B9FA4",
-    //justifyContent: 'center',
     alignContent: 'center'
   },
-  tempContainer: {
-    flex: 3,
-  }
+  emptySectionContainer: {
+    flex: 1,
+    marginRight:20,
+    flexDirection: 'row'
+  },
+
 })
 AppRegistry.registerComponent('AwesomeProject', () => ChatScreen);
