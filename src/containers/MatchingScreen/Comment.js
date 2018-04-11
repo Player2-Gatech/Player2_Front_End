@@ -13,7 +13,7 @@ export default class Comment extends Component {
                 <View style={styles.sectionTitleContainer}>
                     <Text style={styles.sectionTitle}>{'Comments'}</Text>
                 </View>
-                
+
                 <View style={styles.commentContainer}>
                     <Text>Anonymous</Text>
                     <Text>
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start'
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#9B9FA4',
     marginHorizontal: 8
   },

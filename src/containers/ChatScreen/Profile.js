@@ -11,6 +11,7 @@ import Game from './Game'
 import Video from './Video'
 import Comment from './Comment'
 import AddModal from './AddModal'
+import FlagModal from './FlagModal'
 
 import CustomButton from '../../components/CustomButton'
 
@@ -18,6 +19,11 @@ export default class Profile extends Component {
     _onPressComment(user) {
         this.refs.commentModal.showAddModal(user)
     }
+
+    _onPressFlag(user) {
+        this.refs.flagModal.showFlagModal(user)
+    }
+
     _onSubmitModal(user, starCount, comment) {
         let body = JSON.stringify({
             'user_id': user.user_id,
@@ -87,8 +93,13 @@ export default class Profile extends Component {
                     </View>
                 </ScrollView>
                 { !isPending && <ActionButton buttonColor='#1976D2'>
-                    <ActionButton.Item buttonColor='#9b59b6'
-                                        title='leave comment'
+                    <ActionButton.Item buttonColor='#4286f4'
+                                        title='Report Player'
+                                        onPress = {() => this._onPressFlag(user)}>
+                        <Icon name='md-flag'/>
+                    </ActionButton.Item>
+                    <ActionButton.Item buttonColor='#4286f4'
+                                        title='Leave Comment'
                                         onPress = {() => this._onPressComment(user)}>
                         <Icon name='md-create'/>
                     </ActionButton.Item>
@@ -109,6 +120,10 @@ export default class Profile extends Component {
                 </View>}
                 <AddModal
                     ref={'commentModal'}
+                    parentScreen={this}
+                />
+                <FlagModal
+                    ref={'flagModal'}
                     parentScreen={this}
                 />
             </View>

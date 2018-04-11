@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderBottomWidth: 2,
     borderColor: '#99E7FF',
+    paddingVertical: 10,
     alignItems: 'center'
   },
   editIcon: {
@@ -152,11 +153,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row'
-  },
-  blankSpaceText: {
-    textAlign: 'right',
-    fontSize: 13,
-    paddingRight: 5
   },
   videoClipContainer: {
     //width: metrics.Device_WIDTH,
