@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { List, ListItem, Avatar } from 'react-native-elements';
 import imgProfile from '../../images/profileicon.png'
+import PTRView from 'react-native-pull-to-refresh';
 
 class FriendList extends Component {
   onLearnMore = (user, isPending) => {
@@ -48,6 +49,7 @@ class FriendList extends Component {
       });
   }
 
+
   _update = (updatedPending, updatedFriends) => {
     this.setState({pendingUsers: updatedPending, friendUsers: updatedFriends})
   }
@@ -62,6 +64,8 @@ class FriendList extends Component {
       )
     } else {
       return (
+      <PTRView onRefresh={this._getFriends}
+        colors='#9B9FA4'> // changing colors doesn't work T_T
         <ScrollView>
           <View style={styles.separatorContainer}>
             <View style={styles.separatorLine} />
@@ -123,6 +127,7 @@ class FriendList extends Component {
             ))}
           </List>
         </ScrollView>
+      </PTRView>
       );
     }
   }
