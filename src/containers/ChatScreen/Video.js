@@ -30,8 +30,7 @@ export default class Video extends Component {
               <View style={styles.emptyStateTextContainer}>
                 <Text style={styles.emptyStateText}>{'Looks like there is nothing here!'}</Text>
               </View>
-              <View style={{flex: 2}}>
-              </View>
+              <View style={{flex:1}}/>
             </View>
           </View>
         )
@@ -103,13 +102,19 @@ const styles = StyleSheet.create({
     height: 170,
     marginHorizontal: 10,
     backgroundColor: "#9B9FA4",
-    alignContent: 'center'
+    alignContent: 'center',
+    paddingVertical: 5
   },
   emptySectionContainer: {
     flex: 1,
-    marginRight:20,
-    flexDirection: 'row'
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
   },
-
+  emptyStateTextContainer: {
+    flex: 2,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+  },
 })
 AppRegistry.registerComponent('AwesomeProject', () => ChatScreen);
