@@ -61,11 +61,10 @@ class FriendList extends Component {
           <View style={styles.spinnerContainer}>
             <ActivityIndicator size="large" color="#99E7FF" />
           </View>
-      )
+      );
     } else {
       return (
-      <PTRView onRefresh={this._getFriends}
-        colors='#9B9FA4'> // changing colors doesn't work T_T
+      <PTRView onRefresh={this._getFriends}>
         <ScrollView>
           <View style={styles.separatorContainer}>
             <View style={styles.separatorLine} />
