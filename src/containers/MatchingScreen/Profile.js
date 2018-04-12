@@ -154,6 +154,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   noMoreContainer: {
+    backgroundColor: '#fff',
     position: 'absolute',
     left: 0,
     right: 0,

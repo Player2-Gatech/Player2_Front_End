@@ -26,7 +26,7 @@ export default class SelectGame extends Component {
         allGameInfo: PropTypes.object.isRequired,
         skillSpinner: PropTypes.bool.isRequired
     }*/
-
+    
     _onPressSelectGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
         this.refs.addModal.showAddModal('Edit Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);
@@ -69,27 +69,26 @@ export default class SelectGame extends Component {
                     <TouchableOpacity
                         onPress={() => this._onPressSelectGame(item.gameTitle, allGameInfo)}
                     >
-                        <Image
-                            style={styles.gameLogo}
-                            source={images[item.gameTitle]}
-                            resizeMode={'contain'}/>
+                        <Image style={styles.gameLogo}
+                               source={images[item.gameTitle]}
+                               resizeMode={'contain'}/>
                     </TouchableOpacity>
                 </View>
             );
         });
     }
-
+    
     renderSpinner(enableSpinner) {
-      if (enableSpinner) {
-        return (
-        <View>
-          <Text style={styles.spinnerText}>{'Getting stats...'}</Text>
-          <ActivityIndicator size="large" color="#0000ff" />
-        </View>
-        )
-      }
+        if (enableSpinner) {
+            return (
+                <View>
+                  <Text style={styles.spinnerText}>{'Getting stats...'}</Text>
+                  <ActivityIndicator size="large" color="#0000ff" />
+                </View>
+            );
+        };
     }
-
+    
     render () {
         const { addGameFunc,
                 modalSubmit,
@@ -100,27 +99,25 @@ export default class SelectGame extends Component {
         return (
           <View>
             <View style={styles.container}>
-              {
-                this.renderSelectGames(playerGames, allGameInfo)
-              }
-              <View style={styles.buttonContainer}>
-                <TouchableOpacity
-                    onPress={() => addGameFunc()}
-                >
-                  <Image
-                      style={styles.button}
-                      source={require('../../images/plusIconWhite.png')}
-                      resizeMode={'contain'}/>
-                </TouchableOpacity>
-              </View>
-              <AddModal
-                  ref={'addModal'}
-                  parentScreen={this}
-              />
+                { this.renderSelectGames(playerGames, allGameInfo) }
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                        onPress={() => addGameFunc()}
+                    >
+                    <Image
+                        style={styles.button}
+                        source={require('../../images/plusIconWhite.png')}
+                        resizeMode={'contain'}/>
+                    </TouchableOpacity>
+                </View>
+                <AddModal
+                    ref={'addModal'}
+                    parentScreen={this}
+                />
             </View>
-          <View style={styles.spinnerContainer}>
-            { this.renderSpinner(skillSpinner) }
-          </View>
+            <View style={styles.spinnerContainer}>
+                { this.renderSpinner(skillSpinner) }
+            </View>
         </View>
       )
     }
@@ -128,7 +125,6 @@ export default class SelectGame extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     //justifyContent: 'center',
     alignItems: 'center',
@@ -183,5 +179,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textAlign: 'center'
   },
-
 })
+
+AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);

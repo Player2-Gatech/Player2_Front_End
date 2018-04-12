@@ -57,7 +57,17 @@ export default class Search extends Component {
     render () {
         const { navigate } = this.props.navigation
         const { enableSpinner, skillModifier, roleModifier, commentModifier, restrictRanks} = this.state
-        return (
+                return (
+                <View style={{paddingVertical:20}}>
+                  <CustomButton
+                      onPress={() => this.getMatches(navigate)}
+                      buttonStyle={styles.button}
+                      textStyle={styles.buttonText}
+                      text={enableSpinner ? '' : 'Search'}
+                  />
+                </View>
+                )
+        /*return (
             <View style={styles.container}>
               <View style={styles.mainContainer}>
                 <View
@@ -116,8 +126,7 @@ export default class Search extends Component {
                   />
                 <View
                   style={{flex:2}}/>
-                <View
-                  style={{paddingVertical:20}}>
+                <View style={{paddingVertical:20}}>
                   <CustomButton
                       onPress={() => this.getMatches(navigate)}
                       buttonStyle={styles.button}
@@ -129,6 +138,7 @@ export default class Search extends Component {
                   style={{flex:0.5}}/>
               </View>
             </View>
+            */
         )
     }
 }

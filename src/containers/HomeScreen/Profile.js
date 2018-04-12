@@ -39,9 +39,9 @@ export default class Profile extends Component {
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
 
+                //<View style={{ flex: 1, alignItems: 'flex-end', }}>
         return {
             headerRight: (
-                <View style={{ flex: 1, alignItems: 'flex-end', }}>
                     <TouchableOpacity onPress={ params.handleEditProfile } >
                         <Image
                             source = { require('../../images/pencilIcon.png') }
@@ -54,9 +54,10 @@ export default class Profile extends Component {
                         />
 
                     </TouchableOpacity>
-                </View>
-            )
+            ),
+            headerLeft: <View/>
         }
+                //</View>
     }
 
     componentWillMount() {
@@ -103,12 +104,9 @@ export default class Profile extends Component {
              console.error(error)
          });
     }
-
-    _toggleEditMode() {
-        this.props.navigation.navigate('EditProfile');
-    }
     
     _toggleEditGame = () => {
+        //alert("Hello?")
         this.props.navigation.navigate('SelectGame', {playerGames: this.state.playerGames,
                                                       allGameInfo: this.state.allGameInfo,
                                                       addGameFunc: this._toggleAddGame,

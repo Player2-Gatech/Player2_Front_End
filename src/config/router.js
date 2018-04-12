@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
@@ -23,7 +23,10 @@ export const HomeStack = StackNavigator({
         navigationOptions: {
             title: 'My Profile',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
@@ -36,12 +39,16 @@ export const HomeStack = StackNavigator({
         navigationOptions: {
             title: 'Edit Profile',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#1976D2',
-            }
+            },
+            headerRight: <View/>
         },
     },
     SelectGame: {
@@ -49,12 +56,16 @@ export const HomeStack = StackNavigator({
         navigationOptions: {
             title: 'Select Game',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#1976D2',
-            }
+            },
+            headerRight: <View/>
         },
     },
     AddGame: {
@@ -62,7 +73,10 @@ export const HomeStack = StackNavigator({
         navigationOptions: {
             title: 'AddGame',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
@@ -78,7 +92,10 @@ export const MatchingStack = StackNavigator({
         navigationOptions: {
             title: 'Search',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
@@ -91,12 +108,16 @@ export const MatchingStack = StackNavigator({
         navigationOptions: {
             title: 'Matching',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#1976D2',
-            }
+            },
+            headerRight: <View/>
         },
     }
 });
@@ -107,7 +128,10 @@ export const ChatStack = StackNavigator({
         navigationOptions: {
             title: 'Friends List',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
@@ -121,13 +145,17 @@ export const ChatStack = StackNavigator({
         navigationOptions: {
             title: 'User Profile',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#1976D2',
                 borderBottomWidth: 0,
-            }
+            },
+            headerRight: <View/>
         },
     },
     // TODO : change Details to chatting room screen
@@ -137,13 +165,17 @@ export const ChatStack = StackNavigator({
             //title: `${navigation.state.params.name.first.toUpperCase()} ${'Chat'}`,
             title: 'Chat',
             headerTitleStyle: {
-                color: 'white'
+                color: 'white',
+                flex: 1,
+                textAlign: 'center',
+                alignSelf:'center'
             },
             headerTintColor: 'white',
             headerStyle: {
                 backgroundColor: '#1976D2',
                 borderBottomWidth: 0,
-            }
+            },
+            headerRight: <View/>
         }),
     }
 });
@@ -186,8 +218,8 @@ export const Tabs = TabNavigator({
         }
     }
 }, {
-    swipeEnabled: true,
-    animationEnabled: true,
+    swipeEnabled: false,
+    animationEnabled: false,
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
@@ -202,9 +234,3 @@ export const Tabs = TabNavigator({
     }
 });
 
-export const Root = StackNavigator({
-    Tabs: {
-        screen: Tabs,
-    },
-    
-});

@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types'
 import {
     StyleSheet,
     AppRegistry,
+    View
 } from 'react-native'
 
 import { Tabs } from '../../config/router';
