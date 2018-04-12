@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
-import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator} from 'react-native'
+import { StyleSheet, AppRegistry, ScrollView,
+         View, Text, TextInput, Image,
+         ActivityIndicator, TouchableOpacity } from 'react-native'
 import Slider from "react-native-slider";
 import CustomButton from '../../components/CustomButton'
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -15,23 +17,20 @@ export default class Search extends Component {
     constructor() {
       super()
       this.state = {
-        enableSpinner: false,
         skillModifier: .6,
         roleModifier: .2,
         commentModifier: .1,
         restrictRanks: true
+        animating: true,
+        enableSpinner: false
       }
     }
 
-    renderSpinner(enableSpinner) {
-      if (enableSpinner) {
-        return (
-          <ActivityIndicator size="large" color="#99E7FF" />
-        )
-      }
-    }
+    closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
 
-    getMatches(navigate) {
+    componentDidMount = () => this.closeActivityIndicator()
+
+    getMatches() {
       this.setState({enableSpinner : true})
       // just league for now
       const base64 = require('base-64')
@@ -51,7 +50,7 @@ export default class Search extends Component {
       .then((responseJson) => {
           console.log(responseJson.matches)
           this.setState({enableSpinner : false})
-          navigate("MatchingProfile", {screen: "MatchingProfile", matchingProfiles: responseJson.matches})
+          this.props.navigation.navigate("MatchingProfile", { matchingProfiles: responseJson.matches })
       })
     }
 
@@ -134,6 +133,29 @@ export default class Search extends Component {
                 this.renderSpinner(enableSpinner)
               }
               </View>
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color="#99E7FF" />
+                </View>
+                <View style={styles.mainContainer}>
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
+                    <CustomButton
+                        onPress={() => this.getMatches()}
+                        buttonStyle={styles.button}
+                        textStyle={styles.buttonText}
+                        text={enableSpinner ? '' : 'Search'}
+                    />
+                </View>
             </View>
         )
     }

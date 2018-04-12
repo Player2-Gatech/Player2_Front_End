@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: metrics.DEVICE_WIDTH
+    width: metrics.DEVICE_WIDTH,
+    paddingTop: 10,
   },
   imgContainer: {
     //marginTop: 28

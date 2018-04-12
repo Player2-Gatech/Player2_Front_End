@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, Alert } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import ActionButton from 'react-native-action-button'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -45,15 +46,15 @@ export default class Profile extends Component {
     }
 
     _onRespondToRequest(user, skipped, updateFriends) {
-      let body = JSON.stringify({
-          'matchUserId': user.user_id,
-          'pending': false,
-          'delete': skipped,
-          'retUpdated': true
-      })
+        let body = JSON.stringify({
+            'matchUserId': user.user_id,
+            'pending': false,
+            'delete': skipped,
+            'retUpdated': true
+        })
 
-      const base64 = require('base-64')
-      fetch(baseUrl + "/api/playerFriends", {
+        const base64 = require('base-64')
+        fetch(baseUrl + "/api/playerFriends", {
           method: 'PUT',
           headers: {
               Accept: 'application/json',
@@ -61,12 +62,12 @@ export default class Profile extends Component {
               'Authorization': 'Basic ' + base64.encode(authKey+":")
           },
           body: body
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-           updateFriends(responseJson.pending, responseJson.friends)
-            this.props.navigation.navigate('FriendList', {screen: 'FriendList'})
-      })
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            updateFriends(responseJson.pending, responseJson.friends)
+            this.props.navigation.dispatch(NavigationActions.back())
+        })
     }
 
     render () {
@@ -81,9 +82,15 @@ export default class Profile extends Component {
                             photo={user.profilePhoto}
                         />
                         <Game
-                            gameUsername={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].displayName }
-                            myPosition={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].role }
-                            duoPosition={user.playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
+                            gameUsername={user.playerGameRole
+                                              .filter(g => g.gameTitle == 'League of Legends')[0]
+                                              .displayName }
+                            myPosition={user.playerGameRole
+                                            .filter(g => g.gameTitle == 'League of Legends')[0]
+                                            .role }
+                            duoPosition={user.playerGameRole
+                                             .filter(g => g.gameTitle == 'League of Legends')[0]
+                                             .partnerRole }
                             skillInfo={user.playerSkill[0]}
                         />
                         <Video
@@ -148,7 +155,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: metrics.DEVICE_WIDTH,
     height: 70,
-    //marginHorizontal: 50,
     backgroundColor: '#1976D2',
     borderBottomWidth: 2,
     borderTopWidth: 2,
@@ -157,7 +163,6 @@ const styles = StyleSheet.create({
   skipButton: {
     width: 100,
     height: 40,
-    //marginLeft: metrics.DEVICE_WIDTH / 2 - 115,
     marginRight: 30,
     borderRadius: 30,
     backgroundColor: 'white',

@@ -13,7 +13,9 @@ import PTRView from 'react-native-pull-to-refresh';
 
 class FriendList extends Component {
   onLearnMore = (user, isPending) => {
-    this.props.navigation.navigate('PendingProfile', {screen: 'PendingProfile', user: user, isPending: isPending, updateFriends: this._update});
+    this.props.navigation.navigate('PendingProfile', { screen: 'PendingProfile',
+                                                       user: user, isPending: isPending,
+                                                       updateFriends: this._update});
   };
   // TODO : change navigation to chatting room screen
   onChatting = (user) => {
@@ -42,7 +44,9 @@ class FriendList extends Component {
       })
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({pendingUsers: responseJson.pending, friendUsers: responseJson.friends, loadingSpinner: false})
+        this.setState({ pendingUsers: responseJson.pending,
+                        friendUsers: responseJson.friends,
+                        loadingSpinner: false})
       })
       .catch((error) => {
           console.error(error)
@@ -86,7 +90,9 @@ class FriendList extends Component {
                 avatar= {
                   <Avatar
                   rounded
-                  source= {user.friendProfile.profilePhoto ? {uri: `data:image/png;base64,${user.friendProfile.profilePhoto}`} : imgProfile}
+                  source= { user.friendProfile.profilePhoto ? 
+                                {uri: `data:image/png;base64,${user.friendProfile.profilePhoto}`} :
+                                imgProfile}
                   onPress={() => this.onLearnMore(user.friendProfile, true)}
                   />}
                 title={user.friendProfile.displayName ? user.friendProfile.displayName : 'Anonymous'}
@@ -116,7 +122,9 @@ class FriendList extends Component {
                 avatar= {
                   <Avatar
                   rounded
-                  source= {user.friendProfile.profilePhoto ? {uri: `data:image/png;base64,${user.friendProfile.profilePhoto}`} : imgProfile}
+                  source= {user.friendProfile.profilePhoto ?
+                                {uri: `data:image/png;base64,${user.friendProfile.profilePhoto}`} :
+                                imgProfile}
                   onPress={() => this.onLearnMore(user.friendProfile, false)}
                   />}
                 title={user.friendProfile.displayName ? user.friendProfile.displayName : 'Anonymous'}

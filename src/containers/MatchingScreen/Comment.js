@@ -1,31 +1,54 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image } from 'react-native'
+import Stars from 'react-native-star-rating'
 
 import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 
+const comments = [{
+    commenter: "Anonymous",
+    rating: 4,
+    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
+}, {
+    commenter: "Anonymous",
+    rating: 3,
+    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
+}];
+
 export default class Comment extends Component {
+    
+    addCommentComponent() {
+        return comments.map((item) => {
+            return (
+                <View style={styles.commentContainer}>
+                    <View style={styles.nameStarContainer}>
+                        <Text style={{ alignItems: 'flex-start' }} > {item.commenter} </Text>
+                        <View style={styles.starContainer}>
+                            <Stars
+                                disabled={false}
+                                maxStars={5}
+                                starSize={20}
+                                fullStarColor={'#F1C40F'}
+                                emptyStarColor={'#F1C40F'}
+                                rating={item.rating}
+                            />
+                        </View>
+                    </View>
+                    <Text> {item.message} </Text>
+                </View> 
+            );
+        });
+    }
+    
     render () {
         return (
             <View style={styles.container}>
                 <View style={styles.sectionTitleContainer}>
                     <Text style={styles.sectionTitle}>{'Comments'}</Text>
                 </View>
-
-                <View style={styles.commentContainer}>
-                    <Text>Anonymous</Text>
-                    <Text>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
-                    </Text>
-                </View>
-                <View style={styles.commentContainer}>
-                    <Text>Anonymous</Text>
-                    <Text>
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
-                    </Text>
-                </View>
+                { this.addCommentComponent() }
             </View>
         )
     }
@@ -35,11 +58,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    //justifyContent: 'center',
-    //alignItems: 'center'
   },
   sectionTitleContainer: {
-    paddingHorizontal: 10,
     paddingBottom: 10,
     flexDirection: 'row',
     alignItems: 'flex-start'
@@ -47,7 +67,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 14,
     color: '#9B9FA4',
-    marginHorizontal: 8
+    marginHorizontal: 8,
+    textAlign: 'left'
   },
   commentContainer: {
     borderWidth: StyleSheet.hairlineWidth,
@@ -55,6 +76,15 @@ const styles = StyleSheet.create({
     borderColor: '#99E7FF',
     padding: 5,
     margin: 5
+  },
+  nameStarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  starContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
   }
 })
 AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
