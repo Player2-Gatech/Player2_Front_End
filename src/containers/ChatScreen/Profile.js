@@ -18,10 +18,6 @@ import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
 
-    state = {
-      comments: []
-    }
-
     _onPressComment(user) {
         this.refs.commentModal.showAddModal(user)
     }
@@ -48,7 +44,7 @@ export default class Profile extends Component {
         })
         .then((response) => response.json())
         .then((responseJson) => {
-          this.setState({comments: responseJson})
+          this.props.navigation.setParams({ user: responseJson})
         });
     }
 
@@ -78,7 +74,6 @@ export default class Profile extends Component {
     }
 
     render () {
-        const { comments } = this.state
         const { user, isPending, updateFriends} = this.props.navigation.state.params;
         return (
             <View>
@@ -105,7 +100,7 @@ export default class Profile extends Component {
                             playerVideo={ user.playerVideo }
                         />
                         <Comment
-                          comments = {comments.length > user.playerComments.length ? comments : user.playerComments}
+                          comments = {user.playerComments}
                         />
                     </View>
                 </ScrollView>
