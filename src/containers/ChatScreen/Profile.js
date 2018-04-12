@@ -26,7 +26,7 @@ export default class Profile extends Component {
 
     _onSubmitModal(user, starCount, comment) {
         let body = JSON.stringify({
-            'user_id': user.user_id,
+            'userId': user.user_id,
             'message': comment,
             'rating': starCount
         })

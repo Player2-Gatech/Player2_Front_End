@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import Profile from '../containers/HomeScreen/Profile';
@@ -130,6 +130,8 @@ export const Tabs = TabNavigator({
 }, {
     swipeEnabled: true,
     animationEnabled: true,
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
     tabBarOptions: {
         activeTintColor: 'white',
         activeBackgroundColor: '#1976D2',
