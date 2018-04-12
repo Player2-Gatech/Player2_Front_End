@@ -21,7 +21,7 @@ class ChatRoom extends Component {
         _id: user.idA
       }
     };
-    this.roomName = str(min(user.idA, user.idB)) + str(max(user.idB, user.id))
+    this.roomName = Math.min(user.idA, user.idB).toString() + Math.max(user.idA, user.idB).toString();
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this._getMessages();
@@ -77,6 +77,7 @@ class ChatRoom extends Component {
       })
       .then((response) => response.json())
       .then((responseJson) => {
+        console.log('CHAT RESPONSE: ', responseJson)
         this.setState({
           messages: responseJson.chats.sort({
             createdAt: -1
