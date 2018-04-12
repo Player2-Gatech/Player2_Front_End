@@ -47,6 +47,8 @@ export default class Comment extends Component {
                 <View style={styles.sectionTitleContainer}>
                     <Text style={styles.sectionTitle}>{'Comments'}</Text>
                 </View>
+                <View style={{flex: 2}}/>
+                <View style={{flex: 3}}/>
                 { this.addCommentComponent(comments) }
             </View>
         )
@@ -60,14 +62,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   sectionTitleContainer: {
+    flex: 1,
     paddingBottom: 10,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'center',
+    marginRight: 20
   },
   sectionTitle: {
     fontSize: 14,
     color: '#9B9FA4',
-    marginHorizontal: 8,
     textAlign: 'left'
   },
   commentContainer: {

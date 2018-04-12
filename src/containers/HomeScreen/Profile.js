@@ -16,6 +16,7 @@ import Comment from './Comment'
 
 import AddVideoModal from './AddVideoModal'
 import CustomButton from '../../components/CustomButton'
+import metrics from '../../config/metrics'
 
 export default class Profile extends Component {
     state = {
@@ -335,6 +336,43 @@ export default class Profile extends Component {
                   <ActivityIndicator size="large" color="#99E7FF" />
                 </View>
             )
+        }
+        if (username == null&& bio == null && photo == "" && gameUsername == "" && playerVideo.length == 0 && playerComments.length == 0) {
+          return (
+              <ScrollView>
+                  <View style={styles.container}>
+                      <ViewProfile
+                          username={ username }
+                          bio={ bio }
+                          photo= {photo}
+                      />
+                      <Game
+                          editGame={ editGame }
+                          editGameFunc={ this._toggleEditGame }
+                          gameUsername={ gameUsername }
+                          myPosition={ myPosition }
+                          duoPosition={ duoPosition }
+                          skillInfo = { skillInfo }
+                          isEmpty={playerGames.length == 0}
+                      />
+                      <Video
+                        videoUrl={ videoUrl }
+                        isEmpty={videoUrl == ""}
+                        onVideoPress={ this._onPressAddVideo.bind(this) }
+                      />
+                      <Comment
+                        comments={playerComments}
+                      />
+                      <View
+                        style={{flex: 1, width: metrics.DEVICE_WIDTH, height: metrics.DEVICE_HEIGHT * 0.25}}
+                      />
+                      <AddVideoModal
+                        ref={'addVideoModal'}
+                        parentScreen={this}
+                      />
+                  </View>
+              </ScrollView>
+          )
         } else {
           return (
               <ScrollView>
@@ -359,7 +397,7 @@ export default class Profile extends Component {
                         onVideoPress={ this._onPressAddVideo.bind(this) }
                       />
                       <Comment
-                        comments = {playerComments}
+                        comments={playerComments}
                       />
                       <AddVideoModal
                         ref={'addVideoModal'}
