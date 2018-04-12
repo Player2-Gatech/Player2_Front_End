@@ -63,7 +63,7 @@ export default class Search extends Component {
                   <Text style={styles.textStyle}>{'Game Performance'}</Text>
                   <Slider
                     value={this.state.skillModifier}
-                    onValueChange={value => this.setState({ skillModifier })}
+                    onValueChange={value => this.setState({ skillModifier: value})}
                     style={styles.slider}
                     trackStyle={customStyles.track}
                     thumbStyle={customStyles.thumb}
@@ -76,7 +76,7 @@ export default class Search extends Component {
                   <Text style={styles.textStyle}>{'Role Compatbility'}</Text>
                   <Slider
                     value={this.state.roleModifier}
-                    onValueChange={value => this.setState({ roleModifier })}
+                    onValueChange={value => this.setState({ roleModifier: value })}
                     style={styles.slider}
                     trackStyle={customStyles.track}
                     thumbStyle={customStyles.thumb}
@@ -88,7 +88,7 @@ export default class Search extends Component {
                   <Text style={styles.textStyle}>{'Feedback Rating'}</Text>
                   <Slider
                     value={this.state.commentModifier}
-                    onValueChange={value => this.setState({ commentModifier })}
+                    onValueChange={value => this.setState({ commentModifier: value })}
                     style={styles.slider}
                     trackStyle={customStyles.track}
                     thumbStyle={customStyles.thumb}
