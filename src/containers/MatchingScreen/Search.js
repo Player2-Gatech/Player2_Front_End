@@ -20,7 +20,7 @@ export default class Search extends Component {
         skillModifier: .6,
         roleModifier: .2,
         commentModifier: .1,
-        restrictRanks: true
+        restrictRanks: true,
         animating: true,
         enableSpinner: false
       }
@@ -128,34 +128,6 @@ export default class Search extends Component {
                 <View
                   style={{flex:0.5}}/>
               </View>
-              <View style={styles.spinnerContainer}>
-              {
-                this.renderSpinner(enableSpinner)
-              }
-              </View>
-                <View style={styles.spinnerContainer}>
-                    <ActivityIndicator size="large" color="#99E7FF" />
-                </View>
-                <View style={styles.mainContainer}>
-                    <Slider
-                      value={this.state.value}
-                      onValueChange={value => this.setState({ value })}
-                    />
-                    <Slider
-                      value={this.state.value}
-                      onValueChange={value => this.setState({ value })}
-                    />
-                    <Slider
-                      value={this.state.value}
-                      onValueChange={value => this.setState({ value })}
-                    />
-                    <CustomButton
-                        onPress={() => this.getMatches()}
-                        buttonStyle={styles.button}
-                        textStyle={styles.buttonText}
-                        text={enableSpinner ? '' : 'Search'}
-                    />
-                </View>
             </View>
         )
     }
