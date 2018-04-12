@@ -10,18 +10,23 @@ export default class Search extends Component {
     constructor() {
       super()
       this.state = {
+        animating: true,
         enableSpinner: false
       }
     }
 
     renderSpinner(enableSpinner) {
-      if (enableSpinner) {
+      /*if (enableSpinner) {
+                    //{ this.renderSpinner(enableSpinner) }
         return (
-          <ActivityIndicator size="large" color="#99E7FF" />
         )
-      }
+      }*/
     }
+    
+    closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
 
+    componentDidMount = () => this.closeActivityIndicator()
+    
     getMatches() {
       this.setState({enableSpinner : true})
       // just league for now
@@ -46,6 +51,9 @@ export default class Search extends Component {
         const { enableSpinner } = this.state
         return (
             <View style={styles.container}>
+                <View style={styles.spinnerContainer}>
+                    <ActivityIndicator size="large" color="#99E7FF" />
+                </View>
                 <View style={styles.mainContainer}>
                     <CustomButton
                         onPress={() => this.getMatches()}
@@ -53,11 +61,6 @@ export default class Search extends Component {
                         textStyle={styles.buttonText}
                         text={enableSpinner ? '' : 'Search'}
                     />
-                <View style={styles.spinnerContainer}>
-                {
-                  this.renderSpinner(enableSpinner)
-                }
-                </View>
                 </View>
             </View>
         )

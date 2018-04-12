@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: "#00ff0000",
     flex: 1,
     marginTop: 10,
     width: metrics.DEVICE_WIDTH

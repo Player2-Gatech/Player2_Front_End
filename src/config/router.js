@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image } from 'react-native';
-import { TabNavigator, StackNavigator } from 'react-navigation';
+import { TabNavigator, TabBarBottom, StackNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import Profile from '../containers/HomeScreen/Profile';
@@ -12,6 +12,7 @@ import SelectGame from '../containers/HomeScreen/SelectGame';
 import Search from '../containers/MatchingScreen/Search';
 import MatchingProfile from '../containers/MatchingScreen/Profile';
 
+import ChatScreen from '../containers/ChatScreen/index';
 import FriendList from '../containers/ChatScreen/FriendList';
 import PendingProfile from '../containers/ChatScreen/Profile';
 import ChatRoom from '../containers/ChatScreen/ChatRoom';
@@ -187,6 +188,8 @@ export const Tabs = TabNavigator({
 }, {
     swipeEnabled: true,
     animationEnabled: true,
+    tabBarComponent: TabBarBottom,
+    tabBarPosition: 'bottom',
     tabBarOptions: {
         activeTintColor: 'white',
         activeBackgroundColor: '#1976D2',
