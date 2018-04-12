@@ -9,7 +9,7 @@ import { MatchingStack } from '../../config/router';
 import Profile from './Profile'
 import Search from './Search'
 
-export default class HomeScreen extends Component {
+export default class MatchingScreen extends Component {
     static propTypes = {
         logout: PropTypes.func
     }
@@ -20,4 +20,4 @@ export default class HomeScreen extends Component {
     }
 }
 
-AppRegistry.registerComponent('AwesomeProject', () => HomeScreen);
+AppRegistry.registerComponent('AwesomeProject', () => MatchingScreen);

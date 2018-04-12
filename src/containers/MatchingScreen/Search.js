@@ -202,3 +202,5 @@ var customStyles = StyleSheet.create({
     borderColor: 'rgba(150, 150, 150, 0.0)'
   }
 });
+
+AppRegistry.registerComponent('AwesomeProject', () => MatchingScreen);

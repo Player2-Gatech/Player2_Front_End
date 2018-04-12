@@ -45,68 +45,59 @@ export default class Profile extends Component {
         const { navigate } = this.props.navigation
           if (matchIndex < matchingProfiles.length) {
               return (
-              <View>
-                  <ScrollView>
-                      <View style={styles.container}>
-                          <ViewProfile
-                              username={matchingProfiles[matchIndex].displayName }
-                              bio={matchingProfiles[matchIndex].bio }
-                              photo={matchingProfiles[matchIndex].profilePhoto}
-                          />
-                          <Game
-                              gameUsername={matchingProfiles[matchIndex].playerGameRole.
+                <View>
+                    <ScrollView>
+                        <View style={styles.container}>
+                            <ViewProfile
+                                username={matchingProfiles[matchIndex].displayName }
+                                bio={matchingProfiles[matchIndex].bio }
+                                photo={matchingProfiles[matchIndex].profilePhoto}
+                            />
+                            <Game
+                                gameUsername={matchingProfiles[matchIndex].playerGameRole.
                                     filter(g => g.gameTitle == 'League of Legends')[0].displayName }
-                              myPosition={matchingProfiles[matchIndex].playerGameRole.
+                                myPosition={matchingProfiles[matchIndex].playerGameRole.
                                     filter(g => g.gameTitle == 'League of Legends')[0].role }
-                              duoPosition={matchingProfiles[matchIndex].playerGameRole.
+                                duoPosition={matchingProfiles[matchIndex].playerGameRole.
                                     filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
-                              skillInfo={matchingProfiles[matchIndex].playerSkill[0]}
-                          />
-                          <Video
-                              playerVideo={matchingProfiles[matchIndex].playerVideo}
-                          />
-                          <Comment
-                            comments = {matchingProfiles[matchIndex].playerComments}
-                          />
-                      </View>
-                  </ScrollView>
-                  <View style={styles.buttonContainer}>
-                      <CustomButton
-                          onPress={() => {
-                            console.log(matchingProfiles[matchIndex + 1])
-                            this.setState({matchIndex: matchIndex+1})}}
-                          buttonStyle={styles.skipButton}
-                          textStyle={styles.skipButtonText}
-                          text={'SKIP'}
-                      />
-                      <CustomButton
-                          onPress={() => {
-                            this._sendPendingRequest(matchingProfiles[matchIndex].user_id)
-                          }}
-                          buttonStyle={styles.acceptButton}
-                          textStyle={styles.acceptButtonText}
-                          text={'DUO'}
-                      />
-                  </View>
-              </View>
-              )
-           } else {
-             return (
-               <View style={styles.noMoreContainer}>
-                  <Text style={styles.noMoreText}> No more potential matches to view!</Text>
-                  <Image style={styles.img} source={require('../../images/sad.gif')} resize={'contain'}/>
-                  <CustomButton
-                      onPress={() => {
-                        this.setState({matchIndex: 0})
-                        this.props.navigation.dispatch(NavigationActions.back())
-                      }}
-                      buttonStyle={styles.button}
-                      textStyle={styles.buttonText}
-                      text={'Reconfigure Search'}
-                  />
-               </View>
-             )
-           }
+                                skillInfo={matchingProfiles[matchIndex].playerSkill[0]}
+                            />
+                            <Video playerVideo={ matchingProfiles[matchIndex].playerVideo } />
+                            <Comment comments={ matchingProfiles[matchIndex].playerComments } />
+                        </View>
+                    </ScrollView>
+                    <View style={styles.buttonContainer}>
+                    <CustomButton
+                        onPress={() => { console.log(matchingProfiles[matchIndex + 1])
+                                         this.setState({matchIndex: matchIndex+1}) } }
+                        buttonStyle={styles.skipButton}
+                        textStyle={styles.skipButtonText}
+                        text={'SKIP'}
+                    />
+                    <CustomButton
+                        onPress={() => { this._sendPendingRequest(matchingProfiles[matchIndex].user_id) }}
+                        buttonStyle={styles.acceptButton}
+                        textStyle={styles.acceptButtonText}
+                        text={'DUO'}
+                    />
+                </View>
+            </View>
+            )
+        } else {
+            return (
+                <View style={styles.noMoreContainer}>
+                    <Text style={styles.noMoreText}> No more potential matches to view! </Text>
+                    <Image style={styles.img} source={require('../../images/sad.gif')} resize={'contain'} />
+                    <CustomButton
+                        onPress={() => { this.setState({matchIndex: 0})
+                                         this.props.navigation.dispatch(NavigationActions.back()) }}
+                        buttonStyle={styles.button}
+                        textStyle={styles.buttonText}
+                        text={'Reconfigure Search'}
+                    />
+                </View>
+            )
+        }
     }
 }
 
@@ -184,3 +175,5 @@ const styles = StyleSheet.create({
     width: 150
   },
 })
+
+AppRegistry.registerComponent('AwesomeProject', () => Profile);
