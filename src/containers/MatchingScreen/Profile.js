@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View, Text, TextInput, Image, ActivityIndicator } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 
 import metrics from '../../config/metrics'
 
@@ -92,7 +93,7 @@ export default class Profile extends Component {
                   <CustomButton
                       onPress={() => {
                         this.setState({matchIndex: 0})
-                        navigate("Search", {screen: "Search"})
+                        this.props.navigation.dispatch(NavigationActions.back())
                       }}
                       buttonStyle={styles.button}
                       textStyle={styles.buttonText}
