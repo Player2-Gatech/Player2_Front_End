@@ -34,8 +34,9 @@ export default class Profile extends Component {
         skillSpinner: false,
         videoUrl: "",
         playerVideo: null,
+        playerComments: null
     }
-    
+
     static navigationOptions = ({ navigation }) => {
         const params = navigation.state.params || {};
 
@@ -65,12 +66,12 @@ export default class Profile extends Component {
         this.props.navigation.setParams({ handleEditProfile : this._navigateToEditProfile });
     }
     _navigateToEditProfile = () => {
-        this.props.navigation.navigate('EditProfile', { _editProfile: this._editProfile, 
+        this.props.navigation.navigate('EditProfile', { _editProfile: this._editProfile,
                                                         username: this.state.username,
                                                         bio     : this.state.bio,
                                                         photo   : this.state.photo})
     }
-    
+
     _editProfile = (username, bio, photo) => {
         this.setState({editMode:true})
         if (username != '' ) {
@@ -105,6 +106,10 @@ export default class Profile extends Component {
          });
     }
     
+    _toggleEditMode() {
+        this.props.navigation.navigate('EditProfile');
+    }
+
     _toggleEditGame = () => {
         //alert("Hello?")
         this.props.navigation.navigate('SelectGame', {playerGames: this.state.playerGames,
@@ -120,7 +125,7 @@ export default class Profile extends Component {
                                                     skillSpinner: this.state.skillSpinner,
                                                     modalSubmit: this._modalSubmit});
     }
-    
+
     _onPressAddVideo(videoUrl) {
         this.refs.addVideoModal.showAddVideoModal('Add Video Url', videoUrl);
     }
@@ -261,13 +266,14 @@ export default class Profile extends Component {
                               myPosition: playerGame.role,
                               duoPosition: playerGame.partnerRole,
                               gameUsername: playerGame.displayName,
-                              playerVideo: responseJson.playerVideo})
+                              playerVideo: responseJson.playerVideo,
+                              playerComments: responseJson.playerComments})
             } else {
               this.setState({ username: responseJson.displayName,
                               bio: responseJson.bio,
                               photo: responseJson.profilePhoto,
                               skillInfo: responseJson.playerSkill[0],
-                              playerVideo: responseJson.playerVideo})
+                              playerVideo: responseJson.playerVideo, playerComments: responseJson.playerComments})
             }
             var playerVideo = responseJson.playerVideo
             if (playerVideo.length > 0) {
@@ -321,8 +327,8 @@ export default class Profile extends Component {
         const { editMode, editGame, username, bio, photo,
                 gameUsername, myPosition, duoPosition, playerGames,
                 allGameInfo, skillInfo, skillSpinner, profileSpinner,
-                playerVideo, videoUrl} = this.state
-        
+                playerVideo, videoUrl, playerComments} = this.state
+
         if (profileSpinner) {
             return (
                 <View style={styles.spinnerContainer}>
@@ -352,7 +358,9 @@ export default class Profile extends Component {
                         isEmpty={videoUrl == ""}
                         onVideoPress={ this._onPressAddVideo.bind(this) }
                       />
-                      <Comment/>
+                      <Comment
+                        comments = {playerComments}
+                      />
                       <AddVideoModal
                         ref={'addVideoModal'}
                         parentScreen={this}

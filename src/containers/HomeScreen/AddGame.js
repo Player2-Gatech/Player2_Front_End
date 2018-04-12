@@ -32,7 +32,7 @@ export default class AddGame extends Component {
         allGameInfo: PropTypes.object.isRequired,
         skillSpinner: PropTypes.bool.isRequired
     }*/
-    
+
     _onPressAddGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
         this.refs.addModal.showAddModal('Add Game Details', gameTitle, matchingGame.ignDescriptor, matchingGame.roles);

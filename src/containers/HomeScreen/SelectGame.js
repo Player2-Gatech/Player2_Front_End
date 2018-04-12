@@ -118,6 +118,8 @@ export default class SelectGame extends Component {
             <View style={styles.spinnerContainer}>
                 { this.renderSpinner(skillSpinner) }
             </View>
+          <View style={styles.spinnerContainer}>
+          </View>
         </View>
       )
     }
@@ -126,7 +128,6 @@ export default class SelectGame extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    //justifyContent: 'center',
     alignItems: 'center',
     height: metrics.DEVICE_HEIGHT
   },

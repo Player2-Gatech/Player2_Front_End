@@ -65,7 +65,9 @@ export default class Profile extends Component {
                           <Video
                               playerVideo={matchingProfiles[matchIndex].playerVideo}
                           />
-                          <Comment/>
+                          <Comment
+                            comments = {matchingProfiles[matchIndex].playerComments}
+                          />
                       </View>
                   </ScrollView>
                   <View style={styles.buttonContainer}>
@@ -110,14 +112,12 @@ export default class Profile extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 70
   },
   buttonContainer: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
