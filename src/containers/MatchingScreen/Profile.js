@@ -62,7 +62,9 @@ export default class Profile extends Component {
                           <Video
                               playerVideo={matchingProfiles[matchIndex].playerVideo}
                           />
-                          <Comment/>
+                          <Comment
+                            comments = {matchingProfiles[matchIndex].playerComments}
+                          />
                       </View>
                   </ScrollView>
                   <View style={styles.buttonContainer}>

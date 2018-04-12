@@ -7,24 +7,15 @@ import CustomButton from '../../components/CustomButton'
 import imgProfile from '../../images/logo.png'
 import metrics from '../../config/metrics'
 
-const comments = [{
-    commenter: "Anonymous",
-    rating: 4,
-    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
-}, {
-    commenter: "Anonymous",
-    rating: 3,
-    message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Vel orci porta non pulvinar neque laoreet suspendisse. Pulvinar elementum integer enim neque volutpat ac tincidunt vitae. Gravida arcu ac tortor dignissim. Felis bibendum ut tristique et egestas."
-}];
-
 export default class Comment extends Component {
-    
-    addCommentComponent() {
+
+    addCommentComponent(comments) {
+      if (comments.length > 0) {
         return comments.map((item) => {
             return (
                 <View style={styles.commentContainer}>
                     <View style={styles.nameStarContainer}>
-                        <Text style={{ alignItems: 'flex-start' }} > {item.commenter} </Text>
+                        <Text style={{ alignItems: 'flex-start', fontWeight: 'bold' }} > {item.commenter} </Text>
                         <View style={styles.starContainer}>
                             <Stars
                                 disabled={false}
@@ -37,18 +28,26 @@ export default class Comment extends Component {
                         </View>
                     </View>
                     <Text> {item.message} </Text>
-                </View> 
+                </View>
             );
         });
+      } else {
+        return (
+          <View style={styles.emptyContainer}>
+            <Text>{'No comments for this user yet!'}</Text>
+          </View>
+        )
+      }
     }
-    
+
     render () {
+        const { comments } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.sectionTitleContainer}>
                     <Text style={styles.sectionTitle}>{'Comments'}</Text>
                 </View>
-                { this.addCommentComponent() }
+                { this.addCommentComponent(comments) }
             </View>
         )
     }
@@ -57,6 +56,7 @@ export default class Comment extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: metrics.DEVICE_WIDTH * 0.95,
     backgroundColor: '#fff',
   },
   sectionTitleContainer: {
@@ -71,11 +71,14 @@ const styles = StyleSheet.create({
     textAlign: 'left'
   },
   commentContainer: {
-    borderWidth: StyleSheet.hairlineWidth,
+    borderWidth: .8,
     borderRadius: 10,
     borderColor: '#99E7FF',
     padding: 5,
     margin: 5
+  },
+  emptyContainer: {
+    alignItems: 'center',
   },
   nameStarContainer: {
     flexDirection: 'row',

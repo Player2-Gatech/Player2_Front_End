@@ -17,6 +17,11 @@ import FlagModal from './FlagModal'
 import CustomButton from '../../components/CustomButton'
 
 export default class Profile extends Component {
+
+    state = {
+      comments: []
+    }
+
     _onPressComment(user) {
         this.refs.commentModal.showAddModal(user)
     }
@@ -42,7 +47,9 @@ export default class Profile extends Component {
             body: body
         })
         .then((response) => response.json())
-        // TODO update profile since comment has been posted?
+        .then((responseJson) => {
+          this.setState({comments: responseJson})
+        });
     }
 
     _onRespondToRequest(user, skipped, updateFriends) {
@@ -71,6 +78,7 @@ export default class Profile extends Component {
     }
 
     render () {
+        const { comments } = this.state
         const { user, isPending, updateFriends} = this.props.navigation.state.params;
         return (
             <View>
@@ -96,7 +104,9 @@ export default class Profile extends Component {
                         <Video
                             playerVideo={ user.playerVideo }
                         />
-                        <Comment/>
+                        <Comment
+                          comments = {comments.length > user.playerComments.length ? comments : user.playerComments}
+                        />
                     </View>
                 </ScrollView>
                 { !isPending && <ActionButton buttonColor='#1AB515'>
