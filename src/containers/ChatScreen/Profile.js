@@ -27,7 +27,7 @@ export default class Profile extends Component {
 
     _onSubmitModal(user, starCount, comment) {
         let body = JSON.stringify({
-            'user_id': user.user_id,
+            'userId': user.user_id,
             'message': comment,
             'rating': starCount
         })
@@ -99,13 +99,14 @@ export default class Profile extends Component {
                         <Comment/>
                     </View>
                 </ScrollView>
-                { !isPending && <ActionButton buttonColor='#1976D2'>
-                    <ActionButton.Item buttonColor='#4286f4'
+                { !isPending && <ActionButton buttonColor='#1AB515'>
+                    <ActionButton.Item buttonColor='#F1330F'
                                         title='Report Player'
+                                        textContainerStyle={{ backgroundColor:'#F1330F' }}
                                         onPress = {() => this._onPressFlag(user)}>
                         <Icon name='md-flag'/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#4286f4'
+                    <ActionButton.Item buttonColor='#F1C40F'
                                         title='Leave Comment'
                                         onPress = {() => this._onPressComment(user)}>
                         <Icon name='md-create'/>
