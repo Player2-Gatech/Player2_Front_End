@@ -21,18 +21,40 @@ class ChatRoom extends Component {
         _id: user.idA
       }
     };
-    this.roomName = 'roomName';
+    this.roomName = str(min(user.idA, user.idB)) + str(max(user.idB, user.id))
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
+    this._getMessages();
 
     this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
-    //this.socket = io('128.61.30.127:8001');
-    this.socket.emit('join', {room: 'roomName'});
+    //this.socket = io('128.61.28.235:8001');
+    this.socket.emit('join', {room: this.roomName});
     this.socket.on('from_server', this.onReceivedMessage);
   }
 
   onSend = (message) => {
     this.socket.emit('room_send', {message: message[0], room: this.roomName});
+      let body = json.stringify({
+        'text': message,
+        'createdAt': new Date(),
+      });
+      const base64 = require('base-64')
+      fetch(baseUrl + "/api/chat?roomName" + this.roomName, {
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + base64.encode(authKey+":")
+          },
+          body: body
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        console.log(responseJson)
+      })
+      .catch((error) => {
+          console.error(error)
+      });
   };
 
   onReceivedMessage = (message) => {
@@ -41,6 +63,29 @@ class ChatRoom extends Component {
         messages: GiftedChat.append(previousState.messages, message)
       };
     });
+  }
+
+  _getMessages = () => {
+      const base64 = require('base-64')
+      fetch(baseUrl + "/api/chat?roomName=" + this.roomName, {
+          method: 'GET',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Basic ' + base64.encode(authKey+":")
+          },
+      })
+      .then((response) => response.json())
+      .then((responseJson) => {
+        this.setState({
+          messages: responseJson.chats.sort({
+            createdAt: -1
+          })
+        })
+      })
+      .catch((error) => {
+          console.error(error)
+      });
   }
 
   renderBubble(props) {
