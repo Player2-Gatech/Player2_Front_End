@@ -26,9 +26,9 @@ export default class Search extends Component {
       }
     }
 
-    //closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
+    closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
 
-    //componentDidMount = () => this.closeActivityIndicator()
+    componentDidMount = () => this.closeActivityIndicator()
 
     getMatches() {
       this.setState({enableSpinner : true})
@@ -57,17 +57,8 @@ export default class Search extends Component {
     render () {
         const { navigate } = this.props.navigation
         const { enableSpinner, skillModifier, roleModifier, commentModifier, restrictRanks} = this.state
-                return (
-                <View style={{paddingVertical:20}}>
-                  <CustomButton
-                      onPress={() => this.getMatches(navigate)}
-                      buttonStyle={styles.button}
-                      textStyle={styles.buttonText}
-                      text={enableSpinner ? '' : 'Search'}
-                  />
-                </View>
-                )
-        /*return (
+        
+        return (
             <View style={styles.container}>
               <View style={styles.mainContainer}>
                 <View
@@ -138,7 +129,6 @@ export default class Search extends Component {
                   style={{flex:0.5}}/>
               </View>
             </View>
-            */
         )
     }
 }
