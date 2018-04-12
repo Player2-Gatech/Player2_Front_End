@@ -21,19 +21,10 @@ export default class Search extends Component {
         roleModifier: .2,
         commentModifier: .1,
         restrictRanks: 1,
-        animating: true,
-        enableSpinner: false
       }
     }
 
-    closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
-
-    componentDidMount = () => this.closeActivityIndicator()
-
     getMatches() {
-      console.log("PRINTING TRUTHY NESS")
-      console.log(this.state.restrictRanks)
-      this.setState({enableSpinner : true})
       // just league for now
       const base64 = require('base-64')
       total = this.state.roleModifier + this.state.commentModifier + this.state.skillModifier
@@ -51,14 +42,12 @@ export default class Search extends Component {
       .then((response) => response.json())
       .then((responseJson) => {
           console.log(responseJson)
-          this.setState({enableSpinner : false})
-          this.props.navigation.navigate("MatchingProfile", { matchingProfiles: responseJson.matches })
+          this.props.navigation.navigate('MatchingProfile', { matchingProfiles: responseJson.matches })
       })
     }
 
     render () {
-        const { navigate } = this.props.navigation
-        const { enableSpinner, skillModifier, roleModifier, commentModifier, restrictRanks} = this.state
+        const {skillModifier, roleModifier, commentModifier, restrictRanks} = this.state
 
         return (
             <View style={styles.container}>
@@ -121,10 +110,10 @@ export default class Search extends Component {
                   style={{flex:2}}/>
                 <View style={{paddingVertical:20}}>
                   <CustomButton
-                      onPress={() => this.getMatches(navigate)}
+                      onPress={() => this.getMatches()}
                       buttonStyle={styles.button}
                       textStyle={styles.buttonText}
-                      text={enableSpinner ? '' : 'Search'}
+                      text={'Search'}
                   />
                 </View>
                 <View
@@ -175,15 +164,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: 'white',
     fontWeight: 'bold'
-  },
-  spinnerContainer: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center'
   },
   slider: {
     width: metrics.DEVICE_WIDTH * 0.6,
