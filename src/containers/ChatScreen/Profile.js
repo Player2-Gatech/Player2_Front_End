@@ -109,15 +109,16 @@ export default class Profile extends Component {
                         />
                     </View>
                 </ScrollView>
-                { !isPending && <ActionButton buttonColor='#1AB515'>
-                    <ActionButton.Item buttonColor='#F1330F'
+                { !isPending && <ActionButton buttonColor='#1976D2'>
+                    <ActionButton.Item buttonColor='#E74C3C'
                                         title='Report Player'
-                                        textContainerStyle={{ backgroundColor:'#F1330F' }}
+                                        textContainerStyle={{ backgroundColor:'#E5E7E9' }}
                                         onPress = {() => this._onPressFlag(user)}>
                         <Icon name='md-flag'/>
                     </ActionButton.Item>
-                    <ActionButton.Item buttonColor='#F1C40F'
+                    <ActionButton.Item buttonColor='#F4D03F'
                                         title='Leave Comment'
+                                        textContainerStyle={{ backgroundColor:'#E5E7E9' }}
                                         onPress = {() => this._onPressComment(user)}>
                         <Icon name='md-create'/>
                     </ActionButton.Item>

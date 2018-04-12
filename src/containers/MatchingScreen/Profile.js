@@ -54,9 +54,12 @@ export default class Profile extends Component {
                               photo={matchingProfiles[matchIndex].profilePhoto}
                           />
                           <Game
-                              gameUsername={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].displayName }
-                              myPosition={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].role }
-                              duoPosition={matchingProfiles[matchIndex].playerGameRole.filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
+                              gameUsername={matchingProfiles[matchIndex].playerGameRole.
+                                    filter(g => g.gameTitle == 'League of Legends')[0].displayName }
+                              myPosition={matchingProfiles[matchIndex].playerGameRole.
+                                    filter(g => g.gameTitle == 'League of Legends')[0].role }
+                              duoPosition={matchingProfiles[matchIndex].playerGameRole.
+                                    filter(g => g.gameTitle == 'League of Legends')[0].partnerRole }
                               skillInfo={matchingProfiles[matchIndex].playerSkill[0]}
                           />
                           <Video

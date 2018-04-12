@@ -24,7 +24,7 @@ class ChatRoom extends Component {
     this.roomName = Math.min(user.idA, user.idB).toString() + Math.max(user.idA, user.idB).toString();
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
-    this._getMessages();
+    //this._getMessages();
 
     this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
     //this.socket = io('128.61.28.235:8001');
@@ -34,27 +34,27 @@ class ChatRoom extends Component {
 
   onSend = (message) => {
     this.socket.emit('room_send', {message: message[0], room: this.roomName});
-      let body = json.stringify({
-        'text': message,
-        'createdAt': new Date(),
-      });
-      const base64 = require('base-64')
-      fetch(baseUrl + "/api/chat?roomName" + this.roomName, {
-          method: 'POST',
-          headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Basic ' + base64.encode(authKey+":")
-          },
-          body: body
-      })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson)
-      })
-      .catch((error) => {
-          console.error(error)
-      });
+    let body = JSON.stringify({
+      'text': message[0].text,
+      'createdAt': new Date(),
+    });
+    const base64 = require('base-64')
+    fetch(baseUrl + "/api/chat?roomName=" + this.roomName, {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Basic ' + base64.encode(authKey+":")
+        },
+        body: body
+    })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson)
+    })
+    .catch((error) => {
+        console.error(error)
+    });
   };
 
   onReceivedMessage = (message) => {
@@ -79,9 +79,12 @@ class ChatRoom extends Component {
       .then((responseJson) => {
         console.log('CHAT RESPONSE: ', responseJson)
         this.setState({
-          messages: responseJson.chats.sort({
-            createdAt: -1
+          messages: responseJson.chats.sort(function(a,b) {
+            console.log(a.createdAt);
+            console.log(b.createdAt);
+            return new Date(b.createdAt) - new Date(a.createdAt);
           })
+          //messages: responseJson.chats.sort()
         })
       })
       .catch((error) => {
