@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView,
          View, Text, TextInput, Image,
          ActivityIndicator, TouchableOpacity } from 'react-native'
+import Slider from "react-native-slider";
 
 import CustomButton from '../../components/CustomButton'
 
@@ -55,6 +56,18 @@ export default class Search extends Component {
                     <ActivityIndicator size="large" color="#99E7FF" />
                 </View>
                 <View style={styles.mainContainer}>
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
+                    <Slider
+                      value={this.state.value}
+                      onValueChange={value => this.setState({ value })}
+                    />
                     <CustomButton
                         onPress={() => this.getMatches()}
                         buttonStyle={styles.button}

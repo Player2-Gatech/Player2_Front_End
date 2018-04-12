@@ -44,6 +44,7 @@ export default class AddVideoModal extends Component {
                 <Image style={styles.youtubeIcon} source={image['Youtube']} resizeMode='contain'/>
                 <TextInput
                     style={styles.input}
+                    autoCapitalize={"none"}
                     underlineColorAndroid='transparent'
                     placeholder={'Enter the youtube code'}
                     value={videoUrl}
