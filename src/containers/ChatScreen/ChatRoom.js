@@ -24,7 +24,7 @@ class ChatRoom extends Component {
     this.roomName = Math.min(user.idA, user.idB).toString() + Math.max(user.idA, user.idB).toString();
 
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
-    this._getMessages();
+    //this._getMessages();
 
     this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
     //this.socket = io('128.61.28.235:8001');
