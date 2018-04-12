@@ -186,8 +186,9 @@ export const Tabs = TabNavigator({
         }
     }
 }, {
-    swipeEnabled: true,
-    animationEnabled: true,
+    swipeEnabled: false,
+    animationEnabled: false,
+    lazy: false,
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     tabBarOptions: {
@@ -206,5 +207,5 @@ export const Root = StackNavigator({
     Tabs: {
         screen: Tabs,
     },
-    
+
 });

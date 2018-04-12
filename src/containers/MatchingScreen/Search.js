@@ -26,9 +26,9 @@ export default class Search extends Component {
       }
     }
 
-    closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
+    //closeActivityIndicator = () => setTimeout(() => this.setState({ animating: false }), 6000)
 
-    componentDidMount = () => this.closeActivityIndicator()
+    //componentDidMount = () => this.closeActivityIndicator()
 
     getMatches() {
       this.setState({enableSpinner : true})
@@ -48,7 +48,7 @@ export default class Search extends Component {
       })
       .then((response) => response.json())
       .then((responseJson) => {
-          console.log(responseJson.matches)
+          console.log(responseJson)
           this.setState({enableSpinner : false})
           this.props.navigation.navigate("MatchingProfile", { matchingProfiles: responseJson.matches })
       })
