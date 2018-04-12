@@ -9,8 +9,8 @@ import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-
 import metrics from '../../config/metrics'
 
 var radio_props = [
-  {label: 'Ranked\t', value: true },
-  {label: 'Casual', value: false }
+  {label: 'Ranked\t\t', value: 1 },
+  {label: 'Casual', value: 0 }
 ];
 
 export default class Search extends Component {
@@ -20,7 +20,7 @@ export default class Search extends Component {
         skillModifier: .6,
         roleModifier: .2,
         commentModifier: .1,
-        restrictRanks: true,
+        restrictRanks: 1,
         animating: true,
         enableSpinner: false
       }
@@ -31,6 +31,8 @@ export default class Search extends Component {
     componentDidMount = () => this.closeActivityIndicator()
 
     getMatches() {
+      console.log("PRINTING TRUTHY NESS")
+      console.log(this.state.restrictRanks)
       this.setState({enableSpinner : true})
       // just league for now
       const base64 = require('base-64')
@@ -57,7 +59,7 @@ export default class Search extends Component {
     render () {
         const { navigate } = this.props.navigation
         const { enableSpinner, skillModifier, roleModifier, commentModifier, restrictRanks} = this.state
-        
+
         return (
             <View style={styles.container}>
               <View style={styles.mainContainer}>
