@@ -26,7 +26,7 @@ class ChatRoom extends Component {
     this.onReceivedMessage = this.onReceivedMessage.bind(this);
     this._getMessages();
 
-    this.socket = io('http://ec2-34-203-205-241.compute-1.amazonaws.com:8001');
+    this.socket = io(baseUrl + ':8001');
     //this.socket = io('128.61.28.235:8001');
     this.socket.emit('join', {room: this.roomName});
     this.socket.on('from_server', this.onReceivedMessage);
