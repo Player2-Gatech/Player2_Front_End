@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 
 import { Tabs } from '../../config/router';
+import { Root } from '../../config/router';
 
 export default class HomeScreen extends Component {
     static propTypes = {
@@ -14,7 +15,7 @@ export default class HomeScreen extends Component {
     }
     render () {
         return (
-            <Tabs/>
+            <Root/>
         )
     }
 }

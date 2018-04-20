@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types'
 import { StyleSheet, AppRegistry, ScrollView, View,
          Text, TextInput, Image, ActivityIndicator,
          TouchableOpacity, Button } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 
 import TopNavigationBar from './TopNavigationBar'
 
@@ -234,6 +235,7 @@ export default class Profile extends Component {
                                     gameUsername: gameUsername,
                                     editMode: true,
                                     editGame: false})
+                    this.props.navigation.dispatch(NavigationActions.back());
                   })
                 .catch((error) => {
                     console.error(error)

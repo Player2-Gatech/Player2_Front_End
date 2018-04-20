@@ -4,7 +4,7 @@ import { Alert } from 'react-native'
 import AuthScreen from './src/containers/AuthScreen'
 import HomeScreen from './src/containers/HomeScreen'
 
-global.baseUrl = "http://ec2-34-203-205-241.compute-1.amazonaws.com"
+global.baseUrl = "http://ec2-54-85-171-146.compute-1.amazonaws.com"
 global.authKey = null
 
 export class LoginAnimation extends Component {

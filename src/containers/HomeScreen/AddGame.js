@@ -117,15 +117,13 @@ export default class AddGame extends Component {
                     parentScreen={this}
                 />
             </View>
-          <View style={styles.spinnerContainer}>
-          {
-            this.renderSpinner(skillSpinner)
-          }
-          </View>
         </View>
         )
     }
 }
+          /*<View style={styles.spinnerContainer}>
+            { this.renderSpinner(skillSpinner) }
+          </View>*/
 
 const styles = StyleSheet.create({
   container: {

@@ -18,14 +18,6 @@ export default class SelectGame extends Component {
         super(props);
         this._onPressSelectGame = this._onPressSelectGame.bind(this)
     }
-    /*static propTypes = {
-        addGame: PropTypes.bool.isRequired,
-        addGameFunc: PropTypes.func.isRequired,
-        modalSubmit: PropTypes.func.isRequired,
-        playerGames: PropTypes.object.isRequired,
-        allGameInfo: PropTypes.object.isRequired,
-        skillSpinner: PropTypes.bool.isRequired
-    }*/
     
     _onPressSelectGame(gameTitle, allGameInfo) {
         var matchingGame = allGameInfo.filter(g => g.title == gameTitle)[0]
@@ -33,6 +25,7 @@ export default class SelectGame extends Component {
     }
 
     _onSubmitModal(myPosition, duoPosition, gameUsername, gameTitle) {
+        this.props.navigation.setParams({ skillSpinner: 1 })
         let body = JSON.stringify({
           'playerGameRole': {
            'gameTitle': gameTitle,
@@ -114,12 +107,13 @@ export default class SelectGame extends Component {
                     ref={'addModal'}
                     parentScreen={this}
                 />
+                {skillSpinner && <View style={styles.spinnerContainer}>
+                  <Text style={styles.spinnerText}>{'Getting stats...'}</Text>
+                  <ActivityIndicator
+                    size="large"
+                    color="#0000ff" />
+                </View>}
             </View>
-            <View style={styles.spinnerContainer}>
-                { this.renderSpinner(skillSpinner) }
-            </View>
-          <View style={styles.spinnerContainer}>
-          </View>
         </View>
       )
     }
